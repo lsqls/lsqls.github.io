@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="http://www.bupt.team/"/>
   <updated>2020-05-03T15:39:08.544Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://www.bupt.team/</id>
   
   <author>
     <name>秦程宇</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2020/05/03/hello-world/"/>
-    <id>http://yoursite.com/2020/05/03/hello-world/</id>
+    <link href="http://www.bupt.team/2020/05/03/hello-world/"/>
+    <id>http://www.bupt.team/2020/05/03/hello-world/</id>
     <published>2020-05-03T12:03:58.347Z</published>
     <updated>2020-05-03T15:39:08.544Z</updated>
     
@@ -35,12 +35,12 @@
     </summary>
     
     
-      <category term="测试" scheme="http://yoursite.com/categories/%E6%B5%8B%E8%AF%95/"/>
+      <category term="测试" scheme="http://www.bupt.team/categories/%E6%B5%8B%E8%AF%95/"/>
     
     
-      <category term="测试" scheme="http://yoursite.com/tags/%E6%B5%8B%E8%AF%95/"/>
+      <category term="测试" scheme="http://www.bupt.team/tags/%E6%B5%8B%E8%AF%95/"/>
     
-      <category term="Hello World" scheme="http://yoursite.com/tags/Hello-World/"/>
+      <category term="Hello World" scheme="http://www.bupt.team/tags/Hello-World/"/>
     
   </entry>
   
