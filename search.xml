@@ -25,4 +25,92 @@
         <tag>Hello World</tag>
       </tags>
   </entry>
+  <entry>
+    <title>笔记-基于Kali_Linux的渗透测试研究</title>
+    <url>/2020/05/24/%E7%AC%94%E8%AE%B0-%E5%9F%BA%E4%BA%8EKali-Linux%E7%9A%84%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%A0%94%E7%A9%B6/</url>
+    <content><![CDATA[<h3 id="主机探测与端口扫描"><a href="#主机探测与端口扫描" class="headerlink" title="主机探测与端口扫描"></a>主机探测与端口扫描</h3><h4 id="活跃主机扫描"><a href="#活跃主机扫描" class="headerlink" title="活跃主机扫描"></a>活跃主机扫描</h4><ul>
+<li><p>ICMP Ping</p>
+</li>
+<li><p>Metasploit主机发现模块</p>
+<p><code>modules/auxiliary/scanner/discovery</code>目录下的模块，主要有<code>arp_sweep</code>、<code>ipv6_multicast_ping</code>、<code>ipv6_nerghbor</code>、<code>udp_probe</code>、<code>udp_sweep</code>。<code>arp_sweep</code>使用ARP请求美剧本地局域网络中的所有活跃主机，<code>udp_sweep</code>通过发送UDP数据包探查指定主机是否活跃，并发现其主机上的UDP服务。</p>
+</li>
+<li><p>Nmap主机探测</p>
+<p><code>nmap -sn  192.168.0.1/24</code> C段扫描，发现活跃主机</p>
+</li>
+</ul>
+<h4 id="操作系统识别"><a href="#操作系统识别" class="headerlink" title="操作系统识别"></a>操作系统识别</h4><p><code>nmap -O  [靶机IP地址]</code>，如果识别的信息不够，可以加上<code>-sV</code>参数</p>
+<h4 id="端口扫描与服务类型探测"><a href="#端口扫描与服务类型探测" class="headerlink" title="端口扫描与服务类型探测"></a>端口扫描与服务类型探测</h4><p>目前常见的端口扫描有：TCP  Connect 扫描、TCP  SYN 扫描 、TCP  ACK 扫描 、TCP  FIN扫描。</p>
+<h5 id="Nmap扫描端口"><a href="#Nmap扫描端口" class="headerlink" title="Nmap扫描端口"></a>Nmap扫描端口</h5><p>常见的扫描类型参数有：</p>
+<ul>
+<li><code>-sT</code>  TCP  Connect 扫描</li>
+<li><code>-sS</code> TCP SYN扫描</li>
+<li><code>-sP</code> 通过发送ICMP Ping 请求探测主机是否存活，原理同Ping</li>
+<li><code>-sA</code> TCP ACK 扫描</li>
+</ul>
+<p>常见的扫描选项有：</p>
+<ul>
+<li><code>-Pn</code>  在扫描之前，不发生ICMP  echo  测试目标是否活跃</li>
+<li><code>-O</code>  启用TCP/IP协议栈的指纹特征来获取主机操作系统类型信息</li>
+<li><code>-F</code> 快速扫描模式，只扫描默认端口</li>
+</ul>
+<h5 id="Python编程实现端口扫描"><a href="#Python编程实现端口扫描" class="headerlink" title="Python编程实现端口扫描"></a>Python编程实现端口扫描</h5><p>使用BSD套接字的接口进行编程</p>
+<h5 id="Nmap探测服务"><a href="#Nmap探测服务" class="headerlink" title="Nmap探测服务"></a>Nmap探测服务</h5><p>端口扫描可以得到服务的简单信息，如果需要获取更加详细的服务版本信心，需要添加<code>-sV</code>选项。</p>
+<h4 id="探测结果分析"><a href="#探测结果分析" class="headerlink" title="探测结果分析"></a>探测结果分析</h4><p>将探测到的信息汇总在表上，将端口和服务信息进行归类，并按照可能的攻击路线进行分类。</p>
+<p><img src="http://cdn.myworkroom.cn/image-20200514161950520.png-d" alt="常见端口极其说明，以及攻击方向"></p>
+<h3 id="网络服务扫描与查点"><a href="#网络服务扫描与查点" class="headerlink" title="网络服务扫描与查点"></a>网络服务扫描与查点</h3><p>对网络上特定服务进行扫描，可以增加渗透成功的概率。在确定开放端口后，通常会对相应端口上运行服务的信息进行更加升入的挖掘，这被称为服务查点。</p>
+<h4 id="Telnet-服务扫描"><a href="#Telnet-服务扫描" class="headerlink" title="Telnet 服务扫描"></a>Telnet 服务扫描</h4><p>Telnet是一个历史悠久但缺乏安全性的网络服务，由于Telnet没有对传输过程中的数据进行加密，这使得使用Telnet的网络设备存在安全风险。可以使用Metasploit<code>中的辅助模块telnet_version</code>进行Telnet服务查点。</p>
+<h4 id="SSH服务扫描"><a href="#SSH服务扫描" class="headerlink" title="SSH服务扫描"></a>SSH服务扫描</h4><p>与Telnet服务相比，SSH采用的是安全的加密信息传输方式。可以使用Metasploit中的<code>ssh_version</code>进行SSH服务查点。</p>
+<h4 id="FPT服务查点"><a href="#FPT服务查点" class="headerlink" title="FPT服务查点"></a>FPT服务查点</h4><p>FPT（File Transfer Protocol）是用于在网络上进行文件传输的一套协议标准，使用的是客户/服务模式，属于网络传输协议的应用层。可以使用Metasploit中的<code>fpt_version</code>进行FPT服务查点。</p>
+<h4 id="数据库服务查点"><a href="#数据库服务查点" class="headerlink" title="数据库服务查点"></a>数据库服务查点</h4><p>这是漏洞频发的“重灾区”，常见的有：SQL Server 的1433端口、Oracle SQL的1521端口、MySQL的3306端口、Postgre SQL的5453。可以使用Metasploit中不同的数据库查询模块进行服务查点：<code>msssql_ping</code>、<code>tnssnr_version</code>、<code>mysql_version</code>、<code>postgres_version</code>。</p>
+<h3 id="网络漏洞扫描"><a href="#网络漏洞扫描" class="headerlink" title="网络漏洞扫描"></a>网络漏洞扫描</h3><p>常见的获取漏洞的方法是使用漏洞扫描工具，主要有<strong>Nessus</strong>和OpenVas，还可以直接到官方网站获取一些设备或系统的漏洞信息。</p>
+<h2 id="Web渗透测试"><a href="#Web渗透测试" class="headerlink" title="Web渗透测试"></a>Web渗透测试</h2><h3 id="常见的Web攻击类型"><a href="#常见的Web攻击类型" class="headerlink" title="常见的Web攻击类型"></a>常见的Web攻击类型</h3><p><img src="http://cdn.myworkroom.cn/image-20200514175813811.png-d" alt="2017年Web应用的各类攻击次数占比"></p>
+<h3 id="SQL注入攻击"><a href="#SQL注入攻击" class="headerlink" title="SQL注入攻击"></a>SQL注入攻击</h3><p>SQL注入漏洞产生需要满足两个条件：</p>
+<ol>
+<li>参数用户可控，即前端传给后端的参数内容是用户可以控制的</li>
+<li>参数是带入数据库查询，即传入的参数拼接到SQL语句且带入数据库查询</li>
+</ol>
+<h4 id="SQL注入实例分析"><a href="#SQL注入实例分析" class="headerlink" title="SQL注入实例分析"></a>SQL注入实例分析</h4><ul>
+<li><p>测试是否存在注入点，以及注入的类型</p>
+<p><img src="http://cdn.myworkroom.cn/image-20200514182000220.png-d" alt="SQL注入测试数据"></p>
+</li>
+<li><p>获取数据库相关信息</p>
+<p>首先使用<code>order by  num</code>判断数据库查询字段数，然后通过<code>union select 1,2,3...</code>联合查询语句判断出具体显示字段的显示位，确定显示位后，可以使用SQL注入常用的内置函数获取数据库的信息，最后获取数据库中表名和列名并导出数据库中的数据，验证数据的有效性可以到<a href="www.cmd5.com">www.cmd5.com</a>。</p>
+</li>
+</ul>
+<h3 id="XSS跨站脚本攻击"><a href="#XSS跨站脚本攻击" class="headerlink" title="XSS跨站脚本攻击"></a>XSS跨站脚本攻击</h3><p>跨站脚本攻击允许用户将恶意代码注入到网页中，其他使用者在浏览网页时会受到影响/根据XSS脚本注入方式的不同，XSS攻击一般可以分为三种：反射型XSS、存储型XSS、DOM型XSS。</p>
+<ul>
+<li>反射性XSS又称非持久性XSS，此攻击类型具有一次性，其攻击方式为：攻击者通过电子邮件等方式将包含XSS代码的恶意链接发送给目标用户。</li>
+<li>存储型XSS又称为持久型XSS，攻击脚本将被永久放在服务器的数据库或文件中。这种攻击多见于论坛、博客和留言板。</li>
+<li>DOM型XSS是一种特殊的反射型XSS,它是基于DOM文档对象模型的一种漏洞。DOM型XSS攻击方式为：用户请求一个专门被设计的URL，它由攻击者提交且其中包含XSS代码，而服务器的响应不会以任何形式包含攻击者的脚本，当用户的浏览器处理这个响应时，DOM对象就会处理XSS代码。</li>
+</ul>
+<h3 id="文件上传攻击"><a href="#文件上传攻击" class="headerlink" title="文件上传攻击"></a>文件上传攻击</h3><p>上传webshell工具：BurpSuit</p>
+<h2 id="终端主机渗测试"><a href="#终端主机渗测试" class="headerlink" title="终端主机渗测试"></a>终端主机渗测试</h2><h3 id="网络服务渗透"><a href="#网络服务渗透" class="headerlink" title="网络服务渗透"></a>网络服务渗透</h3><p>网络服务渗透攻击指的是以远程主机所运行的网络服务为目标，向目标服务开放端口发送内嵌而已内容并符合该网络协议的数据包，利用网络服务程序内部的安全漏洞，劫持目标程序控制流，实施远程执行代码的行为，最终达到控制目标系统的目的。</p>
+<p>在利用漏洞进行渗透测试时，需要注意：</p>
+<ul>
+<li>网络环境需要满足需求，测试主机和目标主机至少能够互相ping通</li>
+<li>高危漏洞要明确，需要通过漏洞扫描工具识别</li>
+<li>有可能会由于网络环境不稳定导致入侵失败，需要多次尝试</li>
+</ul>
+<h3 id="Windows-Server-2003"><a href="#Windows-Server-2003" class="headerlink" title="Windows Server 2003"></a>Windows Server 2003</h3><ul>
+<li>Windows远程桌面漏洞：MS12-020</li>
+<li>SMB网络服务漏洞：MS17-010</li>
+</ul>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><ul>
+<li>Samba服务渗透攻击</li>
+<li>Tomcat 服务渗透攻击</li>
+<li>Telnet远程服务渗透攻击</li>
+</ul>
+<h3 id="Windows-7"><a href="#Windows-7" class="headerlink" title="Windows 7"></a>Windows 7</h3><ul>
+<li>SMB服务漏洞：MS17-010</li>
+<li>DNS解析漏洞：MS11-030</li>
+</ul>
+]]></content>
+      <categories>
+        <category>web渗透</category>
+      </categories>
+      <tags>
+        <tag>kali linux</tag>
+        <tag>渗透测试</tag>
+      </tags>
+  </entry>
 </search>
