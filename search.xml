@@ -22,6 +22,7 @@
 <p> 一定要unset GIT_DIR清除变量， 不然会引起remote: fatal: Not a git repository: ‘.’错误。</p>
 <p> 注意权限问题</p>
 </blockquote>
+<h3 id="图片加载测试"><a href="#图片加载测试" class="headerlink" title="图片加载测试"></a>图片加载测试</h3><p>![Hexo 安装使用教程【Mac】 | Pancake Chan的博客- Walk On](<a href="http://image.onebug.tech/Sat" target="_blank" rel="noopener">http://image.onebug.tech/Sat</a>, 20 Jun 2020 001451.png-d)</p>
 ]]></content>
       <categories>
         <category>测试</category>

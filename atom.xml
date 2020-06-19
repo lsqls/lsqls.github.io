@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>一方净土</title>
+  <title>冰冻橘子的自留地</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://www.bupt.team/"/>
-  <updated>2020-06-01T05:26:25.097Z</updated>
-  <id>http://www.bupt.team/</id>
+  <link href="http://www.onebug.tech/"/>
+  <updated>2020-06-19T16:15:11.073Z</updated>
+  <id>http://www.onebug.tech/</id>
   
   <author>
     <name>秦程宇</name>
@@ -18,12 +18,12 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://www.bupt.team/2020/05/03/hello-world/"/>
-    <id>http://www.bupt.team/2020/05/03/hello-world/</id>
+    <link href="http://www.onebug.tech/2020/05/03/hello-world/"/>
+    <id>http://www.onebug.tech/2020/05/03/hello-world/</id>
     <published>2020-05-03T12:03:58.347Z</published>
-    <updated>2020-06-01T05:26:25.097Z</updated>
+    <updated>2020-06-19T16:15:11.073Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><h4 id="hook-自动部署"><a href="#hook-自动部署" class="headerlink" title="hook 自动部署"></a>hook 自动部署</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">unset GIT_DIR </span><br><span class="line">DIR_ONE&#x3D;&#x2F;var&#x2F;www&#x2F;hexoblog&#x2F;public  #此目录为服务器页面展示目录 </span><br><span class="line">cd $DIR_ONE</span><br><span class="line">git pull origin master          #核心代码，自动部署的本质</span><br></pre></td></tr></table></figure><blockquote><p> 一定要unset GIT_DIR清除变量， 不然会引起remote: fatal: Not a git repository: ‘.’错误。</p><p> 注意权限问题</p></blockquote>]]></content>
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><h4 id="hook-自动部署"><a href="#hook-自动部署" class="headerlink" title="hook 自动部署"></a>hook 自动部署</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">unset GIT_DIR </span><br><span class="line">DIR_ONE&#x3D;&#x2F;var&#x2F;www&#x2F;hexoblog&#x2F;public  #此目录为服务器页面展示目录 </span><br><span class="line">cd $DIR_ONE</span><br><span class="line">git pull origin master          #核心代码，自动部署的本质</span><br></pre></td></tr></table></figure><blockquote><p> 一定要unset GIT_DIR清除变量， 不然会引起remote: fatal: Not a git repository: ‘.’错误。</p><p> 注意权限问题</p></blockquote><h3 id="图片加载测试"><a href="#图片加载测试" class="headerlink" title="图片加载测试"></a>图片加载测试</h3><p>![Hexo 安装使用教程【Mac】 | Pancake Chan的博客- Walk On](<a href="http://image.onebug.tech/Sat" target="_blank" rel="noopener">http://image.onebug.tech/Sat</a>, 20 Jun 2020 001451.png-d)</p>]]></content>
     
     <summary type="html">
     
@@ -35,12 +35,12 @@
     </summary>
     
     
-      <category term="测试" scheme="http://www.bupt.team/categories/%E6%B5%8B%E8%AF%95/"/>
+      <category term="测试" scheme="http://www.onebug.tech/categories/%E6%B5%8B%E8%AF%95/"/>
     
     
-      <category term="测试" scheme="http://www.bupt.team/tags/%E6%B5%8B%E8%AF%95/"/>
+      <category term="测试" scheme="http://www.onebug.tech/tags/%E6%B5%8B%E8%AF%95/"/>
     
-      <category term="Hello World" scheme="http://www.bupt.team/tags/Hello-World/"/>
+      <category term="Hello World" scheme="http://www.onebug.tech/tags/Hello-World/"/>
     
   </entry>
   
