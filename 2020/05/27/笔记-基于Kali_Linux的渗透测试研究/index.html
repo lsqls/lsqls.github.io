@@ -30,10 +30,10 @@
 <meta property="og:description" content="渗透信息收集主机探测与端口扫描活跃主机扫描">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://image.onebug.tech/image-20200514161950520.png">
-<meta property="og:image" content="c:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200514175813811.png">
-<meta property="og:image" content="c:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200514182000220.png">
+<meta property="og:image" content="http://image.onebug.tech/image-20200514175813811.png">
+<meta property="og:image" content="http://image.onebug.tech/image-20200514182000220.png">
 <meta property="article:published_time" content="2020-05-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-20T04:51:52.690Z">
+<meta property="article:modified_time" content="2020-06-20T04:53:26.939Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="博客">
 <meta property="article:tag" content="web渗透">
@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-20 12:51:52" itemprop="dateModified" datetime="2020-06-20T12:51:52+08:00">2020-06-20</time>
+                <time title="修改时间：2020-06-20 12:53:26" itemprop="dateModified" datetime="2020-06-20T12:53:26+08:00">2020-06-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,7 +293,7 @@
 <h4 id="FPT服务查点"><a href="#FPT服务查点" class="headerlink" title="FPT服务查点"></a>FPT服务查点</h4><p>FPT（File Transfer Protocol）是用于在网络上进行文件传输的一套协议标准，使用的是客户/服务模式，属于网络传输协议的应用层。可以使用Metasploit中的<code>fpt_version</code>进行FPT服务查点。</p>
 <h4 id="数据库服务查点"><a href="#数据库服务查点" class="headerlink" title="数据库服务查点"></a>数据库服务查点</h4><p>这是漏洞频发的“重灾区”，常见的有：SQL Server 的1433端口、Oracle SQL的1521端口、MySQL的3306端口、Postgre SQL的5453。可以使用Metasploit中不同的数据库查询模块进行服务查点：<code>msssql_ping</code>、<code>tnssnr_version</code>、<code>mysql_version</code>、<code>postgres_version</code>。</p>
 <h3 id="网络漏洞扫描"><a href="#网络漏洞扫描" class="headerlink" title="网络漏洞扫描"></a>网络漏洞扫描</h3><p>常见的获取漏洞的方法是使用漏洞扫描工具，主要有<strong>Nessus</strong>和OpenVas，还可以直接到官方网站获取一些设备或系统的漏洞信息。</p>
-<h2 id="Web渗透测试"><a href="#Web渗透测试" class="headerlink" title="Web渗透测试"></a>Web渗透测试</h2><h3 id="常见的Web攻击类型"><a href="#常见的Web攻击类型" class="headerlink" title="常见的Web攻击类型"></a>常见的Web攻击类型</h3><p><img src="C:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200514175813811.png" alt="2017年Web应用的各类攻击次数占比"></p>
+<h2 id="Web渗透测试"><a href="#Web渗透测试" class="headerlink" title="Web渗透测试"></a>Web渗透测试</h2><h3 id="常见的Web攻击类型"><a href="#常见的Web攻击类型" class="headerlink" title="常见的Web攻击类型"></a>常见的Web攻击类型</h3><p><img src="http://image.onebug.tech/image-20200514175813811.png" alt="2017年Web应用的各类攻击次数占比"></p>
 <h3 id="SQL注入攻击"><a href="#SQL注入攻击" class="headerlink" title="SQL注入攻击"></a>SQL注入攻击</h3><p>SQL注入漏洞产生需要满足两个条件：</p>
 <ol>
 <li>参数用户可控，即前端传给后端的参数内容是用户可以控制的</li>
@@ -301,7 +301,7 @@
 </ol>
 <h4 id="SQL注入实例分析"><a href="#SQL注入实例分析" class="headerlink" title="SQL注入实例分析"></a>SQL注入实例分析</h4><ul>
 <li><p>测试是否存在注入点，以及注入的类型</p>
-<p><img src="C:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200514182000220.png" alt="SQL注入测试数据"></p>
+<p><img src="http://image.onebug.tech/image-20200514182000220.png" alt="SQL注入测试数据"></p>
 </li>
 <li><p>获取数据库相关信息</p>
 <p>首先使用<code>order by  num</code>判断数据库查询字段数，然后通过<code>union select 1,2,3...</code>联合查询语句判断出具体显示字段的显示位，确定显示位后，可以使用SQL注入常用的内置函数获取数据库的信息，最后获取数据库中表名和列名并导出数据库中的数据，验证数据的有效性可以到<a href="www.cmd5.com">www.cmd5.com</a>。</p>
