@@ -256,6 +256,8 @@
     <title>腾讯云(DNSPOD)域名DDNS脚本使用</title>
     <url>/2020/06/24/%E8%85%BE%E8%AE%AF%E4%BA%91(DNSPOD)%E5%9F%9F%E5%90%8DDDNS%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p>DDNS（Dynamic Domain Name Server，动态域名服务）是将用户的动态IP地址映射到一个固定的域名解析服务上，用户每次连接网络的时候客户端程序就会通过信息传递把该主机的动态IP地址传送给位于服务商主机上的服务器程序，服务器程序负责提供DNS服务并实现动态域名解析。下面是介绍如何使用脚本实现腾讯云购买域名的DDNS。</p>
+<a id="more"></a>
+
 <h2 id="登录DNSPod获取密钥"><a href="#登录DNSPod获取密钥" class="headerlink" title="登录DNSPod获取密钥"></a>登录DNSPod获取密钥</h2><p>访问DNSPod控制台<a href="https://console.dnspod.cn/" target="_blank" rel="noopener">https://console.dnspod.cn/</a>，使用你的腾讯云账号登录，如果腾讯云账号绑定微信，直接扫码登录就行。在域名管理添加一条A记录。域名前缀需要设定好，IP可以随意填写，我将其设置为<code>1.1.1.1</code>。</p>
 <p><img src="C:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624223938388.png" alt="image-20200624223938388"></p>
 <p>点击个人头像下的密钥管理，创建一个密钥，将<code>ID</code>和<code>token</code>记下。</p>
