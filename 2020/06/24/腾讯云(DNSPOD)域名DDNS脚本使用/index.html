@@ -30,11 +30,11 @@
 <meta property="og:description" content="DDNS（Dynamic Domain Name Server，动态域名服务）是将用户的动态IP地址映射到一个固定的域名解析服务上，用户每次连接网络的时候客户端程序就会通过信息传递把该主机的动态IP地址传送给位于服务商主机上的服务器程序，服务器程序负责提供DNS服务并实现动态域名解析。下面是介绍如何使用脚本实现腾讯云购买域名的DDNS。 登录DNSPod获取密钥访问DNSPod控制台https:&#x2F;">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="c:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624223938388.png">
-<meta property="og:image" content="c:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624224951160.png">
-<meta property="og:image" content="c:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624225712024.png">
-<meta property="og:image" content="c:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624232552344.png">
+<meta property="og:image" content="http://image.onebug.tech/image-20200624224951160.png-d">
+<meta property="og:image" content="http://image.onebug.tech/image-20200624225712024.png-d">
+<meta property="og:image" content="http://image.onebug.tech/image-20200624232552344.png-d">
 <meta property="article:published_time" content="2020-06-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-24T15:47:05.687Z">
+<meta property="article:modified_time" content="2020-06-24T15:48:32.345Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="域名">
 <meta property="article:tag" content="ddns">
@@ -228,7 +228,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-24 00:00:00 / 修改时间：23:47:05" itemprop="dateCreated datePublished" datetime="2020-06-24T00:00:00+08:00">2020-06-24</time>
+              <time title="创建时间：2020-06-24 00:00:00 / 修改时间：23:48:32" itemprop="dateCreated datePublished" datetime="2020-06-24T00:00:00+08:00">2020-06-24</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,19 +255,19 @@
 <h2 id="登录DNSPod获取密钥"><a href="#登录DNSPod获取密钥" class="headerlink" title="登录DNSPod获取密钥"></a>登录DNSPod获取密钥</h2><p>访问DNSPod控制台<a href="https://console.dnspod.cn/" target="_blank" rel="noopener">https://console.dnspod.cn/</a>，使用你的腾讯云账号登录，如果腾讯云账号绑定微信，直接扫码登录就行。在域名管理添加一条A记录。域名前缀需要设定好，IP可以随意填写，我将其设置为<code>1.1.1.1</code>。</p>
 <p><img src="C:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624223938388.png" alt="image-20200624223938388"></p>
 <p>点击个人头像下的密钥管理，创建一个密钥，将<code>ID</code>和<code>token</code>记下。</p>
-<p><img src="C:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624224951160.png" alt="image-20200624224951160"></p>
+<p><img src="http://image.onebug.tech/image-20200624224951160.png-d" alt="image-20200624224951160"></p>
 <h2 id="设置DDNS脚本"><a href="#设置DDNS脚本" class="headerlink" title="设置DDNS脚本"></a>设置DDNS脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/imki911/ArDNSPod</span><br><span class="line"><span class="built_in">cd</span> ArDNSPod</span><br><span class="line">vi dns.conf</span><br></pre></td></tr></table></figure>
 
 <p><code>dns.conf</code>设置</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. Combine your token ID and token together as follows</span></span><br><span class="line"><span class="comment"># 第一个参数是上图的ID，第二个参数是上图的Token</span></span><br><span class="line">arToken=<span class="string">"123425,b28c3344eaeaea9074c123451234512d"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. Place each domain you want to check as follows</span></span><br><span class="line"><span class="comment"># you can have multiple arDdnsCheck blocks</span></span><br><span class="line"><span class="comment"># 第一个参数是你的域名，第二个参数是前面设定的域名前缀</span></span><br><span class="line">arDdnsCheck <span class="string">"yourdomain.com"</span> <span class="string">"www"</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="定时运行DDNS脚本"><a href="#定时运行DDNS脚本" class="headerlink" title="定时运行DDNS脚本"></a>定时运行DDNS脚本</h2><p>测试脚本是否能正常运行，<code>./ddnspod.sh</code>，显示以下信息说明脚本正常运行，到DNSPod控制台可以看到前面设置的A记录的IP已经被修改为外网IP。</p>
-<p><img src="C:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624225712024.png" alt="image-20200624225712024"></p>
+<p><img src="http://image.onebug.tech/image-20200624225712024.png-d" alt="image-20200624225712024"></p>
 <p>利用cron半小时执行一次DDNS脚本，注意脚本要使用绝对路径。群晖可以使用自带的定时程序完成该操作。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">*/30 * * * *  /home/bzjz/ArDNSPod/ddnspod.sh</span><br></pre></td></tr></table></figure>
 
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>将不支持DDNS的域名服务商下的域名接入DNSPod，同样可以实现DDNS。</p>
-<p><img src="C:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624232552344.png" alt="image-20200624232552344"></p>
+<p><img src="http://image.onebug.tech/image-20200624232552344.png-d" alt="image-20200624232552344"></p>
 
     </div>
 
