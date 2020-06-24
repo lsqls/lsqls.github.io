@@ -259,7 +259,7 @@
 <a id="more"></a>
 
 <h2 id="登录DNSPod获取密钥"><a href="#登录DNSPod获取密钥" class="headerlink" title="登录DNSPod获取密钥"></a>登录DNSPod获取密钥</h2><p>访问DNSPod控制台<a href="https://console.dnspod.cn/" target="_blank" rel="noopener">https://console.dnspod.cn/</a>，使用你的腾讯云账号登录，如果腾讯云账号绑定微信，直接扫码登录就行。在域名管理添加一条A记录。域名前缀需要设定好，IP可以随意填写，我将其设置为<code>1.1.1.1</code>。</p>
-<p><img src="C:%5CUsers%5CMaster%5CPictures%5CImgbot%5Cimage-20200624223938388.png" alt="image-20200624223938388"></p>
+<p><img src="http://image.onebug.tech/image-20200624223938388.png-d" alt="image-20200624223938388"></p>
 <p>点击个人头像下的密钥管理，创建一个密钥，将<code>ID</code>和<code>token</code>记下。</p>
 <p><img src="http://image.onebug.tech/image-20200624224951160.png-d" alt="image-20200624224951160"></p>
 <h2 id="设置DDNS脚本"><a href="#设置DDNS脚本" class="headerlink" title="设置DDNS脚本"></a>设置DDNS脚本</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/imki911/ArDNSPod</span><br><span class="line"><span class="built_in">cd</span> ArDNSPod</span><br><span class="line">vi dns.conf</span><br></pre></td></tr></table></figure>
