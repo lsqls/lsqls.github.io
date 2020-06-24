@@ -219,7 +219,7 @@
   <entry>
     <title>顶级域名组注册</title>
     <url>/2020/06/24/freenom/</url>
-    <content><![CDATA[<h2 id="顶级域名注册"><a href="#顶级域名注册" class="headerlink" title="顶级域名注册"></a>顶级域名注册</h2><p>众所周知，<a href="https://freenom.com/" target="_blank" rel="noopener">Freenom</a>是地球上唯一一个提供免费顶级域名的商家，不过需要每年续期，每次续期最多一年，而管理界面并不是很人性化。下面介绍如何注册一个免费的顶级域名，使用github action 自动续费，以及托管于cloudflare。</p>
+    <content><![CDATA[<p>众所周知，<a href="https://freenom.com/" target="_blank" rel="noopener">Freenom</a>是地球上唯一一个提供免费顶级域名的商家，不过需要每年续期，每次续期最多一年，而管理界面并不是很人性化。下面介绍如何注册一个免费的顶级域名，使用github action 自动续费，以及托管于cloudflare。</p>
 <a id="more"></a>
 
 <h3 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h3><p>注册教程参见<a href="https://zhuanlan.zhihu.com/p/109553641" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/109553641</a>，需要注意的是：</p>
