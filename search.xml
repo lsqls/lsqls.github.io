@@ -284,4 +284,130 @@
         <tag>脚本</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Linux备忘录</title>
+    <url>/2020/06/27/linux%E5%A4%87%E5%BF%98%E5%BD%95/</url>
+    <content><![CDATA[<p>Linux备忘录，记录经常忘记的一些命令以及概念。</p>
+<a id="more"></a>
+
+<ul>
+<li><code>Ctrl + D</code>  结束键盘输入</li>
+<li><code>man</code>常用的数字代表的指令类型<ul>
+<li><strong>1</strong>用户再shell环境中可以操作的指令和可执行文件</li>
+<li><strong>5</strong>配置文件</li>
+<li><strong>8</strong>系统管理员可以使用的管理指令</li>
+</ul>
+</li>
+<li><code>info</code> 与<code>man</code>类似，但是<code>info</code>将文档分成一个个页面，每个页面可以跳转</li>
+<li><code>/usr/share/doc</code> 存放着软件的一整套说明文件</li>
+<li><code>sync</code>将内存中的文件数据立即同步到磁盘</li>
+<li>磁盘<ul>
+<li>IDE 133MB/s</li>
+<li>SATA SATA-II  300MB/s，SATA-III 600MB/s</li>
+<li>SCSI  </li>
+<li>SAS  6Gb/s</li>
+</ul>
+</li>
+<li>磁盘的文件名，文件名后面序号的确定与系统检测到磁盘的顺序有关，而与磁盘所插入的插槽位置无关<ul>
+<li>IDE磁盘：/dev/hd[a-d]</li>
+<li>SATA/SCSI/SAS  ：/dev/sd[a-p]</li>
+</ul>
+</li>
+<li>MBR<ul>
+<li>主要开机记录占446bytes，分区表占64bytes</li>
+<li>分区表最多存储四个分区分为主分区和扩展分区，扩展分区只有一个</li>
+<li>扩展分区使用其它扇区来记录额外的分区表，从而分出更多逻辑分区</li>
+<li>Linux分区当成文件，分区文件的命名方式为：磁盘文件名+编号，例如/dev/sda1。逻辑分区的编号从5开始</li>
+</ul>
+</li>
+<li>GPT<ul>
+<li>GPT为了兼容所有磁盘，在定义扇区上使用逻辑区块地址（Logic Block Address，LBA），LBA扇区大小通常为512bytes</li>
+<li>GPT第一个区块记录MBR，紧接着33个区块记录分区信息，最后的33个区块用于对分区信息进行备份，33个区块的第一个区块为GPT表头记录，这个部分记录了分区表本身位置与大小和备份分区的位，同时放置了分区表的校验码（CRC32）。</li>
+<li>GPT没有扩展分区的概念，都是主分区，每个LBA可以分为4个分区，因此总共可以分128个分区。</li>
+<li>MBR不支持2.2TN以上的硬盘，GPT则最多支持到8ZB</li>
+</ul>
+</li>
+<li>BIOS不可以读取GPT分区表，UEFI可以读取</li>
+<li>对分区进行格式化就是在分区上建立文件系统，一个分区通常只能格式化一个文件系统，但是磁盘阵列等技术可以将一个分区格式化称为多个文件系统</li>
+<li>文件系统<ul>
+<li>inode ，一个文件占用一个inode，记录文件的属性和文件内容所在的block编号</li>
+<li>block：记录文件的具体内容</li>
+<li>superblock：记录文件系统的整体信息，包括inode和block的总量、使用量、剩余量，文件系统的格式和相关信息</li>
+<li>block bitmap：记录block是否被使用的位图</li>
+</ul>
+</li>
+<li>在Ext2文件系统中所支持的block大小有1K，2K，以及4K三种</li>
+<li>inode组成：权限、拥有者与群组、容量、ctime、mtime、定义文件特性的旗标（flag，如SetUID）、文件真正内容的指向</li>
+<li>每个inode的大小是固定的。为了引用大量的block编号，除了使用直接指向外引入了间接、双间接、三间接引用，这决定了文件系统的最大的单文件大小</li>
+<li>建立目录，系统分配一个inode和至少一个block，block中记录的是该目录下的文件名和inode的对应关系</li>
+<li>文件的inode本身不记录文件名，文件名记录在目录中，因此新增文件、删除文件、更改文件名这些与文件名有关的操作都与目录的写权限相关</li>
+<li>ext3/ext4文件系统引入了日志功能，可以利用日志解决block bitmap与block数据不一致的问题</li>
+<li>linux 最基础的三个目录：<ul>
+<li><code>/root</code> 根目录</li>
+<li><code>/usr</code> （unix software resource）软件默认安装目录</li>
+<li><code>/var</code>  （varible）存放系统或程序运行中的数据文件</li>
+</ul>
+</li>
+<li><code>mtime</code>：文件内容被修改会更新；<code>ctime</code>：文件的状态改变会更新；<code>atime</code>：读文件时会更新</li>
+<li><code>mkdir -p</code> 递归创建目录</li>
+<li><code>umask</code>通过掩码表示设置默认权限，文件默认权限为666，目录默认权限为777。<code>umask 0077</code>，之后创建的目录默认权限为700，文件默认权限是600。</li>
+<li><code>ln</code>实体链接在目录下创建一个条目，记录文件名与inode编号，不能跨越文件系统、不能对目录进行链接</li>
+<li><code>ln -s</code>符号链接保存着源文件所在的绝对路径，可以理解为Windows的快捷方式</li>
+<li><code>head</code>：获取文件前几行；<code>tail</code> 获取文件后几行</li>
+<li><code>whereis</code>：搜寻相关的的可执行文件、源代码文件、帮助文件</li>
+<li><code>locate</code>利用数据库进行搜索，使用<code>updatedb</code>来立即更新数据库</li>
+<li><code>find[basedir] [option]</code><ul>
+<li><code>-mtime n</code> 列出在n天前的那一天修改过内容的文件</li>
+<li><code>-mtime +n</code>列出在n天之前修改过内容的文件</li>
+<li><code>-mtime -n</code> 列出在n天之内修改过内容的文件</li>
+<li><code>-user name</code>；<code>-group name</code>；<code>-nouser</code>；<code>-nogroup</code></li>
+<li><code>-name filename</code></li>
+</ul>
+</li>
+<li><code>gzip</code>、<code>bzip2</code>、<code>xz</code>的压缩比不断优化，不过要注意的是，压缩比越高，压缩的世家就越长</li>
+<li><code>tar</code><ul>
+<li>打包压缩 <code>tar -zvcf filename.tar.gz</code></li>
+<li>查看      <code>tar -ztvf  filename.tar.gz</code></li>
+<li>解压缩   <code>tar -zvxf   filename.tar.gz</code></li>
+</ul>
+</li>
+<li>对一个变量赋值直接使用<code>=</code></li>
+<li>对变量的使用需要早变量前加上<code>$</code>，也可以用<code>${}</code>的形式</li>
+<li>变量内容中如果有空格，必须使用双引号或者单引号，双引号中的特殊字符可以保留原本特性，单引号内的特殊字符就是特殊字符本身</li>
+<li>可以使用`指令`或者${指令}的方式将指令的执行结果赋值给变量</li>
+<li>可以使用<code>export</code>命令将自定义变量转为环境变量，环境变量可以在子程序也就是当前bash产生的子bash中使用</li>
+<li>指令搜索顺序<ul>
+<li>绝对或相对路径</li>
+<li>别名</li>
+<li>Bash内置指令</li>
+<li>$PATH指定的路径搜索找到的第一个指令</li>
+</ul>
+</li>
+<li>数据量重定向<ul>
+<li>标准输入 0  <code>&lt;</code>或<code>&lt;&lt;</code></li>
+<li>标准输出 1 <code>&gt;</code>或<code>&gt;&gt;</code></li>
+<li>标准错误输出 2 <code>2&gt;</code> 或<code>2&gt;&gt;</code></li>
+</ul>
+</li>
+<li><code>2&gt;&amp;1</code>表示将标准错误输出转换为标准输出： <code>find /home -name .bashrrc &gt; list 2&gt;&amp;1</code></li>
+<li><code>cut</code>对数据进行切分，取出想要的部分，切分过程一行一行地进行。取出登入者的用户名：<code>last | cut -d &#39; &#39; -f 1</code></li>
+<li>以<code>/etc/passwd</code>的第三列进行排序：<code>cat /etc/passwd | sort -t &#39;:&#39;  -k 3</code></li>
+<li>取得每个人的登录总次数：<code>last|cut -d  &#39; &#39; -f 1 |sort| uniq -c</code> </li>
+<li><code>awk</code>每次只处理一行，处理的最小单位是字段，每个字段的命令方式为<code>$n</code>，n从1开始，<code>$0</code>表示一整行，具体：<code>awk &#39;条件类型 {动作1} 条件类型 {动作2} ...&#39; filename</code></li>
+<li><code>awk</code>变量：<code>NF</code>（每一行拥有的字段数）；<code>NR</code>（目前所处理的是第几行数据）；<code>FS</code>（目前的分隔字符，默认是空格）  </li>
+<li><code>awk</code>示例：<code>/etc/passwd</code>文件的第三个字段为UID，对UID小于10的数据进行处理：<code>cat /etc/passwd|awk &#39;BEGIN {FS=&quot;:&quot;} $3&lt;10 {print $1 &quot;\t&quot; $3}&#39;</code></li>
+<li><code>pstree -A</code>查看进程树</li>
+<li>查看特定端口的进程：<code>netstat -anp|grep port</code></li>
+<li>一个父进程退出，它的一个或者多个进程还在运行，这些子进程将称为孤儿进程，孤儿进程将会被init进程收养</li>
+<li>如果子进程退出，父进程并没有调用<code>wait()</code>或者<code>waitpid()</code>，那么子进程的进程描述符仍然保存在系统中，这种进程被称之为僵尸进程，僵尸进程有可能对系统造成危害，消灭僵尸进程只需要将其父进程杀死即可。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>备忘录</tag>
+      </tags>
+  </entry>
 </search>
