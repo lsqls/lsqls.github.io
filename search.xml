@@ -430,7 +430,7 @@
 <li><p>渲染HTML文件用于发送邮件</p>
 </li>
 <li><p>设置环境变量，邮件发送需要根据这个变量选择是否执行</p>
-<p><img src="http://image.onebug.tech/image-20200628205301788.png-d" alt="image-20200628205301788"></p>
+<p><img src="http://image.onebug.tech/image-20200628210633551.png-d" alt="image-20200628210633551"></p>
 <center> 输出HTML的部分截图</center>
 
 </li>
