@@ -410,4 +410,54 @@
         <tag>备忘录</tag>
       </tags>
   </entry>
+  <entry>
+    <title>github action 部署爬虫脚本</title>
+    <url>/2020/06/28/github%20action%20%E9%83%A8%E7%BD%B2%E7%88%AC%E8%99%AB%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<p>很久之前写了一个爬虫脚本，每10分钟获取一次比特币价格，当价格波动较大时，使用邮件通知我进行交易。之前的脚本部署在学校的群晖上，由于会时不时地停电，爬虫脚本运行状态很不稳定，这段时间接触了github action ，感觉正好满足我的需求，于是将爬虫迁移到到GitHub Action上，并弃用原来Python实现的邮件发送功能，改为利用Github Action实现邮件通知。</p>
+<a id="more"></a>
+
+<h2 id="编写爬虫脚本"><a href="#编写爬虫脚本" class="headerlink" title="编写爬虫脚本"></a>编写爬虫脚本</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#https://price.btcfans.com/</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="keyword">from</span> jinja2 <span class="keyword">import</span> Environment, PackageLoader</span><br><span class="line">max=<span class="number">10000</span>;min=<span class="number">4000</span></span><br><span class="line"><span class="comment">#获取环境变量中的MAX，MIN值</span></span><br><span class="line"><span class="keyword">if</span> <span class="string">'MAX'</span> <span class="keyword">in</span> os.environ:</span><br><span class="line">    max=float(os.getenv(<span class="string">'MAX'</span>)) </span><br><span class="line"><span class="keyword">if</span> <span class="string">'MIN'</span> <span class="keyword">in</span> os.environ:</span><br><span class="line">    min=float(os.getenv(<span class="string">'MIN'</span>))</span><br><span class="line">sendemail=<span class="literal">False</span>;strategy=<span class="string">"继续持有"</span></span><br><span class="line"><span class="comment">#获取https://price.btcfans.com/上显示的比特币价格</span></span><br><span class="line">url=<span class="string">'https://price.btcfans.com/'</span></span><br><span class="line">html = etree.HTML(requests.get(url).text)</span><br><span class="line">price = float(html.xpath(<span class="string">'//li[@id="coin-bitcoin"]//span[@class="last-price"]/text()'</span>)[<span class="number">0</span>].replace(<span class="string">','</span>,<span class="string">''</span>))</span><br><span class="line"><span class="comment">#根据当前价格选择策略，以及是否发送邮件</span></span><br><span class="line"><span class="keyword">if</span> (price&gt;max):</span><br><span class="line">    sendemail=<span class="literal">True</span></span><br><span class="line">    strategy=<span class="string">"卖出"</span></span><br><span class="line"><span class="keyword">if</span> (price&lt;min):</span><br><span class="line">    sendemail=<span class="literal">True</span></span><br><span class="line">    strategy=<span class="string">"买入"</span></span><br><span class="line"><span class="comment">#使用jinja2渲染HTML用于发送邮件</span></span><br><span class="line">env = Environment(loader=PackageLoader(<span class="string">'bitcoin'</span>, <span class="string">''</span>))</span><br><span class="line">template = env.get_template(<span class="string">'template.html'</span>)</span><br><span class="line">template.stream(price=price,max=max,min=min,strategy=strategy).dump(<span class="string">'email.html'</span>)</span><br><span class="line"><span class="comment">#放弃使用Python脚本发送邮件的方案，使用dawidd6/action-send-mail发送邮件，两者通过环境变量通信</span></span><br><span class="line">print(<span class="string">"::set-env name=sendemail::&#123;&#125;"</span>.format(sendemail))</span><br></pre></td></tr></table></figure>
+
+<p>脚本非常简单，可以分为以下几步：</p>
+<ul>
+<li><p>读取环境变量中的MAX、MIN值。如果不存在，就使用默认值</p>
+</li>
+<li><p>获取网络上的比特币价格</p>
+</li>
+<li><p>根据当前比特币价格选择策略</p>
+</li>
+<li><p>渲染HTML文件用于发送邮件</p>
+</li>
+<li><p>设置环境变量，邮件发送需要根据这个变量选择是否执行</p>
+<p><img src="http://image.onebug.tech/image-20200628205301788.png-d" alt="image-20200628205301788"></p>
+<center> 输出HTML的部分截图</center>
+
+</li>
+</ul>
+<h2 id="编写workflow文件"><a href="#编写workflow文件" class="headerlink" title="编写workflow文件"></a>编写workflow文件</h2><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">'bitcoin'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">schedule:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">cron:</span> <span class="string">'*/10 *  * * *'</span> </span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">GetBtcPrice:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">'Checkout codes'</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">'Setup python'</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-python@v1</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">python-version:</span> <span class="string">'3.x'</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">'Install dependencies'</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">python</span> <span class="string">-m</span> <span class="string">pip</span> <span class="string">install</span> <span class="string">--upgrade</span> <span class="string">requests</span> <span class="string">lxml</span> <span class="string">jinja2</span> </span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">'run get price script'</span></span><br><span class="line">      <span class="attr">env:</span></span><br><span class="line">        <span class="attr">MAX:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.MAX</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">MIN:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.MIN</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">python</span> <span class="string">bitcoin.py</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Send</span> <span class="string">mail</span></span><br><span class="line">      <span class="attr">if:</span> <span class="string">$&#123;&#123;</span> <span class="string">env.sendemail</span> <span class="string">==</span> <span class="string">'True'</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">dawidd6/action-send-mail@v2</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">server_address:</span> <span class="string">smtp.163.com</span></span><br><span class="line">        <span class="attr">server_port:</span> <span class="number">465</span></span><br><span class="line">        <span class="attr">username:</span> <span class="string">$&#123;&#123;secrets.MAIL_USERNAME&#125;&#125;</span></span><br><span class="line">        <span class="attr">password:</span> <span class="string">$&#123;&#123;secrets.MAIL_PASSWORD&#125;&#125;</span></span><br><span class="line">        <span class="attr">subject:</span> <span class="string">比特币价格监控</span></span><br><span class="line">        <span class="comment"># Literal body:</span></span><br><span class="line">        <span class="attr">body:</span> <span class="string">file://email.html</span></span><br><span class="line">        <span class="attr">to:</span> <span class="string">$&#123;&#123;secrets.TO&#125;&#125;</span></span><br><span class="line">        <span class="attr">from:</span> <span class="string">$&#123;&#123;secrets.MAIL_USERNAME&#125;&#125;</span> <span class="comment"># &lt;user@example.com&gt;</span></span><br><span class="line">        <span class="comment"># Optional content type (defaults to text/plain):</span></span><br><span class="line">        <span class="attr">content_type:</span> <span class="string">text/html</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>脚本每10分钟执行一次，cron的设置语法和Linux下的crontab一致</p>
+</li>
+<li><p>在secrets中设置<code>MAX</code>、<code>MIN</code>、<code>MAIL_USERNAME</code>、<code>MAIL_PASSWORD</code>、<code>TO</code>（接收邮箱地址）以保证脚本的正常运行</p>
+</li>
+<li><p>Fork 的仓库上 GitHub Actions 的定时任务不会自动执行，必须要手动触发一次后才能正常工作，随便改点什么提交就行</p>
+<p><img src="http://image.onebug.tech/image-20200628205024464.png-d" alt="image-20200628205024464"></p>
+</li>
+</ul>
+<h2 id="参考文章与项目"><a href="#参考文章与项目" class="headerlink" title="参考文章与项目"></a>参考文章与项目</h2><blockquote>
+<p><a href="http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2019/12/github_actions.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/12/github_actions.html</a></p>
+<p><a href="https://github.com/Closty/chaoxing/" target="_blank" rel="noopener">https://github.com/Closty/chaoxing/</a></p>
+<p><a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif" target="_blank" rel="noopener">https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>爬虫</category>
+      </categories>
+      <tags>
+        <tag>爬虫</tag>
+        <tag>github action</tag>
+      </tags>
+  </entry>
 </search>
