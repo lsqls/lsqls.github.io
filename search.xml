@@ -502,7 +502,8 @@
 <li><p>选择 <strong>生成 &gt; 生成解决方案</strong>。</p>
 </li>
 </ol>
-<p>生成完成后，你会在 <code>bin/</code> 文件夹下看到编译后的keygen/patcher。</p>
+<p>生成完成后，你会在 <code>bin/</code> 文件夹下看到编译后的<code>keygen/patcher</code>。</p>
+<h3 id="免编译"><a href="#免编译" class="headerlink" title="免编译"></a>免编译</h3><p>如果你懒得编译，可以下载我编译好的程序，<a href="http://file.onebug.tech/?/%E8%BD%AF%E4%BB%B6%E5%88%86%E4%BA%AB/navicat-keygen-for-x64.zip" target="_blank" rel="noopener">下载地址</a>。</p>
 <h2 id="激活navicat"><a href="#激活navicat" class="headerlink" title="激活navicat"></a>激活navicat</h2><p>在cmd中执行，打开cmd, 进入激活程序的目录，执行</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">navicat-patcher.exe <span class="string">"C:\Program Files\PremiumSoft\ Premium 15"</span></span><br></pre></td></tr></table></figure>
 
