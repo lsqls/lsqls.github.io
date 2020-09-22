@@ -524,4 +524,30 @@
         <tag>github</tag>
       </tags>
   </entry>
+  <entry>
+    <title>使用ventoy制作多系统启动盘</title>
+    <url>/2020/09/22/ventoy/</url>
+    <content><![CDATA[<h2 id="ventoy介绍"><a href="#ventoy介绍" class="headerlink" title="ventoy介绍"></a>ventoy介绍</h2><p>Ventoy是一个制作可启动U盘的开源工具。有了Ventoy你就无需反复地格式化U盘，你<strong>只需要把ISO/WIM/IMG/VHD(x)/EFI文件拷贝到U盘</strong>里面就可以启动了，无需其他操作。 你可以一次性拷贝很<strong>多个</strong>不同类型的ISO文件，在启动时Ventoy会显示一个菜单来选择。</p>
+<a id="more"></a>
+
+<p><img src="http://image.onebug.tech/screen_uefi.png" alt="img"></p>
+<p>ventoy能够无差异支持Legacy BIOS和UEFI模式，并且支持大部分常见操作系统 （Windows/WinPE/Linux/Unix/VMware/Xen 等等）</p>
+<h2 id="制作启动盘"><a href="#制作启动盘" class="headerlink" title="制作启动盘"></a>制作启动盘</h2><p>在<a href="https://www.lanzoux.com/b01bd54gb" target="_blank" rel="noopener">这里</a>，下载安装包，例如 ventoy-1.0.15-windows.zip 然后解压开。直接执行 <code>Ventoy2Disk.exe</code> 如下图所示，选择U盘设备，然后点击 Install 按钮即可。</p>
+<p><img src="http://image.onebug.tech/ventoy2disk2_cn.png" alt="img"></p>
+<blockquote>
+<p><strong>选择安装的时候，U盘将会被格式化，里面所有的数据都会丢失！！！</strong></p>
+</blockquote>
+<h2 id="启动盘的使用"><a href="#启动盘的使用" class="headerlink" title="启动盘的使用"></a>启动盘的使用</h2><p>你只需要把ISO文件拷贝到这里面即可。你可以把ISO文件放在<strong>任意目录以及子目录</strong>下。 Ventoy默认会遍历所有的目录和子目录，找出所有的ISO文件，并按照字母排序之后显示在菜单中。需要注意的是，<strong>ISO文件的全路径中(包括目录、子目录和文件名)不能包含中文或者空格</strong>。</p>
+<p>至于如何从u盘启动系统，可以自行搜索关键词<strong>电脑型号+U盘启动</strong>，比如我用的是的华为matebook，就可以搜索<strong>华为matebook u盘启动</strong>。</p>
+<p><img src="http://image.onebug.tech/image-20200922141917108.png" alt="image-20200922141917108"></p>
+]]></content>
+      <categories>
+        <category>系统</category>
+      </categories>
+      <tags>
+        <tag>多系统</tag>
+        <tag>U盘</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
 </search>
