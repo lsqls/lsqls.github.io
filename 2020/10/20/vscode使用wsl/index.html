@@ -22,17 +22,30 @@
     var CONFIG = {"hostname":"www.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="渺沧海之一粟">
-<meta property="og:type" content="website">
-<meta property="og:title" content="冰冻橘子的自留地">
-<meta property="og:url" content="http://www.onebug.tech/tags/%E6%B5%8B%E8%AF%95/index.html">
+  <meta name="description" content="使用vscode + Wsl 可以改善C++&#x2F;C的开发体验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 VSCode + Wsl 搭建 linux 开发环境">
+<meta property="og:url" content="http://www.onebug.tech/2020/10/20/vscode%E4%BD%BF%E7%94%A8wsl/index.html">
 <meta property="og:site_name" content="冰冻橘子的自留地">
-<meta property="og:description" content="渺沧海之一粟">
+<meta property="og:description" content="使用vscode + Wsl 可以改善C++&#x2F;C的开发体验">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://code.visualstudio.com/assets/docs/remote/wsl/architecture-wsl.png">
+<meta property="og:image" content="http://image.onebug.tech/image-20201021222529606.png-d">
+<meta property="og:image" content="http://image.onebug.tech/image-20201021222425486.png-d">
+<meta property="og:image" content="http://image.onebug.tech/image-20201021222133299.png-d">
+<meta property="og:image" content="http://image.onebug.tech/image-20201021222248879.png-d">
+<meta property="og:image" content="http://image.onebug.tech/image-20201021222646711.png-d">
+<meta property="article:published_time" content="2020-10-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-10-21T14:33:39.466Z">
 <meta property="article:author" content="冰冻橘子">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="vscode">
+<meta property="article:tag" content="wsl">
+<meta property="article:tag" content="windows">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://code.visualstudio.com/assets/docs/remote/wsl/architecture-wsl.png">
 
-<link rel="canonical" href="http://www.onebug.tech/tags/%E6%B5%8B%E8%AF%95/">
+<link rel="canonical" href="http://www.onebug.tech/2020/10/20/vscode%E4%BD%BF%E7%94%A8wsl/">
 
 
 <script id="page-configurations">
@@ -40,12 +53,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: 测试 | 冰冻橘子的自留地</title>
+  <title>用 VSCode + Wsl 搭建 linux 开发环境 | 冰冻橘子的自留地</title>
   
 
 
@@ -196,51 +209,135 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">测试
-          <small>标签</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.onebug.tech/2020/10/20/vscode%E4%BD%BF%E7%94%A8wsl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用 VSCode + Wsl 搭建 linux 开发环境
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-20 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-20T00:00:00+08:00">2020-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-21 22:33:39" itemprop="dateModified" datetime="2020-10-21T22:33:39+08:00">2020-10-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <p>使用vscode + Wsl 可以改善C++/C的开发体验</p>
+<p><img src="https://code.visualstudio.com/assets/docs/remote/wsl/architecture-wsl.png" alt="WSL Architecture"></p>
+<a id="more"></a>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><ul>
+<li><a href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10" target="_blank" rel="noopener">安装 WSL</a></li>
+<li>在 Windows 端(不是在 WSL 中)安装 <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Vs Code</a></li>
+</ul>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ul>
+<li><p>安装Vs Code扩展<a href="https://aka.ms/vscode-remote/download/extension" target="_blank" rel="noopener">Remote Development extension pack</a></p>
+</li>
+<li><p>在<strong>WSL端</strong>安装C++/C 语言扩展（以下是我个人安装的一些扩展）</p>
+<p><img src="http://image.onebug.tech/image-20201021222529606.png-d" alt="image-20201021222529606"></p>
+</li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="初始化项目文件夹"><a href="#初始化项目文件夹" class="headerlink" title="初始化项目文件夹"></a>初始化项目文件夹</h3><ul>
+<li><p>打开vscode</p>
+</li>
+<li><p><code>F1</code>-&gt;<code>Remote-WSL: New Window</code> ，或者点击左下角的绿色按钮</p>
+<p><img src="http://image.onebug.tech/image-20201021222425486.png-d" alt="image-20201021222425486"></p>
+</li>
+<li><p>新建bash终端，使用<code>mkdir</code>等命令新建项目文件夹</p>
+</li>
+</ul>
+<p><img src="http://image.onebug.tech/image-20201021222133299.png-d" alt="image-20201021222133299"></p>
+<ul>
+<li>菜单<code>文件</code>-&gt;<code>打开文件夹</code></li>
+<li><img src="http://image.onebug.tech/image-20201021222248879.png-d" alt="image-20201021222248879"></li>
+</ul>
+<h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><ul>
+<li><p>新建测试文件<code>test.cpp</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"Hello World"</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在安装<code>code runner</code>扩展的前提下，<code>右键</code>- &gt;<code>run code</code>，可以看到，成功运行</p>
+</li>
+</ul>
+<p><img src="http://image.onebug.tech/image-20201021222646711.png-d" alt="image-20201021222646711"></p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-06-20T00:59:03+08:00"
-              content="2020-06-20">
-          06-20
-        </time>
-      </div>
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+              <a href="/tags/vscode/" rel="tag"><i class="fa fa-tag"></i> vscode</a>
+              <a href="/tags/wsl/" rel="tag"><i class="fa fa-tag"></i> wsl</a>
+              <a href="/tags/windows/" rel="tag"><i class="fa fa-tag"></i> windows</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/06/20/%E5%8D%9A%E5%AE%A2%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/" itemprop="url">
-            <span itemprop="name">博客折腾笔记</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/22/ventoy/" rel="prev" title="使用ventoy制作多系统启动盘">
+      <i class="fa fa-chevron-left"></i> 使用ventoy制作多系统启动盘
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -293,6 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖"><span class="nav-number">1.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展"><span class="nav-number">1.2.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化项目文件夹"><span class="nav-number">2.1.</span> <span class="nav-text">初始化项目文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试代码"><span class="nav-number">2.2.</span> <span class="nav-text">测试代码</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
