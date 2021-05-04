@@ -44,7 +44,7 @@
 <meta property="og:image" content="http://image.onebug.tech/201912222331_843.jpg">
 <meta property="og:image" content="http://image.onebug.tech/201912222332_191.jpg">
 <meta property="article:published_time" content="2021-05-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-05-04T01:40:38.157Z">
+<meta property="article:modified_time" content="2021-05-04T14:08:43.018Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="并发">
@@ -247,7 +247,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-05-04 00:00:00 / 修改时间：09:40:38" itemprop="dateCreated datePublished" datetime="2021-05-04T00:00:00+08:00">2021-05-04</time>
+              <time title="创建时间：2021-05-04 00:00:00 / 修改时间：22:08:43" itemprop="dateCreated datePublished" datetime="2021-05-04T00:00:00+08:00">2021-05-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -321,12 +321,12 @@
 <p><strong>释放同步状态</strong></p>
 <p>释放同步状态后，同步队列的变化过程和共享节点获取到同步状态后的变化过程一致，此处不再进行赘述。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li>AQS通过一个int同步状态码，和一个（先进先出）队列来控制多个线程访问资源</li>
+<li><strong>AQS通过一个int同步状态码，和一个（先进先出）队列来控制多个线程访问资源</strong></li>
 <li>支持独占和共享两种模式获取同步状态码</li>
-<li>当线程获取同步状态失败会被加入到同步队列中</li>
+<li><strong>当线程获取同步状态失败会被加入到同步队列中</strong></li>
 <li>当线程释放同步状态，会唤醒后继节点来获取同步状态</li>
-<li>共享模式下的节点获取到同步状态或者释放同步状态时，不仅会唤醒后继节点，还会向后传播，唤醒所有同步节点</li>
-<li>使用volatile关键字保证状态码在线程间的可见性，CAS操作保证修改状态码过程的原子性。</li>
+<li><strong>共享模式下的节点获取到同步状态或者释放同步状态时，不仅会唤醒后继节点，还会向后传播，唤醒所有同步节点</strong></li>
+<li><strong>使用volatile关键字保证状态码在线程间的可见性，CAS操作保证修改状态码过程的原子性。</strong></li>
 </ul>
 <h2 id="条件队列"><a href="#条件队列" class="headerlink" title="条件队列"></a>条件队列</h2><p>条件队列：当某个线程调用了wait方法，或者通过Condition对象调用了await相关方法，线程就会进入阻塞状态，并加入到对应条件队列中。</p>
 <p>即当对象获取到同步锁之后，如果调用了wait方法，当前线程会进入到条件队列中，并释放锁。</p>
@@ -367,7 +367,7 @@
 <h3 id="条件队出队操作"><a href="#条件队出队操作" class="headerlink" title="条件队出队操作"></a>条件队出队操作</h3><p>Condition对象调用signal或者signalAll方法时，方法唤醒对应条件队列中的相关线程并加入到同步队列中。</p>
 <p><img src="http://image.onebug.tech/201912222332_191.jpg" alt="img"></p>
 <h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><ol>
-<li>条件队列和同步队列在Java中有两种实现，synchronized关键字以及基于AQS</li>
+<li>条件队列和同步队列在Java中有两种实现：synchronized关键字和基于AQS</li>
 <li>每个（基于synchronized的）内置锁都只能有一个相关联的条件队列，会存在多个线程可能在同一个条件队列上等待不同的条件谓词；而（基于AQS实现的）显式锁支持多个条件队列</li>
 <li>与wait，notify，notifyAll 对应的方法时Conditoin接口中的await，signal，signalAll，他们具有相同的语义</li>
 </ol>
