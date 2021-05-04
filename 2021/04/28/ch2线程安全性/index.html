@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://image.onebug.tech/image-20210504003303719.png">
 <meta property="og:image" content="http://image.onebug.tech/image-20210504003330856.png">
 <meta property="article:published_time" content="2021-04-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-05-04T01:42:23.128Z">
+<meta property="article:modified_time" content="2021-05-04T13:21:20.280Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="并发">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-04 09:42:23" itemprop="dateModified" datetime="2021-05-04T09:42:23+08:00">2021-05-04</time>
+                <time title="修改时间：2021-05-04 21:21:20" itemprop="dateModified" datetime="2021-05-04T21:21:20+08:00">2021-05-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -274,30 +274,29 @@
 <li>可见性：一个线程对主内存的修改可以及时的被其他线程观察到</li>
 <li>有序性：一个线程观察其他线程中的指令执行顺序，由于指令重排序的存在，该观察结果一般杂乱无序。</li>
 </ul>
-<h2 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h2><p>说到原子性，一般涉及两个机制：</p>
+<h2 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h2><p>JAVA中的原子性，一般涉及两个机制：</p>
 <ul>
 <li>JDK中已经提供好的Atomic包，他们均使用了CAS完成线程的原子性操作</li>
 <li>使用锁的机制来处理线程之间的原子性。锁包括：synchronized、Lock</li>
 </ul>
 <h3 id="Atomic包"><a href="#Atomic包" class="headerlink" title="Atomic包"></a>Atomic包</h3><p><img src="http://image.onebug.tech/image-20210504002340565.png" alt="image-20210504002340565"></p>
 <h4 id="AtomicInteger与CAS"><a href="#AtomicInteger与CAS" class="headerlink" title="AtomicInteger与CAS"></a>AtomicInteger与CAS</h4><p>我们从最简单的AtomicInteger类来了解什么是CAS</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//该方法功能是Interger类型加1</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">incrementAndGet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">//主要看这个getAndAddInt方法</span></span><br><span class="line">       <span class="comment">//var1 传入this指针</span></span><br><span class="line">	<span class="comment">//var2 传入地址偏移量</span></span><br><span class="line">	<span class="comment">//var4 传入自增1</span></span><br><span class="line">       <span class="keyword">return</span> unsafe.getAndAddInt(<span class="keyword">this</span>, valueOffset, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">incrementAndGet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> unsafe.getAndAddInt(<span class="keyword">this</span>, valueOffset, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//var1 要操作的对象</span></span><br><span class="line"><span class="comment">//var2 期望底层当前的数值</span></span><br><span class="line"><span class="comment">//var4 要自增的数值</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> var4)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var5;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">		<span class="comment">//获取内存值，但此时内存值已经是旧的，假设我们称作期望值E</span></span><br><span class="line">        var5 = <span class="keyword">this</span>.getIntVolatile(var1, var2);</span><br><span class="line">        <span class="comment">//compareAndSwapInt方法是重点，</span></span><br><span class="line">        <span class="comment">//var5是期望值，var5 + var4是要更新的值</span></span><br><span class="line">        <span class="comment">//这个操作就是调用CAS的JNI,每个线程将自己内存里的内存值M与var5期望值E作比较，如果相同将内存值M更新为var5 + var4,否则做自旋操作</span></span><br><span class="line">    &#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5 + var4));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> var5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> v ar4)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var5;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        var5 = <span class="keyword">this</span>.getIntVolatile(var1, var2);</span><br><span class="line">    &#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5 + var4));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> var5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>解释一下<code>getAndAddInt</code>方法的流程：</p>
-<p>假设有一下情景：</p>
-<ol>
-<li>A、B两个线程</li>
-<li>jvm主内存的值1，A、B本地内存的值为1（本地内存会拷贝一份主内存的值）</li>
-<li>当前期望值为1，做加1操作</li>
-<li>此时<code>var5 = 1</code>，<code>var4 = 1</code>；<ol>
-<li>A线程将<code>var5</code>与工作内存值<code>M</code>比较，比较<code>var5</code>是否等于1</li>
-<li>如果相同则将工作内存值修改为<code>var5 + var4</code> 即修改为2并同步到主内存，此时<code>this + valueOffset</code>指针里的值就是2，结束循环</li>
-<li>如果不相同，则是B线程修改了主内存的值，说明B线程已经先于A线程做了加1操作，A线程没有更新成功需要继续循环，注意此时<code>var5</code>更新为新的内存值，假设当前的内存值是2，那么此时<code>var5 = 2，var + var4 = 3</code>，重复上述步骤直到成功（自旋），成功之后，内存地址中的值就改变为3</li>
-</ol>
-</li>
-</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 比较obj的offset处内存位置中的值和期望的值，如果相同则更新。此更新是不可中断的。</span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> obj 需要更新的对象</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> offset obj中整型field的偏移量</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> expect 希望field中存在的值</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> update 如果期望值expect与field的当前值相同，设置filed的值为这个新值</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span> 如果field的值被更改返回true</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">compareAndSwapInt</span><span class="params">(Object obj, <span class="keyword">long</span> offset, <span class="keyword">int</span> expect, <span class="keyword">int</span> update)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>getIntVolatile</code>方法获取对象中offset偏移地址对应的整型field的值，支持volatile load语义。</p>
+<p><code>compareAndSwap</code>是一个本地方法，在AtomicInteger类中，它的参数具体含义是：</p>
+<ul>
+<li><code>var1</code> AtomicInteger对象本身。</li>
+<li><code>var2</code> 该对象值的引用地址。</li>
+<li><code>var4</code> 需要变动的数量</li>
+<li><code>var5</code> 是用过<code>var1</code> 、<code>var2</code> 找出的主内存中真实的值</li>
+</ul>
+<p>用该对象当前的值与<code>var5</code>比较，如果相同，更新<code>var5+var4</code>并且返回true；如果不相同继续取值然后在比较，直到更新完成。</p>
+<p>简单来说，<strong>CAS （CompareAndSwap）</strong> 比较当前工作内存中的值和主内存中的值，如果相同则执行规定操作，否则继续比较直到主内存和工作内存中的值一致为止。</p>
 <p><strong>CAS优缺点</strong></p>
 <ul>
 <li><p>优点：非阻塞的轻量级的乐观锁，通过CPU指令实现，在资源竞争不激烈的情况下性能高，相比synchronized重量锁，synchronized会进行比较复杂的加锁、解锁和唤醒操作。</p>
@@ -309,26 +308,19 @@
 </ul>
 </li>
 </ul>
-<blockquote>
-<p><a href="https://www.jianshu.com/p/db5c964a61ee" target="_blank" rel="noopener">深入理解CAS（乐观锁） - 简书 (jianshu.com)</a></p>
-</blockquote>
 <h4 id="LongAdder"><a href="#LongAdder" class="headerlink" title="LongAdder"></a>LongAdder</h4><p><strong>AtomicLong 的缺陷</strong></p>
 <p>AtomicLong 的 Add() 是依赖自旋不断的 CAS 去累加一个 Long 值。如果在竞争激烈的情况下，CAS 操作不断的失败，就会有大量的线程不断的自旋尝试 CAS 会造成 CPU 的极大的消耗。</p>
 <p><strong>LongAdder</strong> </p>
 <p>LongAdder 功能类似 AtomicLong ，在低并发情况下二者表现差不多，在高并发情况下 LongAdder 的表现就会好很多。</p>
-<p>LongAdder先尝试一次cas更新，如果失败会转而通过Cell[]的方式更新值，如果计算index的方式足够散列，那么在并发量大的情况下，多个线程定位到同一个cell的概率也就越低，这有点类似于分段锁的意思。</p>
-<p>当需要在高并发下有较好的性能表现，且对值的精确度要求不高时，可以使用LongAdder（例如网站访问人数计数）。 当需要保证线程安全，可允许一些性能损耗，要求高精度时，可以使用AtomicLong（例如自增id）。</p>
-<blockquote>
-<p><a href="https://juejin.cn/post/6844903891310477325" target="_blank" rel="noopener">深入剖析LongAdder是咋干活的 (juejin.cn)</a></p>
-<p><a href="https://xilidou.com/2018/11/27/LongAdder/" target="_blank" rel="noopener">从 LongAdder 中窥见并发组件的设计思路 | 犀利豆的博客 (xilidou.com)</a></p>
-</blockquote>
+<p>LongAdder先尝试一次CAS更新，如果失败会转而通过<code>Cell[]</code>的方式更新值，如果计算index的方式足够散列，那么在并发量大的情况下，多个线程定位到同一个cell的概率也就越低，这有点类似于分段锁的意思。</p>
+<p>当需要在高并发下有较好的性能表现，且<strong>对值的精确度要求不高时，可以使用LongAdder</strong>（例如网站访问人数计数）。 当需要保证线程安全，可允许一些性能损耗，要求高精度时，需要使用AtomicLong（例如自增id）。</p>
 <h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p><strong>AtomicBoolean</strong></p>
 <p>常用于控制某一件事只让一个线程执行，并仅能执行一次。</p>
 <p><strong>AtomicIntegerFieldUpdater</strong></p>
 <p>这个类的核心作用是要更新一个指定的类的某一个字段的值。并且这个字段一定要用volatile修饰同时还不能是static的。</p>
 <p><strong>AtomicLongArray</strong></p>
 <p>这个类实际上维护了一个Array数组，我们在对数值进行更新的时候，会多一个索引值让我们更新。</p>
-<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h3><p>synchronized是java中的一个关键字，是一种同步锁。在synchronized关键字作用范围内，同一时刻只能有一个线程对其进行操作的。</p>
+<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h3><p>synchronized是java中的一个关键字，是一种 同步锁。在synchronized关键字作用范围内，同一时刻只能有一个线程对其进行操作的。</p>
 <p>它可以修饰的对象主要有四种：</p>
 <ul>
 <li>修饰代码块：大括号括起来的代码，作用于调用的对象</li>
@@ -337,17 +329,17 @@
 <li>修饰类：括号括起来的部分，作用于所有对象</li>
 </ul>
 <h3 id="原子性操作各方法间的对比"><a href="#原子性操作各方法间的对比" class="headerlink" title="原子性操作各方法间的对比"></a>原子性操作各方法间的对比</h3><ul>
-<li>synchronized:不可中断锁，适合竞争不激烈，可读性好</li>
+<li>synchronized：不可中断锁，适合竞争不激烈，可读性好</li>
 <li>Lock：可中断锁，多样化同步，竞争激烈时能维持常态</li>
-<li>Atomic:竞争激烈时能维持常态，比Lock性能好，每次只能同步一个值</li>
+<li>Atomic：竞争激烈时能维持常态，比Lock性能好，每次只能同步一个值</li>
 </ul>
-<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><p>可见性是指一个线程对主内存的修改可以及时的被其他线程观察到。导致共享变量在线程间不可见的原因有：</p>
+<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><p>导致可见性失效的原因：</p>
 <ul>
 <li>线程交叉执行</li>
 <li>重排序结合线程交叉执行</li>
 <li>共享变量更新后的值没有在工作内存与主存间及时更新</li>
 </ul>
-<p>JVM对于可见性，提供了synchronized和volatile。</p>
+<p>JVM对于可见性的实现，提供了synchronized和volatile。</p>
 <h3 id="synchronized-1"><a href="#synchronized-1" class="headerlink" title="synchronized"></a>synchronized</h3><p>JMM关于synchronized的两条规定：</p>
 <ul>
 <li>线程解锁前，必须把共享变量的最新值刷新到主内存</li>
@@ -371,7 +363,13 @@
 </li>
 </ul>
 <h2 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h2><p>Java内存模型中，允许编译器和处理器对指令进行<strong>重排序</strong>，但是重排序过程不会影响到<strong>单线程</strong>程序的执行，却会影响到多线程并发执行的正确性。</p>
-<p>java提供了 volatile、synchronized、Lock可以用来保证有序性。另外，java内存模型具备一些先天的有序性，即不需要任何手段就能得到保证的有序性。通常被我们成为happens-before原则（先行发生原则）。如果两个线程的执行顺序无法从happens-before原则推导出来，那么就不能保证它们的有序性，虚拟机就可以对它们进行重排序。</p>
+<p>java提供了 volatile、synchronized、Lock可以用来保证有序性。另外，java内存模型具备一些<strong>先天的有序性，即不需要任何手段就能得到保证的有序性。通常被我们成为happens-before原则（先行发生原则）</strong>。如果两个线程的执行顺序无法从happens-before原则推导出来，那么就不能保证它们的有序性，虚拟机就可以对它们进行重排序。</p>
+<blockquote>
+<p><a href="https://www.cnblogs.com/yanlong300/p/9073338.html" target="_blank" rel="noopener">并发之atomicInteger与CAS机制 - 枫飘雪落 - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://www.jianshu.com/p/db5c964a61ee" target="_blank" rel="noopener">深入理解CAS（乐观锁） - 简书 (jianshu.com)</a></p>
+<p><a href="https://juejin.cn/post/6844903891310477325" target="_blank" rel="noopener">深入剖析LongAdder是咋干活的 (juejin.cn)</a></p>
+<p><a href="https://xilidou.com/2018/11/27/LongAdder/" target="_blank" rel="noopener">从 LongAdder 中窥见并发组件的设计思路 | 犀利豆的博客 (xilidou.com)</a></p>
+</blockquote>
 
     </div>
 

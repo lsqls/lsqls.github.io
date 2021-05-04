@@ -22,19 +22,24 @@
     var CONFIG = {"hostname":"www.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="高并发相关基础知识概念 并发 同时拥有两个或者多个线程，如果程序在单核处理器上运行，多个线程将交替地还如或者换出内存，这些线程是同时”存在”的，每个线程都处于执行过程中的某个状态，如果运行在多核处理器上，此时，程序中的每个线程都将分配到一个处理器核上，因此可以同时运行。  高并发 高并发是互联网分布式系统架构设计中必须考虑的因素之一，它通常是指，通过设计保证系统能够同时并行处理很多请求。">
+  <meta name="description" content="高并发相关基础知识概念 并发 程序同时拥有两个或者多个线程。如果程序在单核处理器上运行，多个线程将交替地换入或者换出内存，这些线程是同时”存在”的，每个线程都处于执行过程中的某个状态。如果程序运行在多核处理器上，此时，每个线程都将分配到一个处理器核上，因此可以同时运行。  高并发 高并发是互联网分布式系统架构设计中必须考虑的因素之一，它通常是指，通过设计保证系统能够同时并行处理很多请求。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高并发相关基础知识">
 <meta property="og:url" content="http://www.onebug.tech/2021/04/27/ch1%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="冰冻橘子的自留地">
-<meta property="og:description" content="高并发相关基础知识概念 并发 同时拥有两个或者多个线程，如果程序在单核处理器上运行，多个线程将交替地还如或者换出内存，这些线程是同时”存在”的，每个线程都处于执行过程中的某个状态，如果运行在多核处理器上，此时，程序中的每个线程都将分配到一个处理器核上，因此可以同时运行。  高并发 高并发是互联网分布式系统架构设计中必须考虑的因素之一，它通常是指，通过设计保证系统能够同时并行处理很多请求。">
+<meta property="og:description" content="高并发相关基础知识概念 并发 程序同时拥有两个或者多个线程。如果程序在单核处理器上运行，多个线程将交替地换入或者换出内存，这些线程是同时”存在”的，每个线程都处于执行过程中的某个状态。如果程序运行在多核处理器上，此时，每个线程都将分配到一个处理器核上，因此可以同时运行。  高并发 高并发是互联网分布式系统架构设计中必须考虑的因素之一，它通常是指，通过设计保证系统能够同时并行处理很多请求。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://image.onebug.tech/image-20210504002724606.png">
 <meta property="og:image" content="http://image.onebug.tech/image-20210504002838073.png">
+<meta property="og:image" content="http://image.onebug.tech/1195582-20180503162549299-994420333.png">
+<meta property="og:image" content="http://image.onebug.tech/1195582-20180503162602668-681441242.png">
+<meta property="og:image" content="http://image.onebug.tech/1195582-20180503162619534-683579600.png">
+<meta property="og:image" content="http://image.onebug.tech/1195582-20180503162633779-1465275811.png">
+<meta property="og:image" content="http://image.onebug.tech/1195582-20180503162644640-382839091.png">
 <meta property="og:image" content="http://image.onebug.tech/image-20210504003219866.png">
 <meta property="og:image" content="http://image.onebug.tech/image-20210504003101783.png">
 <meta property="article:published_time" content="2021-04-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-05-04T01:42:14.828Z">
+<meta property="article:modified_time" content="2021-05-04T08:43:01.112Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="并发">
@@ -243,7 +248,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-04 09:42:14" itemprop="dateModified" datetime="2021-05-04T09:42:14+08:00">2021-05-04</time>
+                <time title="修改时间：2021-05-04 16:43:01" itemprop="dateModified" datetime="2021-05-04T16:43:01+08:00">2021-05-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,7 +273,7 @@
       
         <h1 id="高并发相关基础知识"><a href="#高并发相关基础知识" class="headerlink" title="高并发相关基础知识"></a>高并发相关基础知识</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
 <li><p>并发</p>
-<p>同时拥有两个或者多个线程，如果程序在单核处理器上运行，多个线程将交替地还如或者换出内存，这些线程是同时”存在”的，每个线程都处于执行过程中的某个状态，如果运行在多核处理器上，此时，程序中的每个线程都将分配到一个处理器核上，因此可以同时运行。</p>
+<p>程序同时拥有两个或者多个线程。如果程序在单核处理器上运行，多个线程将交替地换入或者换出内存，这些线程是同时”存在”的，每个线程都处于执行过程中的某个状态。如果程序运行在多核处理器上，此时，每个线程都将分配到一个处理器核上，因此可以同时运行。</p>
 </li>
 <li><p>高并发</p>
 <p>高并发是互联网分布式系统架构设计中必须考虑的因素之一，它通常是指，通过设计保证系统能够同时并行处理很多请求。</p>
@@ -281,17 +286,17 @@
 <li><p>局部性原理</p>
 <ul>
 <li>时间局部性：如果某个数据被访问，那么在不久的将来它很可能被再次访问。</li>
-<li>空间局部性：如果某个数据被访问，那么与他相邻的数据很快也可能被访问。</li>
+<li>空间局部性：如果某个数据被访问，那么与他相邻的数据也很可能被访问。</li>
 </ul>
 </li>
 <li><p>乱序执行优化</p>
 <p>处理器为提高运算速度而做出违背代码原有顺序的优化。</p>
 </li>
 </ul>
-<h2 id="多核CPU多级缓存一致性协议MESI"><a href="#多核CPU多级缓存一致性协议MESI" class="headerlink" title="多核CPU多级缓存一致性协议MESI"></a>多核CPU多级缓存一致性协议MESI</h2><p>多核CPU的情况下有多个一级缓存，如何保证缓存内部数据的一致,不让系统数据混乱。这里就引出了一个一致性的协议MESI。</p>
+<h2 id="多核CPU多级缓存一致性协议MESI"><a href="#多核CPU多级缓存一致性协议MESI" class="headerlink" title="多核CPU多级缓存一致性协议MESI"></a>多核CPU多级缓存一致性协议MESI</h2><p>多核CPU的情况下有多个一级缓存，如何保证缓存内部数据的一致，不让系统数据混乱。这里就引出了一个一致性的协议MESI。</p>
 <h3 id="MESI协议缓存状态"><a href="#MESI协议缓存状态" class="headerlink" title="MESI协议缓存状态"></a>MESI协议缓存状态</h3><p>MESI 是指4中状态的首字母。每个Cache line有4个状态，可用2个bit表示，它们分别是：</p>
 <blockquote>
-<p><strong>缓存行（Cache line）</strong>:缓存存储数据的单元。</p>
+<p><strong>缓存行（Cache line）</strong>：缓存存储数据的单元。</p>
 </blockquote>
 <table>
 <thead>
@@ -304,10 +309,10 @@
 <tbody><tr>
 <td align="left">M 修改 (Modified)</td>
 <td align="left">该Cache line有效，数据被修改了，和内存中的数据不一致，数据只存在于本Cache中。</td>
-<td align="left">缓存行必须时刻监听所有试图读该缓存行相对就主存的操作，这种操作必须在缓存将该缓存行写回主存并将状态变成S（共享）状态之前被延迟执行。</td>
+<td align="left">缓存行必须时刻监听所有试图读该缓存行的对应主存的操作，这种操作必须在缓存将该缓存行写回主存并将状态变成S（共享）状态之前被延迟执行。</td>
 </tr>
 <tr>
-<td align="left">E 独享、互斥 (Exclusive)</td>
+<td align="left">E 独享(Exclusive)</td>
 <td align="left">该Cache line有效，数据和内存中的数据一致，数据只存在于本Cache中。</td>
 <td align="left">缓存行也必须监听其它缓存读主存中该缓存行的操作，一旦有这种操作，该缓存行需要变成S（共享）状态。</td>
 </tr>
@@ -323,7 +328,6 @@
 </tr>
 </tbody></table>
 <h3 id="MESI状态转换"><a href="#MESI状态转换" class="headerlink" title="MESI状态转换"></a>MESI状态转换</h3><p><img src="http://image.onebug.tech/image-20210504002838073.png" alt="image-20210504002838073"></p>
-<p>说明：</p>
 <ul>
 <li>触发事件</li>
 </ul>
@@ -344,32 +348,62 @@
 </tr>
 <tr>
 <td align="left">远端读取（Remote read）</td>
-<td align="left">其他cache读取本地cache数据</td>
+<td align="left">其他cache读取其他cache数据</td>
 </tr>
 <tr>
 <td align="left">远端写入（Remote write）</td>
-<td align="left">其他cache写入本地cache数据</td>
+<td align="left">其他cache写入其他cache数据</td>
 </tr>
 </tbody></table>
 <ul>
-<li><p>cache分类：</p>
+<li><p>cache分类</p>
 <blockquote>
 <p>前提：所有的cache共同缓存了主内存中的某一条数据。</p>
-<p>注意：本地的事件触发 本地cache和触发cache为相同。</p>
 </blockquote>
+</li>
+<li><p>本地cache：指当前CPU的cache</p>
 <ul>
-<li>本地cache:指当前cpu的cache</li>
-<li>触发cache:触发读写事件的cache</li>
-<li>其他cache:指既除了以上两种之外的cache</li>
+<li>触发cache：触发读写事件的cache</li>
+<li>其他cache：指既除了以上两种之外的cache</li>
 </ul>
 </li>
 </ul>
-<h2 id="MESI与Java"><a href="#MESI与Java" class="headerlink" title="MESI与Java"></a>MESI与Java</h2><p>缓存的一致性消息传递是要时间的，这就使其切换时会产生延迟。当一个缓存被切换状态时其他缓存收到消息完成各自的切换并且发出回应消息这么一长串的时间中CPU都会等待所有缓存响应完成。可能出现的阻塞都会导致各种各样的性能问题和稳定性问题。</p>
-<p>这对于程序员来说简直是一个灾难。幸好java解决了这个问题，至于如何解决的请关注JMM(JavaMemoryMode)。</p>
-<blockquote>
-<p><a href="https://www.cnblogs.com/yanlong300/p/8986041.html" target="_blank" rel="noopener">并发研究之CPU缓存一致性协议(MESI) - 枫飘雪落 - 博客园 (cnblogs.com)</a></p>
-</blockquote>
-<h2 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h2><h3 id="JMM"><a href="#JMM" class="headerlink" title="JMM"></a>JMM</h3><p>Java内存模型（Java Memory Model）即JMM是一个<strong>抽象</strong>的概念。Java内存模型（JMM）定义了Java虚拟机（JVM）在计算机内存（RAM）中的工作规范。在硬件内存模型中，各种CPU架构的实现是不尽相同的，Java作为跨平台的语言，为了屏蔽底层硬件差异，定义了Java内存模型（JMM）。JMM作用于JVM和底层硬件之间，屏蔽了下游不同硬件模型带来的差异，为上游开发者提供了统一的使用接口。说了这么多其实就是想说明白JMM——JVM——硬件的关系。总之一句话，JMM是JVM的内存使用规范，是一个抽象的概念。</p>
+<h3 id="多核缓存协同操作"><a href="#多核缓存协同操作" class="headerlink" title="多核缓存协同操作"></a>多核缓存协同操作</h3><p>假设有三个CPU A、B、C，对应三个缓存分别是cache a、b、 c。在主内存中定义了x的引用值为0。</p>
+<p><img src="http://image.onebug.tech/1195582-20180503162549299-994420333.png" alt="img"></p>
+<p><strong>单核读取</strong></p>
+<p>执行流程：</p>
+<ul>
+<li>CPU A发出了一条指令，从主内存中读取x。、</li>
+<li>从主内存通过bus读取到缓存中（远端读取Remote read）,这是该Cache line修改为E状态（独享）。</li>
+</ul>
+<p><img src="http://image.onebug.tech/1195582-20180503162602668-681441242.png" alt="img"></p>
+<p><strong>双核读取</strong></p>
+<p>执行流程：</p>
+<ul>
+<li>CPU A发出了一条指令，从主内存中读取x。</li>
+<li>CPU A从主内存通过bus读取到 cache a中并将该cache line 设置为E状态。</li>
+<li>CPU B发出了一条指令，从主内存中读取x。</li>
+<li>CPU B试图从主内存中读取x时，CPU A检测到了地址冲突。这时CPU A对相关数据做出响应。此时x 存储于cache a和cache b中，x在cache a和cache b中都被设置为S状态(共享)。</li>
+</ul>
+<p><img src="http://image.onebug.tech/1195582-20180503162619534-683579600.png" alt="img"></p>
+<p><strong>修改数据</strong></p>
+<p>执行流程：</p>
+<ul>
+<li>CPU A 计算完成后发指令需要修改x.</li>
+<li>CPU A 将x设置为M状态（修改）并通知缓存了x的CPU B, CPU B将本地cache b中的x设置为I状态(无效)</li>
+<li>CPU A 对x进行赋值。</li>
+</ul>
+<p><img src="http://image.onebug.tech/1195582-20180503162633779-1465275811.png" alt="img"></p>
+<p><strong>同步数据</strong></p>
+<p>执行流程：</p>
+<ul>
+<li>CPU B 发出了要读取x的指令。</li>
+<li>CPU B 通知CPU A,CPU A将修改后的数据同步到主内存时cache a 修改为E（独享）</li>
+<li>CPU A同步CPU B的x,将cache a和同步后cache b中的x设置为S状态（共享）。、</li>
+</ul>
+<p><img src="http://image.onebug.tech/1195582-20180503162644640-382839091.png" alt="img"></p>
+<h2 id="MESI与Java"><a href="#MESI与Java" class="headerlink" title="MESI与Java"></a>MESI与Java</h2><p>缓存的一致性消息传递是要时间的，这就使其切换时会产生延迟。当一个缓存被切换状态时，其他缓存收到消息完成各自的切换，并且发出回应消息后，这么一长串的时间中CPU都会等待所有缓存响应完成。可能出现的阻塞都会导致各种各样的性能问题和稳定性问题。这对于程序员来说简直是一个灾难。幸好java解决了这个问题，至于如何解决的请关注JMM。</p>
+<h2 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h2><h3 id="JMM"><a href="#JMM" class="headerlink" title="JMM"></a>JMM</h3><p>Java内存模型（Java Memory Model）即JMM，是一个<strong>抽象</strong>的概念。Java内存模型（JMM）定义了Java虚拟机（JVM）在计算机内存（RAM）中的工作规范。在硬件内存模型中，各种CPU架构的实现是不尽相同的，Java作为跨平台的语言，为了屏蔽底层硬件差异，定义了Java内存模型（JMM）。JMM作用于JVM和底层硬件之间，屏蔽了下游不同硬件模型带来的差异，为上游开发者提供了统一的使用接口。说了这么多其实就是想说明白JMM——JVM——硬件的关系。总之一句话，JMM是JVM的内存使用规范，是一个抽象的概念。</p>
 <p><img src="http://image.onebug.tech/image-20210504003219866.png" alt="image-20210504003219866"></p>
 <h3 id="JMM主内存和本地内存交互操作"><a href="#JMM主内存和本地内存交互操作" class="headerlink" title="JMM主内存和本地内存交互操作"></a>JMM主内存和本地内存交互操作</h3><p><img src="http://image.onebug.tech/image-20210504003101783.png" alt="image-20210504003101783"></p>
 <p> 计算机硬件内存模型有缓存和主内存的交互协议MESI，同样JMM也规范了主内存和线程工作内存进行数据交换操作。一共包括如上图所示的8中操作，并且每个操作都是原子性的。</p>
@@ -394,26 +428,35 @@
 <li>如果一个变量事先没有被lock操作锁定，则不允许对它执行unlock操作，也不允许去unlock一个被其他线程锁定住的变量。</li>
 </ul>
 <p>以上8中规则看着也是比较生涩的，其实如果你没看明白也没关系，其实这些规则就是保障数据同步的一些规则。不是很重要，重要的在后面的<strong>happens-before原则</strong>。</p>
-<h3 id="并发环境下JMM存在的问题"><a href="#并发环境下JMM存在的问题" class="headerlink" title="并发环境下JMM存在的问题"></a>并发环境下JMM存在的问题</h3><h4 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h4><p>JMM保证了四章节中的8个操作是原子性的，Java语言本身对基本数据类型的变量的读取和赋值操作是原子性操作。（JVM不对double和long类型的变量做原子性保障，可能的原因是缓存行的大小导致的）</p>
-<p>比如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x ++;</span><br></pre></td></tr></table></figure>
-
-<p>x ++；不是原子操作，因为这行代码包含三个操作：加载x的值，执行 ++，然后写入新值。<br>在并发环境下，为了保证原子性通常采用synchronized或者Lock对代码块加锁保证原子性</p>
-<h4 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h4><p>在Java中提供了一个volatile关键字来保证可见性。当一个主内存中的共享变量被volatile关键字修饰时，一个线程对该变量的修改会被立即刷新（store）到主内存，保证<strong>其他线程看到的值一定是最新的</strong>。<strong>JMM层面上volatile是通过load/store操作实现的可见性</strong>。</p>
-<p>当然我们也可以通过synchronized和Lock通过加锁将多线程进行同步也就是串行执行来保证共享变量的可见性。</p>
+<h3 id="并发环境下JMM存在的问题"><a href="#并发环境下JMM存在的问题" class="headerlink" title="并发环境下JMM存在的问题"></a>并发环境下JMM存在的问题</h3><h4 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h4><p>JMM保证了上文的8个操作是原子性的，以及Java语言本身对除了<code>double</code>和<code>long</code>的基本数据类型的变量的读取和赋值操作是原子性操作。其他的就算是简单的操作，比如<code>x ++</code>，就不是原子操作，因为这行代码包含三个操作：</p>
+<ul>
+<li><p>加载x的值</p>
+</li>
+<li><p>执行 ++</p>
+</li>
+<li><p>写入新值</p>
+</li>
+</ul>
+<p>在并发环境下，通常采用<code>synchronized</code>或者<code>Lock</code>对代码块加锁保证原子性。</p>
+<h4 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h4><p>在Java中提供了一个<code>volatile</code>关键字来保证可见性。当一个主内存中的共享变量被<code>volatile</code>关键字修饰时，一个线程对该变量的修改会被立即刷新（store）到主内存，保证<strong>其他线程看到的值一定是最新的</strong>。<strong>JMM层面上<code>volatile</code>是通过load/store操作实现的可见性</strong>。</p>
+<p>当然我们也可以通过<code>synchronized</code>和<code>Lock</code>通过加锁将多线程进行同步也就是串行执行来保证共享变量的可见性。</p>
 <h4 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h4><p><strong>happens-before原则</strong></p>
 <ul>
 <li>程序次序规则：一个线程内，按照代码顺序，书写在前面的操作先行发生于后面的操作。</li>
 <li>锁定规则：一个unlock操作先行发生于后面对同一个锁的lock操作。（先释放锁，才能加锁）</li>
 <li>volatile变量规则：对同一个变量的写操作先行发生于后面对这个变量的读操作。</li>
 <li>传递规则：如果操作A先行发生于操作B，而操作B又先行发生于C，则A先行发生于操作C。</li>
-<li>线程启动规则：Thread对象的start()方法先行发生于此线程的每一个动作。</li>
-<li>线程终结规则：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生。</li>
-<li>线程终结规则：线程中所有的操作都先行发生于线程的终结检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行。</li>
-<li>对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始。</li>
+<li>线程启动规则：Thread对象的<code>start()</code>方法先行发生于此线程的每一个动作。</li>
+<li>线程终结规则：对线程<code>interrupt()</code>方法的调用先行发生于被中断线程的代码检测到中断事件的发生。</li>
+<li>线程终结规则：线程中所有的操作都先行发生于线程的终结检测，我们可以通过<code>Thread.join()</code>方法结束、<code>Thread.isAlive()</code>的返回值手段检测到线程已经终止执行。</li>
+<li>对象终结规则：一个对象的初始化完成先行发生于他的<code>finalize()</code>方法的开始。</li>
 </ul>
-<p><strong>happens-before与可见性</strong><br>happens-before通过以上8中规则保证可见性，如果一个操作A happens-before 另一个操作B，那么操作A的结果是对操作B可见的。不难理解。</p>
-<p><strong>happens-before与重排序</strong><br>两个操作如果存在happens-before关系，并不意味着一定是有序进行的，因为JVM存在指令重排优化，如果JVM认为两个操作重排序有利于性能提升并且重排序后的操作和未重排结果一致，将进行指令重排序。当然JVM层面的重排序发生于编译期，运行时的指令重排是处理器决定的。Java语言通过volatile关键字通过向主内存加入内存屏障实现禁止指令重排。</p>
+<p><strong>happens-before与可见性</strong><br>happens-before通过以上8中规则保证可见性，<strong>如果一个操作A happens-before 另一个操作B，那么操作A的结果是对操作B可见的，这不难理解</strong>。</p>
+<p><strong>happens-before与重排序</strong><br>两个操作如果存在happens-before关系，并不意味着一定是有序进行的，这是因为JVM存在指令重排优化，如果JVM认为两个操作重排序有利于性能提升并且重排序后的操作和未重排结果一致，将进行指令重排序。当然JVM层面的重排序发生于编译期，运行时的指令重排是处理器决定的。Java语言通过volatile关键字通过向主内存加入内存屏障实现禁止指令重排。</p>
+<blockquote>
+<p><a href="https://www.cnblogs.com/yanlong300/p/8986041.html" target="_blank" rel="noopener">并发研究之CPU缓存一致性协议(MESI) - 枫飘雪落 - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://blog.csdn.net/muxiqingyang/article/details/6615199" target="_blank" rel="noopener">《大话处理器》Cache一致性协议之MESI_木兮清扬的博客-CSDN博客_mesi</a></p>
+</blockquote>
 
     </div>
 
@@ -500,7 +543,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#高并发相关基础知识"><span class="nav-number">1.</span> <span class="nav-text">高并发相关基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多核CPU多级缓存一致性协议MESI"><span class="nav-number">1.2.</span> <span class="nav-text">多核CPU多级缓存一致性协议MESI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MESI协议缓存状态"><span class="nav-number">1.2.1.</span> <span class="nav-text">MESI协议缓存状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MESI状态转换"><span class="nav-number">1.2.2.</span> <span class="nav-text">MESI状态转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MESI与Java"><span class="nav-number">1.3.</span> <span class="nav-text">MESI与Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java内存模型"><span class="nav-number">1.4.</span> <span class="nav-text">Java内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM"><span class="nav-number">1.4.1.</span> <span class="nav-text">JMM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM主内存和本地内存交互操作"><span class="nav-number">1.4.2.</span> <span class="nav-text">JMM主内存和本地内存交互操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发环境下JMM存在的问题"><span class="nav-number">1.4.3.</span> <span class="nav-text">并发环境下JMM存在的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原子性"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可见性"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有序性"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">有序性</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#高并发相关基础知识"><span class="nav-number">1.</span> <span class="nav-text">高并发相关基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多核CPU多级缓存一致性协议MESI"><span class="nav-number">1.2.</span> <span class="nav-text">多核CPU多级缓存一致性协议MESI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MESI协议缓存状态"><span class="nav-number">1.2.1.</span> <span class="nav-text">MESI协议缓存状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MESI状态转换"><span class="nav-number">1.2.2.</span> <span class="nav-text">MESI状态转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多核缓存协同操作"><span class="nav-number">1.2.3.</span> <span class="nav-text">多核缓存协同操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MESI与Java"><span class="nav-number">1.3.</span> <span class="nav-text">MESI与Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java内存模型"><span class="nav-number">1.4.</span> <span class="nav-text">Java内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM"><span class="nav-number">1.4.1.</span> <span class="nav-text">JMM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM主内存和本地内存交互操作"><span class="nav-number">1.4.2.</span> <span class="nav-text">JMM主内存和本地内存交互操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发环境下JMM存在的问题"><span class="nav-number">1.4.3.</span> <span class="nav-text">并发环境下JMM存在的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原子性"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可见性"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有序性"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">有序性</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
