@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.onebug.tech/"/>
-  <updated>2021-09-05T12:36:12.806Z</updated>
+  <updated>2021-09-05T13:41:59.018Z</updated>
   <id>http://www.onebug.tech/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Netty的责任链</title>
+    <link href="http://www.onebug.tech/2021/09/05/java/netty/pipeline%E5%92%8CchannelHandler/"/>
+    <id>http://www.onebug.tech/2021/09/05/java/netty/pipeline%E5%92%8CchannelHandler/</id>
+    <published>2021-09-04T16:00:00.000Z</published>
+    <updated>2021-09-05T13:41:59.018Z</updated>
+    
+    <content type="html"><![CDATA[<p>为了避免逻辑判断泛滥导致的拓展性受限问题，Netty 发明了 <code>pipeline</code> 和 <code>channelHandler</code> 。它通过<strong>责任链设计模式</strong>来组织代码逻辑，并且能够支持逻辑的动态添加和删除 ，Netty 能够支持各类协议的扩展，比如 HTTP，WebSocket，Redis，靠的就是 <code>pipeline</code> 和 <code>channelHandler</code>。</p><a id="more"></a><h1 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h1><p><img src="http://image.onebug.tech/image-20210905211158604.png" alt="image-20210905211158604"></p><p>在 Netty 整个框架里面，一条连接对应着一个 <code>Channel</code>，这条 <code>Channel</code> 所有的处理逻辑都在一个叫做 <code>ChannelPipeline</code> 的对象里面，<code>ChannelPipeline</code> 是一个双向链表结构，他和 <code>Channel</code> 之间是一对一的关系。</p><p><code>ChannelPipeline</code> 里面每个节点都是一个 <code>ChannelHandlerContext</code> 对象，这个对象能够拿到和 Channel 相关的所有的上下文信息，然后这个对象包着一个重要的对象，那就是逻辑处理器 <code>ChannelHandler</code>。</p><h1 id="channelHandler-家族"><a href="#channelHandler-家族" class="headerlink" title="channelHandler 家族"></a>channelHandler 家族</h1><p><img src="http://image.onebug.tech/image-20210905211319568.png" alt="image-20210905211319568"></p><p>入站操作和数据由 <code>ChannelInboundHandler</code>处理。 在开始组装响应之前的所有的逻辑，都可以放置在 <code>ChannelInboundHandler</code> 里处理，它的一个最重要的方法就是 <code>channelRead()</code>。比如，我们在一端读到一段数据，首先要解析这段数据，然后对这些数据做一系列逻辑处理，最终把响应写到对端。</p><p>出站操作和数据将由<code>ChannelOutboundHandler</code> 处理。它是定义我们一端在组装完响应之后，把数据写到对端的逻辑，它里面最核心的一个方法就是 <code>write()</code>。比如，我们封装好一个 <code>response</code> 对象，接下来我们有可能对这个 <code>response</code> 做一些其他的特殊逻辑，然后，再编码成 <code>ByteBuf</code>，最终写到对端。</p><p>这两个子接口分别有对应的默认实现，<code>ChannelInboundHandlerAdapter</code>和 <code>ChanneloutBoundHandlerAdapter</code>，它们分别实现了两大接口的所有功能，默认情况下会把读写事件传播到下一个 <code>handler</code>。</p><h1 id="事件传播"><a href="#事件传播" class="headerlink" title="事件传播"></a>事件传播</h1><p>Netty通过<strong>责任链设计模式</strong>来组织代码逻辑，所谓的事件传播其实就是事件在<code>ChannelPipeline</code>上移动。</p><p>可以看到<code>ChannelPipeline</code>是由一系列<code>ChannelHandlers</code>组成，其还提供了通过自身传播事件的方法，<strong>当进站事件触发时，其从<code>ChannelPipeline</code>的头部传递到尾部，而出站事件会从右边传递到左边。</strong></p><p>当管道传播事件时，其会确定下一个<code>ChannelHandler</code>的类型是否与移动方向匹配，若不匹配，则会跳过并寻找下一个，直至找到相匹配的<code>ChannelHandler</code>（一个处理器可以会同时实现<code>ChannelInboundHandler</code>和<code>ChannelOutboundHandler</code>）。</p><p><img src="http://image.onebug.tech/616953-20170524202716435-790612436.png" alt="img"></p><p>关于<code>ChannelInboundHandler</code> 和<code>ChanneloutBoundHandler</code>的传播顺序的不同，可以看下面的例子：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">serverBootstrap</span><br><span class="line">        .childHandler(<span class="keyword">new</span> ChannelInitializer&lt;NioSocketChannel&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(NioSocketChannel ch)</span> </span>&#123;</span><br><span class="line">                <span class="comment">// inBound，处理读数据的逻辑链</span></span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> InBoundHandlerA());</span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> InBoundHandlerB());</span><br><span class="line">                </span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> OutBoundHandlerD());</span><br><span class="line"></span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> InBoundHandlerC());</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// outBound，处理写数据的逻辑链</span></span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> OutBoundHandlerE());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure><p>在该例子中，<code>pipeline</code> 的执行顺序是：<code>InBoundHandlerA</code>-&gt;<code>InBoundHandlerB()</code>-&gt;<code>InBoundHandlerC()</code>-&gt;<code>OutBoundHandlerE()</code></p><blockquote><p><code>channelPipeline</code>是双向链表，<code>inBoundHandler</code> 的事件通常只会传播到下一个 <code>inBoundHandler</code>，<code>outBoundHandler</code> 的事件通常只会传播到下一个 <code>outBoundHandler</code>，两者相互不受干扰。</p></blockquote><p><code>inBoundHandler</code> 的执行顺序与我们实际的添加顺序相同，而 <code>outBoundHandler</code> 则相反。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;为了避免逻辑判断泛滥导致的拓展性受限问题，Netty 发明了 &lt;code&gt;pipeline&lt;/code&gt; 和 &lt;code&gt;channelHandler&lt;/code&gt; 。它通过&lt;strong&gt;责任链设计模式&lt;/strong&gt;来组织代码逻辑，并且能够支持逻辑的动态添加和删除 ，Netty 能够支持各类协议的扩展，比如 HTTP，WebSocket，Redis，靠的就是 &lt;code&gt;pipeline&lt;/code&gt; 和 &lt;code&gt;channelHandler&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="netty" scheme="http://www.onebug.tech/categories/netty/"/>
+    
+    
+      <category term="java" scheme="http://www.onebug.tech/tags/java/"/>
+    
+      <category term="netty" scheme="http://www.onebug.tech/tags/netty/"/>
+    
+  </entry>
   
   <entry>
     <title>Netty的字节容器---ByteBuf</title>
@@ -580,36 +605,6 @@
       <category term="并发" scheme="http://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
       <category term="笔记" scheme="http://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用 VSCode + Wsl 搭建 linux 开发环境</title>
-    <link href="http://www.onebug.tech/2020/10/20/%E8%BD%AF%E4%BB%B6/vscode%E4%BD%BF%E7%94%A8wsl/"/>
-    <id>http://www.onebug.tech/2020/10/20/%E8%BD%AF%E4%BB%B6/vscode%E4%BD%BF%E7%94%A8wsl/</id>
-    <published>2020-10-19T16:00:00.000Z</published>
-    <updated>2020-10-21T14:33:39.466Z</updated>
-    
-    <content type="html"><![CDATA[<p>使用vscode + Wsl 可以改善C++/C的开发体验</p><p><img src="https://code.visualstudio.com/assets/docs/remote/wsl/architecture-wsl.png" alt="WSL Architecture"></p><a id="more"></a><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><ul><li><a href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10" target="_blank" rel="noopener">安装 WSL</a></li><li>在 Windows 端(不是在 WSL 中)安装 <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Vs Code</a></li></ul><h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ul><li><p>安装Vs Code扩展<a href="https://aka.ms/vscode-remote/download/extension" target="_blank" rel="noopener">Remote Development extension pack</a></p></li><li><p>在<strong>WSL端</strong>安装C++/C 语言扩展（以下是我个人安装的一些扩展）</p><p><img src="http://image.onebug.tech/image-20201021222529606.png-d" alt="image-20201021222529606"></p></li></ul><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="初始化项目文件夹"><a href="#初始化项目文件夹" class="headerlink" title="初始化项目文件夹"></a>初始化项目文件夹</h3><ul><li><p>打开vscode</p></li><li><p><code>F1</code>-&gt;<code>Remote-WSL: New Window</code> ，或者点击左下角的绿色按钮</p><p><img src="http://image.onebug.tech/image-20201021222425486.png-d" alt="image-20201021222425486"></p></li><li><p>新建bash终端，使用<code>mkdir</code>等命令新建项目文件夹</p></li></ul><p><img src="http://image.onebug.tech/image-20201021222133299.png-d" alt="image-20201021222133299"></p><ul><li>菜单<code>文件</code>-&gt;<code>打开文件夹</code></li><li><img src="http://image.onebug.tech/image-20201021222248879.png-d" alt="image-20201021222248879"></li></ul><h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><ul><li><p>新建测试文件<code>test.cpp</code></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"Hello World"</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>在安装<code>code runner</code>扩展的前提下，<code>右键</code>- &gt;<code>run code</code>，可以看到，成功运行</p></li></ul><p><img src="http://image.onebug.tech/image-20201021222646711.png-d" alt="image-20201021222646711"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;使用vscode + Wsl 可以改善C++/C的开发体验&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://code.visualstudio.com/assets/docs/remote/wsl/architecture-wsl.png&quot; alt=&quot;WSL Architecture&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="工具" scheme="http://www.onebug.tech/categories/%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="工具" scheme="http://www.onebug.tech/tags/%E5%B7%A5%E5%85%B7/"/>
-    
-      <category term="vscode" scheme="http://www.onebug.tech/tags/vscode/"/>
-    
-      <category term="wsl" scheme="http://www.onebug.tech/tags/wsl/"/>
-    
-      <category term="windows" scheme="http://www.onebug.tech/tags/windows/"/>
     
   </entry>
   
