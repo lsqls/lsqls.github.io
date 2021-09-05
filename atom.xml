@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.onebug.tech/"/>
-  <updated>2021-05-08T09:58:08.703Z</updated>
+  <updated>2021-09-05T12:36:12.806Z</updated>
   <id>http://www.onebug.tech/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Netty的字节容器---ByteBuf</title>
+    <link href="http://www.onebug.tech/2021/09/04/java/netty/ByteBuf/"/>
+    <id>http://www.onebug.tech/2021/09/04/java/netty/ByteBuf/</id>
+    <published>2021-09-03T16:00:00.000Z</published>
+    <updated>2021-09-05T12:36:12.806Z</updated>
+    
+    <content type="html"><![CDATA[<p>网络数据的基本单位总是字节。Java NIO 提供了<code>ByteBuffer</code> 作为它的字节容器，但是这个类使用起来过于复杂，而且也有些繁琐。Netty 的<code>ByteBuffer</code> 替代品是<code>ByteBuf</code>，一个强大的实现，既解决了JDK API 的局限性，又为网络应用程序的开发者提供了更好的API。<code>ByteBuf</code>本质的原理就是引用了一段内存，这段内存可以是堆内也可以是堆外的，然后用引用计数来控制这段内存是否需要被释放，使用读写指针来控制对 <code>ByteBuf</code> 的读写，可以理解为是外观模式的一种使用。</p><a id="more"></a><h1 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h1><p><img src="http://image.onebug.tech/image-20210903174536572.png" alt="image-20210903174536572"></p><ul><li><p><code>ByteBuf</code> 是一个字节容器，容器里面的的数据分为三个部分，第一个部分是已经丢弃的字节，这部分数据是无效的；第二部分是可读字节，这部分数据是 <code>ByteBuf</code> 的主体数据， 从 <code>ByteBuf</code> 里面读取的数据都来自这一部分;最后一部分的数据是可写字节，所有写到 <code>ByteBuf</code> 的数据都会写到这一段。</p></li><li><p>以上三段内容是被两个指针给划分出来的，从左到右，依次是读指针（<code>readerIndex</code>）、写指针（<code>writerIndex</code>），然后还有一个变量 <code>capacity</code>，表示 <code>ByteBuf</code> 底层内存的总容量。</p></li><li><p>从 <code>ByteBuf</code> 中每读取一个字节，<code>readerIndex</code> 自增1，<code>ByteBuf</code> 里面总共有 <code>writerIndex-readerIndex</code> 个字节可读, 由此可以推论出当 <code>readerIndex</code> 与 <code>writerIndex</code> 相等的时候，<code>ByteBuf</code> 不可读。</p></li><li><p>写数据是从 <code>writerIndex</code> 指向的部分开始写，每写一个字节，<code>writerIndex</code> 自增1，直到增到 <code>capacity</code>，这个时候，表示 <code>ByteBuf</code> 已经不可写了</p></li></ul><blockquote><p><code>ByteBuf</code> 里面其实还有一个参数 <code>maxCapacity</code>，当向 <code>ByteBuf</code> 写数据的时候，如果容量不足，那么这个时候可以进行扩容，直到 <code>capacity</code> 扩容到 <code>maxCapacity</code>，超过 <code>maxCapacity</code> 就会报错</p></blockquote><h1 id="API"><a href="#API" class="headerlink" title="API"></a>API</h1><h2 id="容量"><a href="#容量" class="headerlink" title="容量"></a>容量</h2><table><thead><tr><th>名 称</th><th>描 述</th></tr></thead><tbody><tr><td>capacity()</td><td>表示 <code>ByteBuf</code> 底层占用了多少字节的内存（包括丢弃的字节、可读字节、可写字节）</td></tr><tr><td>maxCapacity()</td><td>表示 <code>ByteBuf</code> 底层最大能够占用多少字节的内存，当向 <code>ByteBuf</code> 中写数据的时候，如果发现容量不足，则进行扩容，直到扩容到 <code>maxCapacity</code>，超过这个数，就抛异常</td></tr><tr><td>readableBytes()</td><td>表示 ByteBuf 当前可读的字节数，它的值等于 <code>writerIndex-readerIndex</code>，如果两者相等，则不可读，<code>isReadable()</code> 方法返回 <code>false</code></td></tr><tr><td>writableBytes()</td><td><code>ByteBuf</code> 当前可写的字节数，它的值等于 capacity-writerIndex，如果两者相等，则表示不可写，<code>isWritable()</code> 返回 <code>false</code>，但是这个时候，并不代表不能往 <code>ByteBuf</code> 中写数据了， 如果发现往 <code>ByteBuf</code> 中写数据写不进去的话，Netty 会自动扩容 <code>ByteBuf</code>，直到扩容到底层的内存大小为 <code>maxCapacity</code>，而 <code>maxWritableBytes()</code> 就表示可写的最大字节数，它的值等于 <code>maxCapacity-writerIndex</code></td></tr></tbody></table><h2 id="索引管理"><a href="#索引管理" class="headerlink" title="索引管理"></a>索引管理</h2><table><thead><tr><th>名 称</th><th>描 述</th></tr></thead><tbody><tr><td>readerIndex()</td><td>返回当前的读指针</td></tr><tr><td>writeIndex()</td><td>返回当前的写指针</td></tr><tr><td>markReaderIndex()</td><td>把当前的读指针保存起来</td></tr><tr><td>resetReaderIndex()</td><td>把当前的读指针恢复到之前保存的值</td></tr></tbody></table><h2 id="读写操作"><a href="#读写操作" class="headerlink" title="读写操作"></a>读写操作</h2><p>有两种类别的读/写操作：</p><ul><li><code>get()</code>和<code>set()</code>操作，从给定的索引开始，并且保持索引不变；</li><li><code>read()</code>和<code>write()</code>操作，从给定的索引开始，并且会根据已经访问过的字节数对索引进行调整。</li></ul><p>基于读写指针和容量、最大可扩容容量，衍生出一系列的读写方法。其中比较重要的有：</p><table><thead><tr><th>名 称</th><th>描 述</th></tr></thead><tbody><tr><td>readByte()</td><td>返回当前<code>readerIndex</code> 处的字节，并将<code>readerIndex</code> 增加1（从 <code>ByteBuf</code> 中读取一个字节）</td></tr><tr><td>writeByte(int)</td><td>在当前<code>writerIndex</code> 处写入一个字节值，并将<code>writerIndex</code> 增加1（往 <code>ByteBuf</code> 中写一个字节）</td></tr><tr><td>readBytes(destination byte[])</td><td>把 <code>ByteBuf</code> 里面的数据全部读取到 <code>destination</code>（<code>ByteBuf</code>-&gt;<code>destination</code>）</td></tr><tr><td>writeBytes(source byte[])</td><td>把字节数组 <code>source</code> 里面的数据写到 <code>ByteBuf</code>（<code>source</code>-&gt;<code>ByteBuf</code>）</td></tr></tbody></table><p>类似的 API 还有 <code>writeBoolean()</code>、<code>writeChar()</code>、<code>writeShort()</code>、<code>writeInt()</code>、<code>writeLong()</code>、<code>writeFloat()</code>、<code>writeDouble()</code> 与 <code>readBoolean()</code>、<code>readChar()</code>、<code>readShort()</code>、<code>readInt()</code>、<code>readLong()</code>、<code>readFloat()</code>、<code>readDouble()</code> ，这里就不一一赘述了。</p><h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><p>由于 Netty 可以使用堆外内存，而堆外内存是不被 <code>jvm</code> 直接管理的，也就是说申请到的内存无法被垃圾回收器直接回收，所以需要我们手动回收，否则会造成内存泄漏。Netty 的 <code>ByteBuf</code> 是通过<strong>引用计数</strong>的方式管理的，如果一个 <code>ByteBuf</code> 没有地方被引用到，需要回收底层内存。默认情况下，当创建完一个 <code>ByteBuf</code>，它的引用为1，然后每次调用 <code>retain()</code> 方法， 它的引用就<code>+1</code>， release() 方法原理是将引用计数<code>-1</code>，减完之后如果发现引用计数为0，则直接回收 <code>ByteBuf</code> 底层的内存。</p><h2 id="池化"><a href="#池化" class="headerlink" title="池化"></a>池化</h2><p>为了降低分配和释放内存的开销，Netty 通过 <code>ByteBufAllocator</code> 实现了<code>ByteBuf</code> 的池化，它可以用来分配我们所描述过的任意类型的<code>ByteBuf</code> 实例（直接内存、堆内存）。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//从Channel 获取一个到 ByteBufAllocator 的引用</span></span><br><span class="line">ByteBufAllocator allocator = channel.alloc();</span><br><span class="line"></span><br><span class="line"><span class="comment">//从ChannelHandlerContext 获取一个到ByteBufAllocator 的引用</span></span><br><span class="line">ByteBufAllocator allocator2 = ctx.alloc();</span><br></pre></td></tr></table></figure><p>一般使用<code>buffer(int initialCapacity, int maxCapacity);</code>返回一个基于堆或者直接内存存储的<code>ByteBuf</code>。</p><h2 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h2><p><code>slice()</code>、<code>duplicate()</code>、<code>copy()</code>三者的返回值都是一个新的 <code>ByteBuf</code> 对象：</p><ul><li><p><code>slice()</code> 方法从原始 <code>ByteBuf</code> 中截取一段，这段数据是从 <code>readerIndex</code> 到 <code>writeIndex</code>，同时，返回的新的 <code>ByteBuf</code> 的最大容量 <code>maxCapacity</code> 为原始 <code>ByteBuf</code> 的 <code>readableBytes()</code></p></li><li><p><code>duplicate()</code> 方法把整个 <code>ByteBuf</code> 都截取出来，包括所有的数据，指针信息</p><blockquote><p><code>slice()</code> 方法与 <code>duplicate()</code> 方法不会拷贝数据，它们只是通过改变读写指针来改变读写的行为。底层内存以及引用计数与原始的 <code>ByteBuf</code> 共享，也就是说返回的 <code>ByteBuf</code> 调用 <code>write</code> 系列方法都会影响到原始的 <code>ByteBuf</code>，但是它们都维持着与原始 <code>ByteBuf</code> 不同的读写指针。</p></blockquote></li><li><p><code>copy()</code> 会直接从原始的 <code>ByteBuf</code> 中拷贝所有的信息，包括读写指针以及<strong>底层对应的数据</strong>，因此， <code>copy()</code> 返回的 <code>ByteBuf</code> 中写数据不会影响到原始的 <code>ByteBuf</code></p></li><li><p><code>retainedSlice()</code> 与 <code>retainedDuplicate()</code>它们的作用是在截取内存片段的同时，增加内存的引用计数。</p></li></ul><p>多个 <code>ByteBuf</code> 可以引用同一段内存，而Netty会通过引用计数来控制内存的释放，应当遵循谁 <code>retain()</code> 谁 <code>release()</code> 的原则。我们建议，在一个函数体里面，只要增加了引用计数（包括 <code>ByteBuf</code> 的创建和手动调用 <code>retain()</code> 方法），就必须调用 <code>release()</code> 方法，否则往往会出现内存泄露的问题。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;网络数据的基本单位总是字节。Java NIO 提供了&lt;code&gt;ByteBuffer&lt;/code&gt; 作为它的字节容器，但是这个类使用起来过于复杂，而且也有些繁琐。Netty 的&lt;code&gt;ByteBuffer&lt;/code&gt; 替代品是&lt;code&gt;ByteBuf&lt;/code&gt;，一个强大的实现，既解决了JDK API 的局限性，又为网络应用程序的开发者提供了更好的API。&lt;code&gt;ByteBuf&lt;/code&gt;本质的原理就是引用了一段内存，这段内存可以是堆内也可以是堆外的，然后用引用计数来控制这段内存是否需要被释放，使用读写指针来控制对 &lt;code&gt;ByteBuf&lt;/code&gt; 的读写，可以理解为是外观模式的一种使用。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="netty" scheme="http://www.onebug.tech/categories/netty/"/>
+    
+    
+      <category term="java" scheme="http://www.onebug.tech/tags/java/"/>
+    
+      <category term="ByteBuf" scheme="http://www.onebug.tech/tags/ByteBuf/"/>
+    
+      <category term="netty" scheme="http://www.onebug.tech/tags/netty/"/>
+    
+  </entry>
   
   <entry>
     <title>java UDP网络编程</title>
@@ -583,33 +610,6 @@
       <category term="wsl" scheme="http://www.onebug.tech/tags/wsl/"/>
     
       <category term="windows" scheme="http://www.onebug.tech/tags/windows/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用ventoy制作多系统启动盘</title>
-    <link href="http://www.onebug.tech/2020/09/22/%E8%BD%AF%E4%BB%B6/ventoy/"/>
-    <id>http://www.onebug.tech/2020/09/22/%E8%BD%AF%E4%BB%B6/ventoy/</id>
-    <published>2020-09-21T16:00:00.000Z</published>
-    <updated>2020-09-22T06:19:23.096Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="ventoy介绍"><a href="#ventoy介绍" class="headerlink" title="ventoy介绍"></a>ventoy介绍</h2><p>Ventoy是一个制作可启动U盘的开源工具。有了Ventoy你就无需反复地格式化U盘，你<strong>只需要把ISO/WIM/IMG/VHD(x)/EFI文件拷贝到U盘</strong>里面就可以启动了，无需其他操作。 你可以一次性拷贝很<strong>多个</strong>不同类型的ISO文件，在启动时Ventoy会显示一个菜单来选择。</p><a id="more"></a><p><img src="http://image.onebug.tech/screen_uefi.png" alt="img"></p><p>ventoy能够无差异支持Legacy BIOS和UEFI模式，并且支持大部分常见操作系统 （Windows/WinPE/Linux/Unix/VMware/Xen 等等）</p><h2 id="制作启动盘"><a href="#制作启动盘" class="headerlink" title="制作启动盘"></a>制作启动盘</h2><p>在<a href="https://www.lanzoux.com/b01bd54gb" target="_blank" rel="noopener">这里</a>，下载安装包，例如 ventoy-1.0.15-windows.zip 然后解压开。直接执行 <code>Ventoy2Disk.exe</code> 如下图所示，选择U盘设备，然后点击 Install 按钮即可。</p><p><img src="http://image.onebug.tech/ventoy2disk2_cn.png" alt="img"></p><blockquote><p><strong>选择安装的时候，U盘将会被格式化，里面所有的数据都会丢失！！！</strong></p></blockquote><h2 id="启动盘的使用"><a href="#启动盘的使用" class="headerlink" title="启动盘的使用"></a>启动盘的使用</h2><p>你只需要把ISO文件拷贝到这里面即可。你可以把ISO文件放在<strong>任意目录以及子目录</strong>下。 Ventoy默认会遍历所有的目录和子目录，找出所有的ISO文件，并按照字母排序之后显示在菜单中。需要注意的是，<strong>ISO文件的全路径中(包括目录、子目录和文件名)不能包含中文或者空格</strong>。</p><p>至于如何从u盘启动系统，可以自行搜索关键词<strong>电脑型号+U盘启动</strong>，比如我用的是的华为matebook，就可以搜索<strong>华为matebook u盘启动</strong>。</p><p><img src="http://image.onebug.tech/image-20200922141917108.png" alt="image-20200922141917108"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;ventoy介绍&quot;&gt;&lt;a href=&quot;#ventoy介绍&quot; class=&quot;headerlink&quot; title=&quot;ventoy介绍&quot;&gt;&lt;/a&gt;ventoy介绍&lt;/h2&gt;&lt;p&gt;Ventoy是一个制作可启动U盘的开源工具。有了Ventoy你就无需反复地格式化U盘，你&lt;strong&gt;只需要把ISO/WIM/IMG/VHD(x)/EFI文件拷贝到U盘&lt;/strong&gt;里面就可以启动了，无需其他操作。 你可以一次性拷贝很&lt;strong&gt;多个&lt;/strong&gt;不同类型的ISO文件，在启动时Ventoy会显示一个菜单来选择。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="系统" scheme="http://www.onebug.tech/categories/%E7%B3%BB%E7%BB%9F/"/>
-    
-    
-      <category term="多系统" scheme="http://www.onebug.tech/tags/%E5%A4%9A%E7%B3%BB%E7%BB%9F/"/>
-    
-      <category term="U盘" scheme="http://www.onebug.tech/tags/U%E7%9B%98/"/>
-    
-      <category term="工具" scheme="http://www.onebug.tech/tags/%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
