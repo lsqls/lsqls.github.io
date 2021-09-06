@@ -3072,7 +3072,7 @@ public class DeadLock implements Runnable {
 <h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p>因为TCP是面向连接的传输协议，TCP传输的数据是以流的形式，而流数据是没有明确的开始结尾边界，所以TCP也没办法判断哪一段流属于一个消息。</p>
 <p><img src="http://image.onebug.tech/1460000021175323" alt="TCP协议传输过程.jpg"></p>
 <p>因为TCP会根据缓冲区的实际情况进行包的划分，在业务上认为，有的包被拆分成多个包进行发送，也可能多个晓小的包封装成一个大的包发送，这就是TCP的粘包或者拆包。</p>
-<p><img src="https://segmentfault.com/img/remote/1460000021175317" alt="粘包拆包图解.png"></p>
+<p><img src="http://image.onebug.tech/1460000021175317" alt="粘包拆包图解.png"></p>
 <p>假设客户端分别发送了两个数据包D1和D2给服务端，由于服务端一次读取到字节数是不确定的，故可能存在以下几种情况：</p>
 <ol>
 <li>服务端分两次读取到两个独立的数据包，分别是D1和D2，没有粘包和拆包。</li>
