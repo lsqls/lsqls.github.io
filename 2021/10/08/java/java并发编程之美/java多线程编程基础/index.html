@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是线程在讨论什么是线程前有必要先说下什么是进程，因为线程是进程中的一个实体，线程本身是不会独立存在的。进程是代码在数据集合上的一次运行活动， 是系统进行资源分配和调度的基本单位， 线程则是进程的一个执行路径， 一个进程中至少有一个线程，进程中的多个线程共享进程的资源。操作系统在分配资源时是把资源分配给进程的， 但是CPU 资源比较特殊， 它是被分配到线程的， 因为真正要占用C PU 运行的是线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java多线程编程基础">
+<meta property="og:url" content="http://www.onebug.tech/2021/10/08/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="冰冻橘子的自留地">
+<meta property="og:description" content="什么是线程在讨论什么是线程前有必要先说下什么是进程，因为线程是进程中的一个实体，线程本身是不会独立存在的。进程是代码在数据集合上的一次运行活动， 是系统进行资源分配和调度的基本单位， 线程则是进程的一个执行路径， 一个进程中至少有一个线程，进程中的多个线程共享进程的资源。操作系统在分配资源时是把资源分配给进程的， 但是CPU 资源比较特殊， 它是被分配到线程的， 因为真正要占用C PU 运行的是线">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://image.onebug.tech/image-20211008205319745.png">
+<meta property="og:image" content="http://image.onebug.tech/image-20211008212955074.png">
+<meta property="og:image" content="http://image.onebug.tech/image-20211008214107190.png">
+<meta property="og:image" content="http://image.onebug.tech/image-20211008213421323.png">
+<meta property="article:published_time" content="2021-10-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-08T13:46:16.869Z">
+<meta property="article:author" content="冰冻橘子">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="并发">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="java并发编程之美">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://image.onebug.tech/image-20211008205319745.png">
+
+<link rel="canonical" href="http://www.onebug.tech/2021/10/08/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java多线程编程基础 | 冰冻橘子的自留地</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ec0ec36f2e4e18c1a7fb6e0d2ac19053";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="冰冻橘子的自留地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">冰冻橘子的自留地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.onebug.tech/2021/10/08/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java多线程编程基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-08 00:00:00 / 修改时间：21:46:16" itemprop="dateCreated datePublished" datetime="2021-10-08T00:00:00+08:00">2021-10-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="什么是线程"><a href="#什么是线程" class="headerlink" title="什么是线程"></a>什么是线程</h1><p>在讨论什么是线程前有必要先说下什么是进程，因为线程是进程中的一个实体，线程本身是不会独立存在的。进程是代码在数据集合上的一次运行活动， 是系统进行资源分配和调度的基本单位， 线程则是进程的一个执行路径， 一个进程中至少有一个线程，进程中的多个线程共享进程的资源。操作系统在分配资源时是把资源分配给进程的， 但是CPU 资源比较特殊， 它是被分配到线程的， 因为真正要占用C PU 运行的是线程， 所以也说线程是CPU 分配的基本单位。</p>
+<a id="more"></a>
+
+<h1 id="线程的创建与启动"><a href="#线程的创建与启动" class="headerlink" title="线程的创建与启动"></a>线程的创建与启动</h1><p>Java 中有三种线程创建方式，分别为：</p>
+<h2 id="Runnable"><a href="#Runnable" class="headerlink" title="Runnable"></a>Runnable</h2><p>实现<code>Runnable</code> 接口的<code>run</code> 方法。使用<code>lambda</code>简化代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runnable task = () -&gt; &#123; System.out.println(<span class="string">"Task #1 is running"</span>); &#125;;</span><br><span class="line"><span class="keyword">new</span> Thread(task).start();</span><br></pre></td></tr></table></figure>
+
+<h2 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h2><p>继承<code>Thread</code> 类并重写<code>run</code> 的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"child thread run"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> ThreadTest().start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="FutureTask"><a href="#FutureTask" class="headerlink" title="FutureTask"></a>FutureTask</h2><p>使用<code>FutureTask</code> 方式。<code>FutureTask</code>实现了<code>Callable</code>接口，能够获取异步任务的返回值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建异步任务</span></span><br><span class="line">FutureTask&lt;Integer&gt; futureTask=<span class="keyword">new</span> FutureTask&lt;&gt;(()-&gt;&#123;</span><br><span class="line">            System.out.println(<span class="string">"task#2: cal 1+2"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>+<span class="number">2</span>;</span><br><span class="line">        &#125;);</span><br><span class="line"><span class="comment">//启动任务</span></span><br><span class="line"><span class="keyword">new</span> Thread(futureTask).start();</span><br><span class="line"></span><br><span class="line"><span class="comment">//等待任务执行完毕，并返回结果</span></span><br><span class="line"><span class="keyword">int</span> result=futureTask.get();</span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">"result is "</span>+result);</span><br></pre></td></tr></table></figure>
+
+<h1 id="线程通知与等待"><a href="#线程通知与等待" class="headerlink" title="线程通知与等待"></a>线程通知与等待</h1><h2 id="wait-和notify"><a href="#wait-和notify" class="headerlink" title="wait()和notify()"></a>wait()和notify()</h2><p>当一个线程调用一个共享变量的<code>wait()</code>方法时， 该调用线程会被阻塞挂起， 直到发生下面几件事情之一才返回： </p>
+<ul>
+<li>其他线程调用了该共享对象的<code>notify()</code>或者<code>notifyAll()</code>方法；</li>
+<li>其他线程调用了该线程的<code>interrupt()</code>方法， 该线程抛出<code>InterruptedException</code> 异常返回。</li>
+</ul>
+<p>一个线程调用共享对象的notify（）方法后，会唤醒一个在该共享变量上调用<code>wait</code>系列方法后被挂起的线程。一个共享变量上可能会有多个线程在等待，具体唤醒哪个等待的线程是<strong>随机</strong>的。不同于<code>notify()</code>函数只会唤醒一个被阻塞到该共享变量上的线程，<code>notifyAll()</code>方法则会唤醒所有在该共享变量上由于调用<code>wait</code> 系列方法而被挂起的线程。</p>
+<p><code>notify</code>和<code>wait</code>系列方法，都需要当前线程获取到了共享变量的监视器锁后，才可以调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Thread thread1=<span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (lock)&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> (!prepare)&#123;</span><br><span class="line">                System.out.println(Thread.currentThread()+<span class="string">"阻塞挂起中..."</span>);</span><br><span class="line">                lock.wait();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread()+<span class="string">"被唤醒"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            System.out.println(<span class="string">"线程被中断"</span>);</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">thread1.start();</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (lock)&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            prepare=<span class="keyword">true</span>;</span><br><span class="line">            System.out.println(Thread.currentThread()+<span class="string">"唤醒其他阻塞挂起的线程"</span>);</span><br><span class="line">            lock.notify();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://image.onebug.tech/image-20211008205319745.png" alt="image-20211008205319745"></p>
+<blockquote>
+<p>另外需要注意的是，当前线程调用共享变量的<code>wait()</code>方法后只会释放当前共享变量上的锁，如果当前线程还持有其他共享变量的锁，则这些锁是不会被释放的</p>
+</blockquote>
+<h2 id="虚假唤醒"><a href="#虚假唤醒" class="headerlink" title="虚假唤醒"></a>虚假唤醒</h2><p>另外需要注意的是，一个线程可以从挂起状态变为可以运行状态（ 也就是被唤醒）即使该线程没有被其他线程调用<code>notify()</code>、<code>notifyAll()</code>方法进行通知，或者被中断，或者等待超时，这就是所谓的虚假唤醒。<br>虽然虚假唤醒在应用实践中很少发生，但要防患于未然，做法就是不停地去测试该线程被唤醒的条件是否满足，不满足则继续等待，也就是说在一个循环中调用<code>wait()</code>方法进行防范。退出循环的条件是满足了唤醒该线程的条件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">synchronized (obj)&#123;</span><br><span class="line">    while (!prepare)&#123;</span><br><span class="line">        &#x2F;&#x2F;阻塞挂起</span><br><span class="line">        obj.wait();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="wait超时"><a href="#wait超时" class="headerlink" title="wait超时"></a>wait超时</h2><ul>
+<li><code>wait(long timeout)</code>：该方法相比<code>wait()</code> 方法多了一个超时参数，它的不同之处在于，如果一个线程调用共享对象的该方法挂起后， 没有在指定的timeout ms 时间内被唤醒，那么该函数还是会因为超时而返回。</li>
+</ul>
+<h1 id="线程的其他方法"><a href="#线程的其他方法" class="headerlink" title="线程的其他方法"></a>线程的其他方法</h1><h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2><p>在项目实践中经常会遇到一个场景，就是是需要等待某几件事情完成后才能继续往下执行，比如多个线程加载资源， 需要等待多个线程全部加载完毕再汇总处理。Thread 类中有一个简单的<code>join</code> 方法就可以做这个事情。（事实上不太使用该方法，<code>AQS</code>中的<code>CountdownLatch</code>更为强大和常用）</p>
+<h2 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h2><p>Thread 类中有一个静态的<code>sleep</code>方法，当一个执行中的线程调用了<code>Thread</code> 的<code>sleep</code> 方法后，调用线程会暂时让出指定时间的执行权，也就是在这期间不参与CPU的调度。指定的睡眠时间到了后该函数会正常返回，线程就处于就绪状态，然后参与CPU 的调度，获取到CPU 资源后就可以继续运行了。不同于<code>wait</code>方法，线程在调用<code>sleep</code>方法后，该线程所拥有的监视器资源，比如锁还是持有不让出的。</p>
+<h2 id="yield"><a href="#yield" class="headerlink" title="yield"></a>yield</h2><p>Thread 类中有一个静态的yield 方法，当一个线程调用<code>yield</code>方法时，实际就是在暗示线程调度器当前线程请求让出自己的CPU使用，但是线程调度器可以无条件忽略这个暗示。当一个线程调用<code>yield</code> 方法时， 当前线程会让出CPU使用权，然后处于就绪状态，线程调度器会从线程就绪队列里面获取一个线程优先级最高的线程，当然也有可能会调度到刚刚让出CPU 的那个线程来获取CPU 执行权，这也是<code>yield</code>和<code>sleep</code>不同的地方。</p>
+<h1 id="线程中断"><a href="#线程中断" class="headerlink" title="线程中断"></a>线程中断</h1><p>Java 中的线程中断是一种线程间的协作模式，通过设置线程的中断标志并不能直接终止该线程的执行， 而是被中断的线程根据中断状态自行处理。</p>
+<ul>
+<li><code>void interrup()</code> 方法： 中断线程， 例如，当线程A 运行时，线程B 可以调用钱程A的<code>interrupt()</code>方法来设置线程A 的中断标志为true 并立即返回。<strong>设置标志仅仅是设置标志， 线程A 实际并没有被中断， 它会继续往下执行</strong>。如果线程A 因为调用了<code>wait</code> 系列函数、<code>join</code> 方法或者<code>sleep</code> 方法而被阻塞挂起，这时候若线程B 调用线程A 的<code>interrupt()</code> 方法，线程A 会在调用这些方法的地方抛出<code>InterruptedException</code> 异常而返回。</li>
+<li><code>boolean isinterrupte()</code> 方法： 检测当前线程是否被中断，如果是返回<code>true</code> ， 否则返回<code>false</code> 。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Thread thread=<span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">float</span> i=<span class="number">0</span>;</span><br><span class="line">                <span class="keyword">while</span> (i&lt;<span class="number">1000</span>) &#123;</span><br><span class="line">                    i++;</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(i);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">finally</span> &#123;</span><br><span class="line"><span class="comment">//                clean up if required</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        thread.start();</span><br><span class="line"></span><br><span class="line">        thread.interrupt();</span><br><span class="line">        System.out.println(<span class="string">"中断线程"</span>+thread);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://image.onebug.tech/image-20211008212955074.png" alt="image-20211008212955074"></p>
+<p>可以看到，程序没有抛出异常，而是正常执行。</p>
+<h1 id="线程死锁"><a href="#线程死锁" class="headerlink" title="线程死锁"></a>线程死锁</h1><p>死锁是指两个或两个以上的线程在执行过程中，因争夺资源而造成的互相等待的现象，在无外力作用的情况下，这些线程会一直相互等待而无法继续运行下去。</p>
+<p>死锁的产生必须具备以下四个条件：</p>
+<ul>
+<li>互斥条件： 指线程对己经获取到的资源进行排它性使用， 即该资源同时只由一个线程占用。如果此时还有其他线程请求获取该资源，则请求者只能等待，直至占有资源的线程释放该资源。</li>
+<li>请求并持有条件： 指一个线程己经持有了至少一个资源， 但又提出了新的资源请求，而新资源己被其他线程占有，所以当前线程会被阻塞，但阻塞的同时并不释放自己己经获取的资源。</li>
+<li>不可剥夺条件： 指线程获取到的资源在自己使用完之前不能被其他线程抢占， 只有在自己使用完毕后才由自己释放该资源。</li>
+<li>环路等待条件： 指在发生死锁时， 必然存在一个线程→资源的环形链， 即线程集合{TO , TL T2 ，…， Tn ｝中的TO 正在等待一个Tl 占用的资源， Tl 正在等待T2 占用的资源，……Tn 正在等待己被TO 占用的资源。</li>
+</ul>
+<p>一个线程死锁的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeadLock</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> Object resource1=<span class="keyword">new</span> Object();</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> Object resource2=<span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread threadA=<span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            System.out.println(<span class="string">"threadA 尝试获取 resource1中..."</span>);</span><br><span class="line">            <span class="keyword">synchronized</span> (resource1)&#123;</span><br><span class="line">                System.out.println(<span class="string">"threadA 获取 resource1成功"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">"threadA 尝试获取 resource2中..."</span>);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">synchronized</span> (resource2)&#123;</span><br><span class="line">                    System.out.println(<span class="string">"threadA 获取 resource2成功"</span>);</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Thread threadB=<span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            System.out.println(<span class="string">"threadB 尝试获取 resource2中..."</span>);</span><br><span class="line">            <span class="keyword">synchronized</span> (resource2)&#123;</span><br><span class="line">                System.out.println(<span class="string">"threadB 获取 resource2成功"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">"threadB尝试获取 resource1中..."</span>);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">synchronized</span> (resource1)&#123;</span><br><span class="line">                    System.out.println(<span class="string">"threadB 获取 resource1成功"</span>);</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        threadA.start();</span><br><span class="line">        threadB.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://image.onebug.tech/image-20211008214107190.png" alt="image-20211008214107190"></p>
+<p>如图所示，<code>threadA</code>和<code>threadB</code>形成了线程死锁。</p>
+<p><img src="http://image.onebug.tech/image-20211008213421323.png" alt="image-20211008213421323"></p>
+<p>关于如何避免线程死锁，操作系统中有详细介绍，这里不赘述。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/" rel="tag"><i class="fa fa-tag"></i> java并发编程之美</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/" rel="prev" title="Netty的优化">
+      <i class="fa fa-chevron-left"></i> Netty的优化
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是线程"><span class="nav-number">1.</span> <span class="nav-text">什么是线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的创建与启动"><span class="nav-number">2.</span> <span class="nav-text">线程的创建与启动</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Runnable"><span class="nav-number">2.1.</span> <span class="nav-text">Runnable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Thread"><span class="nav-number">2.2.</span> <span class="nav-text">Thread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FutureTask"><span class="nav-number">2.3.</span> <span class="nav-text">FutureTask</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程通知与等待"><span class="nav-number">3.</span> <span class="nav-text">线程通知与等待</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#wait-和notify"><span class="nav-number">3.1.</span> <span class="nav-text">wait()和notify()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚假唤醒"><span class="nav-number">3.2.</span> <span class="nav-text">虚假唤醒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait超时"><span class="nav-number">3.3.</span> <span class="nav-text">wait超时</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的其他方法"><span class="nav-number">4.</span> <span class="nav-text">线程的其他方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#join"><span class="nav-number">4.1.</span> <span class="nav-text">join</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sleep"><span class="nav-number">4.2.</span> <span class="nav-text">sleep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yield"><span class="nav-number">4.3.</span> <span class="nav-text">yield</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程中断"><span class="nav-number">5.</span> <span class="nav-text">线程中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程死锁"><span class="nav-number">6.</span> <span class="nav-text">线程死锁</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="冰冻橘子"
+      src="http://image.onebug.tech/avatar.png">
+  <p class="site-author-name" itemprop="name">冰冻橘子</p>
+  <div class="site-description" itemprop="description">渺沧海之一粟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lsqls" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lsqls" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:764666894@qq.com" title="邮箱 → mailto:764666894@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>邮箱</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备17073808-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冰冻橘子</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
