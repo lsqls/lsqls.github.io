@@ -202,6 +202,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.onebug.tech/2021/04/15/java/java%E5%B9%B6%E5%8F%91/ch5%E7%BA%BF%E7%A8%8B%E5%B0%81%E9%97%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/15/java/java%E5%B9%B6%E5%8F%91/ch5%E7%BA%BF%E7%A8%8B%E5%B0%81%E9%97%AD/" class="post-title-link" itemprop="url">线程封闭</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-15 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-15T00:00:00+08:00">2021-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-08 18:00:24" itemprop="dateModified" datetime="2021-05-08T18:00:24+08:00">2021-05-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E9%AB%98%E5%B9%B6%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">java高并发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="线程封闭"><a href="#线程封闭" class="headerlink" title="线程封闭"></a>线程封闭</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>当访问共享变量时，往往需要加锁来保证数据同步。<strong>一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了，这种技术称为线程封闭。</strong></p>
+<p>线程封闭技术有一个常见的应用，JDBC的Connection对象。Connection对象在实现的时候并没有对线程安全做太多的处理，JDBC的规范里也没有要求Connection对象必须是线程安全的。实际在服务器应用程序中，线程从连接池获取了一个Connection对象，使用完再把Connection对象返回给连接池，由于大多数请求都是由单线程采用同步的方式来处理的，并且在Connection对象返回之前，连接池不会将它分配给其他线程。因此这种连接管理模式处理请求时隐含的将Connection对象封闭在线程里面，这样我们使用的<strong>Connection对象虽然本身不是线程安全的，但是它通过线程封闭也做到了线程安全。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/15/java/java%E5%B9%B6%E5%8F%91/ch5%E7%BA%BF%E7%A8%8B%E5%B0%81%E9%97%AD/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.onebug.tech/2021/04/13/java/java%E5%B9%B6%E5%8F%91/ch4%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -917,87 +999,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.onebug.tech/2020/06/24/%E7%BD%91%E7%AB%99/freenom/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
-      <meta itemprop="name" content="冰冻橘子">
-      <meta itemprop="description" content="渺沧海之一粟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="冰冻橘子的自留地">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/24/%E7%BD%91%E7%AB%99/freenom/" class="post-title-link" itemprop="url">顶级域名注册</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-24 00:00:00" itemprop="dateCreated datePublished" datetime="2020-06-24T00:00:00+08:00">2020-06-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-05 10:13:03" itemprop="dateModified" datetime="2020-07-05T10:13:03+08:00">2020-07-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BD%91%E7%AB%99/" itemprop="url" rel="index"><span itemprop="name">网站</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>众所周知，<a href="https://freenom.com/" target="_blank" rel="noopener">Freenom</a>是地球上唯一一个提供免费顶级域名的商家，不过需要每年续期，每次续期最多一年，而管理界面并不是很人性化。下面介绍如何注册一个免费的顶级域名，使用github action 自动续费，以及托管于cloudflare。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/24/%E7%BD%91%E7%AB%99/freenom/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1069,7 +1070,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

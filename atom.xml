@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.onebug.tech/"/>
-  <updated>2021-10-08T13:46:16.869Z</updated>
+  <updated>2021-10-10T11:35:36.974Z</updated>
   <id>http://www.onebug.tech/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ThreadLocal详解</title>
+    <link href="http://www.onebug.tech/2021/10/10/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal/"/>
+    <id>http://www.onebug.tech/2021/10/10/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal/</id>
+    <published>2021-10-09T16:00:00.000Z</published>
+    <updated>2021-10-10T11:35:36.974Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="线程封闭"><a href="#线程封闭" class="headerlink" title="线程封闭"></a>线程封闭</h1><p>当访问共享变量时，往往需要加锁来保证数据同步。<strong>一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了，这种技术称为线程封闭。</strong></p><p>线程封闭技术有一个常见的应用，JDBC的Connection对象。Connection对象在实现的时候并没有对线程安全做太多的处理，JDBC的规范里也没有要求Connection对象必须是线程安全的。实际在服务器应用程序中，线程从连接池获取了一个Connection对象，使用完再把Connection对象返回给连接池，由于大多数请求都是由单线程采用同步的方式来处理的，并且在Connection对象返回之前，连接池不会将它分配给其他线程。因此这种连接管理模式处理请求时隐含的将Connection对象封闭在线程里面，这样我们使用的Connection对象虽然本身不是线程安全的，但是它通过线程封闭也做到了线程安全。</p><p>实现线程封闭，一般有三种方法：Ad-hoc 线程封闭、堆栈封闭、<strong>ThreadLocal线程封闭</strong>。</p><a id="more"></a><h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p>ThreadLocal 是JDK 包提供的，它提供了线程本地变量，也就是如果你创建了一个ThreadLocal 变量，那么访问这个变量的每个线程都会有这个变量的一个本地副本。当多个线程操作这个变量时，实际操作的是自己本地内存里面的变量，从而避免了线程安全问题。创建一个ThreadLocal 变量后，每个线程都会复制一个变量到自己的本地内存中。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//   一个简单ThreadLocal示例</span></span><br><span class="line">    <span class="keyword">static</span> ThreadLocal&lt;String&gt; localVal=<span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        localVal.set(<span class="string">"main THREAD"</span>);</span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            System.out.println(localVal.get());</span><br><span class="line">            localVal.set(<span class="string">"THREAD 1"</span>);</span><br><span class="line">            System.out.println(localVal.get());</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            localVal.set(<span class="string">"THREAD 2"</span>);</span><br><span class="line">            System.out.println(localVal.get());</span><br><span class="line">        &#125;).start();</span><br><span class="line">        </span><br><span class="line">        localVal.remove();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><p><img src="http://image.onebug.tech/image-20211010191615958.png" alt="image-20211010191615958"></p><h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p><img src="http://image.onebug.tech/image-20211010191911770.png" alt="image-20211010191911770"></p><p><code>Thread</code> 类中有一个<code>threadLocals</code> 和一个<code>inheritableThreadLocals</code> ， 它们都是<code>ThreadLocalMap</code> 类型的变量， 而<code>ThreadLocalMap</code> 是一个定制化的<code>Hashmap</code> 。其实每个线程的本地变量不是存放在<code>ThreadLocal</code> 实例里面，而是存放在调用线程的<code>threadLocals</code> 变量里面。也就是说， <code>ThreadLocal</code> 类型的本地变量存放在具体的线程内存空间中。而<code>ThreadLocal</code> 就是一个工具壳类，它通过<code>set</code> 方法把<code>value</code> 值放入调用线程的<code>threadLocals</code> 里面并存放起来，当调用线程调用它的get 方法时，再从当前线程的<code>threadLocals</code> 变量里面将其拿出来使用。</p><p><code>ThreadLocal</code>工具类的<code>set</code>方法：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//获取当前线程</span></span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    <span class="comment">//获取线程对应的ThreadLocalMap</span></span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">    <span class="comment">// 将this作为key,写入ThreadLocalMap </span></span><br><span class="line">    map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>ThreadLocal</code>工具类的<code>get</code>方法：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">    ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul><li><p>内存泄露与预防：每个线程的本地变量存放在线程自己的内存变量<code>threadLocals</code> 中，如果当前线程一直不消亡， 那么这些本地变量会一直存在， 所以可能会造成内存溢出， 因此使用完毕后要记得调用<code>ThreadLocal</code> 的<code>remove</code> 方法删除对应线程的<code>threadLocals</code> 中的本地变量。</p></li><li><p><code>InheritableThreadLocal</code>：<code>InheritableThreadLocal</code>继承自<code>ThreadLocal</code> ， 其提供了一个特性，就是让子线程可以访问在父线程中设置的本地变量。它的实现原理是当父线程创建子线程时，构造函数会把父线程中<code>inheritableThreadLocals</code> 变量里面的本地变量复制一份保存到子线程的<code>inheritableThreadLocals</code> 变量里面。</p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;线程封闭&quot;&gt;&lt;a href=&quot;#线程封闭&quot; class=&quot;headerlink&quot; title=&quot;线程封闭&quot;&gt;&lt;/a&gt;线程封闭&lt;/h1&gt;&lt;p&gt;当访问共享变量时，往往需要加锁来保证数据同步。&lt;strong&gt;一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了，这种技术称为线程封闭。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;线程封闭技术有一个常见的应用，JDBC的Connection对象。Connection对象在实现的时候并没有对线程安全做太多的处理，JDBC的规范里也没有要求Connection对象必须是线程安全的。实际在服务器应用程序中，线程从连接池获取了一个Connection对象，使用完再把Connection对象返回给连接池，由于大多数请求都是由单线程采用同步的方式来处理的，并且在Connection对象返回之前，连接池不会将它分配给其他线程。因此这种连接管理模式处理请求时隐含的将Connection对象封闭在线程里面，这样我们使用的Connection对象虽然本身不是线程安全的，但是它通过线程封闭也做到了线程安全。&lt;/p&gt;
+&lt;p&gt;实现线程封闭，一般有三种方法：Ad-hoc 线程封闭、堆栈封闭、&lt;strong&gt;ThreadLocal线程封闭&lt;/strong&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="读书笔记" scheme="http://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="java" scheme="http://www.onebug.tech/tags/java/"/>
+    
+      <category term="并发" scheme="http://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="笔记" scheme="http://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="java并发编程之美" scheme="http://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    
+  </entry>
   
   <entry>
     <title>java多线程编程基础</title>
@@ -565,34 +596,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;线程不安全类&quot;&gt;&lt;a href=&quot;#线程不安全类&quot; class=&quot;headerlink&quot; title=&quot;线程不安全类&quot;&gt;&lt;/a&gt;线程不安全类&lt;/h1&gt;&lt;p&gt;如果一个类的对象同时可以被多个线程访问，并且你不做特殊的同步或并发处理，那么它就很容易表现出线程不安全的现象。比如抛出异常、逻辑处理错误等。下面列举一下常见的线程不安全的类及对应的线程安全类：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="java高并发" scheme="http://www.onebug.tech/categories/java%E9%AB%98%E5%B9%B6%E5%8F%91/"/>
-    
-    
-      <category term="java" scheme="http://www.onebug.tech/tags/java/"/>
-    
-      <category term="并发" scheme="http://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
-    
-      <category term="笔记" scheme="http://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>线程封闭</title>
-    <link href="http://www.onebug.tech/2021/04/15/java/java%E5%B9%B6%E5%8F%91/ch5%E7%BA%BF%E7%A8%8B%E5%B0%81%E9%97%AD/"/>
-    <id>http://www.onebug.tech/2021/04/15/java/java%E5%B9%B6%E5%8F%91/ch5%E7%BA%BF%E7%A8%8B%E5%B0%81%E9%97%AD/</id>
-    <published>2021-04-14T16:00:00.000Z</published>
-    <updated>2021-05-08T10:00:24.975Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="线程封闭"><a href="#线程封闭" class="headerlink" title="线程封闭"></a>线程封闭</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>当访问共享变量时，往往需要加锁来保证数据同步。<strong>一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了，这种技术称为线程封闭。</strong></p><p>线程封闭技术有一个常见的应用，JDBC的Connection对象。Connection对象在实现的时候并没有对线程安全做太多的处理，JDBC的规范里也没有要求Connection对象必须是线程安全的。实际在服务器应用程序中，线程从连接池获取了一个Connection对象，使用完再把Connection对象返回给连接池，由于大多数请求都是由单线程采用同步的方式来处理的，并且在Connection对象返回之前，连接池不会将它分配给其他线程。因此这种连接管理模式处理请求时隐含的将Connection对象封闭在线程里面，这样我们使用的<strong>Connection对象虽然本身不是线程安全的，但是它通过线程封闭也做到了线程安全。</strong></p><a id="more"></a><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="Ad-hoc-线程封闭"><a href="#Ad-hoc-线程封闭" class="headerlink" title="Ad-hoc 线程封闭"></a>Ad-hoc 线程封闭</h3><p><code>Ad-hoc</code>线程封闭是指，维护线程封闭性的职责完全由程序实现来承担。Ad-hoc线程封闭是非常脆弱的，因为没有任何一种语言特性，例如可见性修饰符或局部变量，能将对象封闭到目标线程上。事实上，对线程封闭对象（例如，GUI应用程序中的可视化组件或数据模型等）的引用通常保存在公有变量中。</p><h3 id="堆栈封闭"><a href="#堆栈封闭" class="headerlink" title="堆栈封闭"></a>堆栈封闭</h3><p>堆栈封闭其实就是方法中定义局部变量。不存在并发问题。多个线程访问一个方法的时候，<strong>方法中的局部变量都会被拷贝一份到线程的栈中</strong>（Java内存模型），所以局部变量是不会被多个线程所共享的。</p><h3 id="ThreadLocal线程封闭"><a href="#ThreadLocal线程封闭" class="headerlink" title="ThreadLocal线程封闭"></a>ThreadLocal线程封闭</h3><p>它是一个特别好的封闭方法，其实<code>ThreadLocal</code>内部维护了一个<code>map</code>，<strong>map的key是每个线程的名称，而map的value就是我们要封闭的对象</strong>。<code>ThreadLocal</code>提供了<code>get</code>、<code>set</code>、<code>remove</code>方法，每个操作都是基于当前线程的，所以它是线程安全的。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ThreadLocal的get方法源码</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();<span class="comment">//当前线程对象</span></span><br><span class="line">    ThreadLocalMap map = getMap(t);<span class="comment">//get操作基于当前线程</span></span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>ThreadLocal</code>的使用场景：</p><ul><li>实现单个线程单例以及单个线程上下文信息存储，比如交易id等</li><li>实现线程安全，非线程安全的对象使用<code>ThreadLocal</code>之后就会变得线程安全，因为每个线程都会有一个对应的实例</li><li>承载一些线程相关的数据，避免在方法中来回传递参数</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;线程封闭&quot;&gt;&lt;a href=&quot;#线程封闭&quot; class=&quot;headerlink&quot; title=&quot;线程封闭&quot;&gt;&lt;/a&gt;线程封闭&lt;/h1&gt;&lt;h2 id=&quot;概念&quot;&gt;&lt;a href=&quot;#概念&quot; class=&quot;headerlink&quot; title=&quot;概念&quot;&gt;&lt;/a&gt;概念&lt;/h2&gt;&lt;p&gt;当访问共享变量时，往往需要加锁来保证数据同步。&lt;strong&gt;一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了，这种技术称为线程封闭。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;线程封闭技术有一个常见的应用，JDBC的Connection对象。Connection对象在实现的时候并没有对线程安全做太多的处理，JDBC的规范里也没有要求Connection对象必须是线程安全的。实际在服务器应用程序中，线程从连接池获取了一个Connection对象，使用完再把Connection对象返回给连接池，由于大多数请求都是由单线程采用同步的方式来处理的，并且在Connection对象返回之前，连接池不会将它分配给其他线程。因此这种连接管理模式处理请求时隐含的将Connection对象封闭在线程里面，这样我们使用的&lt;strong&gt;Connection对象虽然本身不是线程安全的，但是它通过线程封闭也做到了线程安全。&lt;/strong&gt;&lt;/p&gt;
     
     </summary>
     
