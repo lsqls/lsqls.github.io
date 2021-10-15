@@ -22,22 +22,25 @@
     var CONFIG = {"hostname":"www.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="死锁通俗的说，死锁就是两个或者多个线程，相互占用对方需要的资源，而都不进行释放，导致彼此之间都相互等待对方释放资源，产生了无限制等待的现象。死锁一旦发生，如果没有外力介入，这种等待将永远存在，从而对程序产生严重影响。用来描述死锁的问题最有名的场景就是“哲学家就餐问题”。">
+  <meta name="description" content="synchronizedsynchronized块是Java 提供的一种原子性内置锁， Java 中的每个对象都可以把它当作一个同步锁来使用， 这些Java 内置的使用者看不到的锁被称为内部锁，也叫作监视器锁。synchronized 关键字底层原理属于 JVM 层面。线程的执行代码在进入synchronized 代码块前会自动获取内部锁，这时候其他线程访问该同步代码块时会被阻塞挂起。拿到内部锁的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="死锁">
-<meta property="og:url" content="http://www.onebug.tech/2021/04/21/java/java%E5%B9%B6%E5%8F%91/ch12%E6%AD%BB%E9%94%81/index.html">
+<meta property="og:title" content="java多线程编程基础（二）">
+<meta property="og:url" content="http://www.onebug.tech/2021/10/15/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
 <meta property="og:site_name" content="冰冻橘子的自留地">
-<meta property="og:description" content="死锁通俗的说，死锁就是两个或者多个线程，相互占用对方需要的资源，而都不进行释放，导致彼此之间都相互等待对方释放资源，产生了无限制等待的现象。死锁一旦发生，如果没有外力介入，这种等待将永远存在，从而对程序产生严重影响。用来描述死锁的问题最有名的场景就是“哲学家就餐问题”。">
+<meta property="og:description" content="synchronizedsynchronized块是Java 提供的一种原子性内置锁， Java 中的每个对象都可以把它当作一个同步锁来使用， 这些Java 内置的使用者看不到的锁被称为内部锁，也叫作监视器锁。synchronized 关键字底层原理属于 JVM 层面。线程的执行代码在进入synchronized 代码块前会自动获取内部锁，这时候其他线程访问该同步代码块时会被阻塞挂起。拿到内部锁的">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-04-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-05-08T10:01:11.213Z">
+<meta property="og:image" content="http://image.onebug.tech/image-20211015202422807.png">
+<meta property="article:published_time" content="2021-10-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-15T12:53:40.097Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="并发">
 <meta property="article:tag" content="笔记">
+<meta property="article:tag" content="java并发编程之美">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://image.onebug.tech/image-20211015202422807.png">
 
-<link rel="canonical" href="http://www.onebug.tech/2021/04/21/java/java%E5%B9%B6%E5%8F%91/ch12%E6%AD%BB%E9%94%81/">
+<link rel="canonical" href="http://www.onebug.tech/2021/10/15/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
 
 <script id="page-configurations">
@@ -50,7 +53,7 @@
   };
 </script>
 
-  <title>死锁 | 冰冻橘子的自留地</title>
+  <title>java多线程编程基础（二） | 冰冻橘子的自留地</title>
   
 
 
@@ -208,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.onebug.tech/2021/04/21/java/java%E5%B9%B6%E5%8F%91/ch12%E6%AD%BB%E9%94%81/">
+    <link itemprop="mainEntityOfPage" href="http://www.onebug.tech/2021/10/15/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
@@ -221,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          死锁
+          java多线程编程基础（二）
         </h1>
 
         <div class="post-meta">
@@ -230,23 +233,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-04-21 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-21T00:00:00+08:00">2021-04-21</time>
+              <time title="创建时间：2021-10-15 00:00:00 / 修改时间：20:53:40" itemprop="dateCreated datePublished" datetime="2021-10-15T00:00:00+08:00">2021-10-15</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-08 18:01:11" itemprop="dateModified" datetime="2021-05-08T18:01:11+08:00">2021-05-08</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E9%AB%98%E5%B9%B6%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">java高并发</span></a>
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
                 </span>
             </span>
 
@@ -261,67 +258,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><p>通俗的说，死锁就是两个或者多个线程，相互占用对方需要的资源，而都不进行释放，导致彼此之间都相互等待对方释放资源，产生了无限制等待的现象。死锁一旦发生，如果没有外力介入，这种等待将永远存在，从而对程序产生严重影响。用来描述死锁的问题最有名的场景就是“哲学家就餐问题”。</p>
+        <h1 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h1><p><code>synchronized块</code>是Java 提供的一种原子性内置锁， <code>Java</code> 中的每个对象都可以把它当作一个同步锁来使用， 这些Java 内置的使用者看不到的锁被称为内部锁，也叫作监视器锁。<code>synchronized</code> 关键字底层原理属于 JVM 层面。线程的执行代码在进入<code>synchronized</code> 代码块前会自动获取内部锁，这时候其他线程访问该同步代码块时会被阻塞挂起。拿到内部锁的线程会在正常退出同步代码块或者抛出异常后或者在同步块内调用了该内置锁资源的<code>wait</code> 系列方法时释放该内置锁。内置锁是排它锁，也就是当一个线程获取这个锁后， 其他线程必须等待该线程释放锁后才能获取该锁。</p>
 <a id="more"></a>
 
-<h3 id="死锁产生的必要条件"><a href="#死锁产生的必要条件" class="headerlink" title="死锁产生的必要条件"></a>死锁产生的必要条件</h3><ul>
-<li>互斥条件：进程对锁分配的资源进行排他性使用</li>
-<li>请求和保持条件：线程已经保持了一个资源，但是又提出了其他请求，而该资源已被其他线程占用</li>
-<li>不剥夺条件：在使用时不能被剥夺，只能自己用完释放</li>
-<li>环路等待条件：资源调用是一个环形的链</li>
+<p>由于Java 中的线程是与操作系统的原生线程一一对应的，所以当阻塞一个线程时，需要从用户态切换到内核态执行阻塞操作，这是很耗时的操作，而<code>synchronized</code>的使用就会导致上下文切换。</p>
+<blockquote>
+<p>庆幸的是，JDK1.6 对锁的实现引入了大量的优化，如自旋锁、适应性自旋锁、锁消除、锁粗化、偏向锁、轻量级锁等技术来减少锁操作的开销，所以现在的 <code>synchronized</code> 锁效率也很不错了。</p>
+</blockquote>
+<p><code>synchronized</code> 同时具有内存语义，这个内存语义可以解决共享变量内存可见性问题。进入<code>synchronized</code> 块的内存语义是把在<code>synchronized</code> 块内使用到的变量从线程的工作内存中清除，这样在<code>synchronized</code> 块内使用到该变量时就不会从线程的工作内存中获取，而是<strong>直接从主内存中获取</strong>。退出<code>synchronized</code> 块的内存语义是把在<code>synchronized</code> 块内对共享变量的修改刷新到主内存。</p>
+<h1 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h1><p>使用锁的方式可以解决共享变量内存可见性问题，但是使用锁太笨重，因为它会带来线程上下文的切换开销。对于解决内存可见性问题， Java 还提供了一种弱形式的同步，也就是使用<code>volatile</code> 关键字。该关键字可以确保对一个变量的更新对其他线程马上可见。当一个变量被声明为<code>volatile</code> 时，线程在<strong>写入变量</strong>时不会把值缓存在寄存器或者其他地方，而是会把值<strong>刷新回主内存</strong>。当其他线程<strong>读取该共享变量</strong>时，会<strong>从主内存重新获取</strong>最新值，而不是使用当前线程的工作内存中的值。<code>volatile</code> 的内存语义和<code>synchronized</code> 的内存语义有相似之处，具体来说就是，当线程写入了<code>volatile</code> 变量值时就等价于线程退出<code>synchronized</code> 同步块（把写入工作内存的变量值同步到主内存），读取<code>volatile</code> 变量值时就相当于进入同步块（ 先清空本地内存变量值，再从主内存获取最新值）。</p>
+<p><code>volatile</code> 只能保证共享变量的可见性，不能解决<code>读—改一写</code>等的原子性问题。下例中，<code>cnt</code>变量已经使用<code>volatile</code> 修饰，最终结果却不正确。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Unsafe</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerCount</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keyword">int</span> cnt=<span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line"><span class="comment">//线程不安全</span></span><br><span class="line">        Thread[] threads=<span class="keyword">new</span> Thread[<span class="number">10</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;threads.length;i++)&#123;</span><br><span class="line">            threads[i]=<span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">10000</span>;j++)&#123;</span><br><span class="line">                    cnt++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            threads[i].start();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Thread thread : threads) &#123;</span><br><span class="line">            thread.join();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"cnt:"</span>+cnt);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://image.onebug.tech/image-20211015202422807.png" alt=""></p>
+<p>一般来说，volatile适合状态验证，不适合累加值，在修饰状态标记量时，要保证对：</p>
+<ul>
+<li>变量的写操作不依赖于当前值</li>
+<li>该变量没有包含在具有其他变量的式子中</li>
 </ul>
-<h2 id="死锁示例"><a href="#死锁示例" class="headerlink" title="死锁示例"></a>死锁示例</h2><pre><code>@Slf4j
-public class DeadLock implements Runnable {
-    public int flag = 1;
-    //静态对象是类的所有对象共享的
-    private static Object o1 = new Object(), o2 = new Object();
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//volatile经典用法</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="keyword">boolean</span> asleep</span><br><span class="line">...</span><br><span class="line">	<span class="keyword">while</span>(!asleep)&#123;</span><br><span class="line">		<span class="comment">//do some work</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 
-    @Override
-    public void run() {
-        log.info(&quot;flag:{}&quot;, flag);
-        if (flag == 1) {
-            synchronized (o1) {
-                try {
-                    Thread.sleep(500);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                synchronized (o2) {
-                    log.info(&quot;1&quot;);
-                }
-            }
-        }
-        if (flag == 0) {
-            synchronized (o2) {
-                try {
-                    Thread.sleep(500);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                synchronized (o1) {
-                    log.info(&quot;0&quot;);
-                }
-            }
-        }
-    }
 
-    public static void main(String[] args) {
-        DeadLock td1 = new DeadLock();
-        DeadLock td2 = new DeadLock();
-        td1.flag = 1;
-        td2.flag = 0;
-        //td1,td2都处于可执行状态，但JVM线程调度先执行哪个线程是不确定的。
-        //td2的run()可能在td1的run()之前运行
-        new Thread(td1).start();
-        new Thread(td2).start();
-    }
-}</code></pre><p><strong>jps jstack 定位死锁</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;jps</span><br><span class="line">&gt;jstack pid</span><br></pre></td></tr></table></figure>
 
-<h2 id="避免死锁"><a href="#避免死锁" class="headerlink" title="避免死锁"></a>避免死锁</h2><ul>
-<li>注意加锁顺序</li>
-<li>设置加锁时限（超过时限放弃加锁）</li>
-<li>死锁检测</li>
+<h1 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h1><p>在Java 中， 锁在并发处理中占据了一席之地，但是使用锁有一个不好的地方，就是当一个线程没有获取到锁时会被阻塞挂起， 这会导致线程上下文的切换和重新调度开销。Java 提供了非阻塞的<code>volatile</code> 关键字来解决共享变量的可见性问题， 这在一定程度上弥补了锁带来的开销问题，但是volatile 只能保证共享变量的可见性，不能解决<code>读—改一写</code>等的原子性问题。CAS 即Compare and Swap ，其是JDK 提供的非阻塞原子性操作， 它通过硬件保证了比较更新操作的原子性。JDK 里面的Unsafe 类提供了一系列的<code>compareAndSwap*</code>方法，例如:</p>
+<ul>
+<li><code>boolean compareAndSwapLong(Object obj ,long valueOffset,long expect, long update）</code>方<br>法： 其中<code>compareAndSwap</code> 的意思是比较并交换。CAS 有四个操作数， 分别为： 对象内存位置、对象中的变量的偏移量、变量预期值和新的值。其操作含义是， 如果对象<code>obj</code> 中内存偏移量为<code>valueOffset</code> 的变量值为<code>expect</code> ，则使用新的值<code>update</code> 替换旧的值<code>expect</code> 。这是处理器提供的一个原子性指令。</li>
+</ul>
+<h1 id="Unsafe"><a href="#Unsafe" class="headerlink" title="Unsafe"></a>Unsafe</h1><p>JDK 的<code>rt.jar</code>包中的<code>Unsafe</code> 类提供了硬件级别的原子性操作， <code>Unsafe</code> 类中的方法都是<code>native</code> 方法，它们使用JNI的方式访问本地C++实现，除了上文提到的<code>compareAndSwap*</code>方法，其中还有几个重要的方法：</p>
+<ul>
+<li><code>long objectFieldOffset(Field field）</code> 方法： 返回指定的变量在所属类中的内存偏移地址，该偏移地址仅仅在该Unsafe 函数中访问指定宇段时使用。</li>
+<li><code>void park(boolean isAbsolute, long time）</code> 方法： 阻塞当前线程</li>
+<li><code>void unpark(Object thread）</code> 方法：唤醒调用<code>park</code>后阻塞的线程。</li>
 </ul>
 
     </div>
@@ -336,6 +303,7 @@ public class DeadLock implements Runnable {
               <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
               <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
               <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/" rel="tag"><i class="fa fa-tag"></i> java并发编程之美</a>
           </div>
 
         
@@ -344,13 +312,10 @@ public class DeadLock implements Runnable {
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/04/20/java/java%E5%B9%B6%E5%8F%91/ch11%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="prev" title="线程池">
-      <i class="fa fa-chevron-left"></i> 线程池
+    <a href="/2021/10/10/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal/" rel="prev" title="ThreadLocal详解">
+      <i class="fa fa-chevron-left"></i> ThreadLocal详解
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/05/06/java/javaIO/Java%20IO%E6%B5%81/" rel="next" title="JAVA IO流详解">
-      JAVA IO流详解 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -409,7 +374,7 @@ public class DeadLock implements Runnable {
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#死锁"><span class="nav-number">1.</span> <span class="nav-text">死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁产生的必要条件"><span class="nav-number">1.0.1.</span> <span class="nav-text">死锁产生的必要条件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁示例"><span class="nav-number">1.1.</span> <span class="nav-text">死锁示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#避免死锁"><span class="nav-number">1.2.</span> <span class="nav-text">避免死锁</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized"><span class="nav-number">1.</span> <span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile"><span class="nav-number">2.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAS"><span class="nav-number">3.</span> <span class="nav-text">CAS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unsafe"><span class="nav-number">4.</span> <span class="nav-text">Unsafe</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

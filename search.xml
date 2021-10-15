@@ -3235,8 +3235,91 @@ public class DeadLock implements Runnable {
       </tags>
   </entry>
   <entry>
-    <title>java多线程编程基础</title>
-    <url>/2021/10/08/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/</url>
+    <title>ThreadLocal详解</title>
+    <url>/2021/10/10/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal/</url>
+    <content><![CDATA[<h1 id="线程封闭"><a href="#线程封闭" class="headerlink" title="线程封闭"></a>线程封闭</h1><p>当访问共享变量时，往往需要加锁来保证数据同步。<strong>一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了，这种技术称为线程封闭。</strong></p>
+<p>线程封闭技术有一个常见的应用，JDBC的Connection对象。Connection对象在实现的时候并没有对线程安全做太多的处理，JDBC的规范里也没有要求Connection对象必须是线程安全的。实际在服务器应用程序中，线程从连接池获取了一个Connection对象，使用完再把Connection对象返回给连接池，由于大多数请求都是由单线程采用同步的方式来处理的，并且在Connection对象返回之前，连接池不会将它分配给其他线程。因此这种连接管理模式处理请求时隐含的将Connection对象封闭在线程里面，这样我们使用的Connection对象虽然本身不是线程安全的，但是它通过线程封闭也做到了线程安全。</p>
+<p>实现线程封闭，一般有三种方法：Ad-hoc 线程封闭、堆栈封闭、<strong>ThreadLocal线程封闭</strong>。</p>
+<a id="more"></a>
+
+<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p>ThreadLocal 是JDK 包提供的，它提供了线程本地变量，也就是如果你创建了一个ThreadLocal 变量，那么访问这个变量的每个线程都会有这个变量的一个本地副本。当多个线程操作这个变量时，实际操作的是自己本地内存里面的变量，从而避免了线程安全问题。创建一个ThreadLocal 变量后，每个线程都会复制一个变量到自己的本地内存中。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//   一个简单ThreadLocal示例</span></span><br><span class="line">    <span class="keyword">static</span> ThreadLocal&lt;String&gt; localVal=<span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        localVal.set(<span class="string">"main THREAD"</span>);</span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            System.out.println(localVal.get());</span><br><span class="line">            localVal.set(<span class="string">"THREAD 1"</span>);</span><br><span class="line">            System.out.println(localVal.get());</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            localVal.set(<span class="string">"THREAD 2"</span>);</span><br><span class="line">            System.out.println(localVal.get());</span><br><span class="line">        &#125;).start();</span><br><span class="line">        </span><br><span class="line">        localVal.remove();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://image.onebug.tech/image-20211010191615958.png" alt="image-20211010191615958"></p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p><img src="http://image.onebug.tech/image-20211010191911770.png" alt="image-20211010191911770"></p>
+<p><code>Thread</code> 类中有一个<code>threadLocals</code> 和一个<code>inheritableThreadLocals</code> ， 它们都是<code>ThreadLocalMap</code> 类型的变量， 而<code>ThreadLocalMap</code> 是一个定制化的<code>Hashmap</code> 。其实每个线程的本地变量不是存放在<code>ThreadLocal</code> 实例里面，而是存放在调用线程的<code>threadLocals</code> 变量里面。也就是说， <code>ThreadLocal</code> 类型的本地变量存放在具体的线程内存空间中。而<code>ThreadLocal</code> 就是一个工具壳类，它通过<code>set</code> 方法把<code>value</code> 值放入调用线程的<code>threadLocals</code> 里面并存放起来，当调用线程调用它的get 方法时，再从当前线程的<code>threadLocals</code> 变量里面将其拿出来使用。</p>
+<p><code>ThreadLocal</code>工具类的<code>set</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//获取当前线程</span></span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    <span class="comment">//获取线程对应的ThreadLocalMap</span></span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">    <span class="comment">// 将this作为key,写入ThreadLocalMap </span></span><br><span class="line">    map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ThreadLocal</code>工具类的<code>get</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">    ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li><p>内存泄露与预防：每个线程的本地变量存放在线程自己的内存变量<code>threadLocals</code> 中，如果当前线程一直不消亡， 那么这些本地变量会一直存在， 所以可能会造成内存溢出， 因此使用完毕后要记得调用<code>ThreadLocal</code> 的<code>remove</code> 方法删除对应线程的<code>threadLocals</code> 中的本地变量。</p>
+</li>
+<li><p><code>InheritableThreadLocal</code>：<code>InheritableThreadLocal</code>继承自<code>ThreadLocal</code> ， 其提供了一个特性，就是让子线程可以访问在父线程中设置的本地变量。它的实现原理是当父线程创建子线程时，构造函数会把父线程中<code>inheritableThreadLocals</code> 变量里面的本地变量复制一份保存到子线程的<code>inheritableThreadLocals</code> 变量里面。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>并发</tag>
+        <tag>笔记</tag>
+        <tag>java并发编程之美</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java多线程编程基础（二）</title>
+    <url>/2021/10/15/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h1><p><code>synchronized块</code>是Java 提供的一种原子性内置锁， <code>Java</code> 中的每个对象都可以把它当作一个同步锁来使用， 这些Java 内置的使用者看不到的锁被称为内部锁，也叫作监视器锁。<code>synchronized</code> 关键字底层原理属于 JVM 层面。线程的执行代码在进入<code>synchronized</code> 代码块前会自动获取内部锁，这时候其他线程访问该同步代码块时会被阻塞挂起。拿到内部锁的线程会在正常退出同步代码块或者抛出异常后或者在同步块内调用了该内置锁资源的<code>wait</code> 系列方法时释放该内置锁。内置锁是排它锁，也就是当一个线程获取这个锁后， 其他线程必须等待该线程释放锁后才能获取该锁。</p>
+<a id="more"></a>
+
+<p>由于Java 中的线程是与操作系统的原生线程一一对应的，所以当阻塞一个线程时，需要从用户态切换到内核态执行阻塞操作，这是很耗时的操作，而<code>synchronized</code>的使用就会导致上下文切换。</p>
+<blockquote>
+<p>庆幸的是，JDK1.6 对锁的实现引入了大量的优化，如自旋锁、适应性自旋锁、锁消除、锁粗化、偏向锁、轻量级锁等技术来减少锁操作的开销，所以现在的 <code>synchronized</code> 锁效率也很不错了。</p>
+</blockquote>
+<p><code>synchronized</code> 同时具有内存语义，这个内存语义可以解决共享变量内存可见性问题。进入<code>synchronized</code> 块的内存语义是把在<code>synchronized</code> 块内使用到的变量从线程的工作内存中清除，这样在<code>synchronized</code> 块内使用到该变量时就不会从线程的工作内存中获取，而是<strong>直接从主内存中获取</strong>。退出<code>synchronized</code> 块的内存语义是把在<code>synchronized</code> 块内对共享变量的修改刷新到主内存。</p>
+<h1 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h1><p>使用锁的方式可以解决共享变量内存可见性问题，但是使用锁太笨重，因为它会带来线程上下文的切换开销。对于解决内存可见性问题， Java 还提供了一种弱形式的同步，也就是使用<code>volatile</code> 关键字。该关键字可以确保对一个变量的更新对其他线程马上可见。当一个变量被声明为<code>volatile</code> 时，线程在<strong>写入变量</strong>时不会把值缓存在寄存器或者其他地方，而是会把值<strong>刷新回主内存</strong>。当其他线程<strong>读取该共享变量</strong>时，会<strong>从主内存重新获取</strong>最新值，而不是使用当前线程的工作内存中的值。<code>volatile</code> 的内存语义和<code>synchronized</code> 的内存语义有相似之处，具体来说就是，当线程写入了<code>volatile</code> 变量值时就等价于线程退出<code>synchronized</code> 同步块（把写入工作内存的变量值同步到主内存），读取<code>volatile</code> 变量值时就相当于进入同步块（ 先清空本地内存变量值，再从主内存获取最新值）。</p>
+<p><code>volatile</code> 只能保证共享变量的可见性，不能解决<code>读—改一写</code>等的原子性问题。下例中，<code>cnt</code>变量已经使用<code>volatile</code> 修饰，最终结果却不正确。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Unsafe</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerCount</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keyword">int</span> cnt=<span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line"><span class="comment">//线程不安全</span></span><br><span class="line">        Thread[] threads=<span class="keyword">new</span> Thread[<span class="number">10</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;threads.length;i++)&#123;</span><br><span class="line">            threads[i]=<span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">10000</span>;j++)&#123;</span><br><span class="line">                    cnt++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            threads[i].start();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Thread thread : threads) &#123;</span><br><span class="line">            thread.join();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"cnt:"</span>+cnt);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://image.onebug.tech/image-20211015202422807.png" alt=""></p>
+<p>一般来说，volatile适合状态验证，不适合累加值，在修饰状态标记量时，要保证对：</p>
+<ul>
+<li>变量的写操作不依赖于当前值</li>
+<li>该变量没有包含在具有其他变量的式子中</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//volatile经典用法</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="keyword">boolean</span> asleep</span><br><span class="line">...</span><br><span class="line">	<span class="keyword">while</span>(!asleep)&#123;</span><br><span class="line">		<span class="comment">//do some work</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h1><p>在Java 中， 锁在并发处理中占据了一席之地，但是使用锁有一个不好的地方，就是当一个线程没有获取到锁时会被阻塞挂起， 这会导致线程上下文的切换和重新调度开销。Java 提供了非阻塞的<code>volatile</code> 关键字来解决共享变量的可见性问题， 这在一定程度上弥补了锁带来的开销问题，但是volatile 只能保证共享变量的可见性，不能解决<code>读—改一写</code>等的原子性问题。CAS 即Compare and Swap ，其是JDK 提供的非阻塞原子性操作， 它通过硬件保证了比较更新操作的原子性。JDK 里面的Unsafe 类提供了一系列的<code>compareAndSwap*</code>方法，例如:</p>
+<ul>
+<li><code>boolean compareAndSwapLong(Object obj ,long valueOffset,long expect, long update）</code>方<br>法： 其中<code>compareAndSwap</code> 的意思是比较并交换。CAS 有四个操作数， 分别为： 对象内存位置、对象中的变量的偏移量、变量预期值和新的值。其操作含义是， 如果对象<code>obj</code> 中内存偏移量为<code>valueOffset</code> 的变量值为<code>expect</code> ，则使用新的值<code>update</code> 替换旧的值<code>expect</code> 。这是处理器提供的一个原子性指令。</li>
+</ul>
+<h1 id="Unsafe"><a href="#Unsafe" class="headerlink" title="Unsafe"></a>Unsafe</h1><p>JDK 的<code>rt.jar</code>包中的<code>Unsafe</code> 类提供了硬件级别的原子性操作， <code>Unsafe</code> 类中的方法都是<code>native</code> 方法，它们使用JNI的方式访问本地C++实现，除了上文提到的<code>compareAndSwap*</code>方法，其中还有几个重要的方法：</p>
+<ul>
+<li><code>long objectFieldOffset(Field field）</code> 方法： 返回指定的变量在所属类中的内存偏移地址，该偏移地址仅仅在该Unsafe 函数中访问指定宇段时使用。</li>
+<li><code>void park(boolean isAbsolute, long time）</code> 方法： 阻塞当前线程</li>
+<li><code>void unpark(Object thread）</code> 方法：唤醒调用<code>park</code>后阻塞的线程。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>并发</tag>
+        <tag>笔记</tag>
+        <tag>java并发编程之美</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java多线程编程基础（一）</title>
+    <url>/2021/10/08/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89/</url>
     <content><![CDATA[<h1 id="什么是线程"><a href="#什么是线程" class="headerlink" title="什么是线程"></a>什么是线程</h1><p>在讨论什么是线程前有必要先说下什么是进程，因为线程是进程中的一个实体，线程本身是不会独立存在的。进程是代码在数据集合上的一次运行活动， 是系统进行资源分配和调度的基本单位， 线程则是进程的一个执行路径， 一个进程中至少有一个线程，进程中的多个线程共享进程的资源。操作系统在分配资源时是把资源分配给进程的， 但是CPU 资源比较特殊， 它是被分配到线程的， 因为真正要占用C PU 运行的是线程， 所以也说线程是CPU 分配的基本单位。</p>
 <a id="more"></a>
 
@@ -3296,43 +3379,6 @@ public class DeadLock implements Runnable {
 <p>如图所示，<code>threadA</code>和<code>threadB</code>形成了线程死锁。</p>
 <p><img src="http://image.onebug.tech/image-20211008213421323.png" alt="image-20211008213421323"></p>
 <p>关于如何避免线程死锁，操作系统中有详细介绍，这里不赘述。</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>并发</tag>
-        <tag>笔记</tag>
-        <tag>java并发编程之美</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ThreadLocal详解</title>
-    <url>/2021/10/10/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal/</url>
-    <content><![CDATA[<h1 id="线程封闭"><a href="#线程封闭" class="headerlink" title="线程封闭"></a>线程封闭</h1><p>当访问共享变量时，往往需要加锁来保证数据同步。<strong>一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了，这种技术称为线程封闭。</strong></p>
-<p>线程封闭技术有一个常见的应用，JDBC的Connection对象。Connection对象在实现的时候并没有对线程安全做太多的处理，JDBC的规范里也没有要求Connection对象必须是线程安全的。实际在服务器应用程序中，线程从连接池获取了一个Connection对象，使用完再把Connection对象返回给连接池，由于大多数请求都是由单线程采用同步的方式来处理的，并且在Connection对象返回之前，连接池不会将它分配给其他线程。因此这种连接管理模式处理请求时隐含的将Connection对象封闭在线程里面，这样我们使用的Connection对象虽然本身不是线程安全的，但是它通过线程封闭也做到了线程安全。</p>
-<p>实现线程封闭，一般有三种方法：Ad-hoc 线程封闭、堆栈封闭、<strong>ThreadLocal线程封闭</strong>。</p>
-<a id="more"></a>
-
-<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p>ThreadLocal 是JDK 包提供的，它提供了线程本地变量，也就是如果你创建了一个ThreadLocal 变量，那么访问这个变量的每个线程都会有这个变量的一个本地副本。当多个线程操作这个变量时，实际操作的是自己本地内存里面的变量，从而避免了线程安全问题。创建一个ThreadLocal 变量后，每个线程都会复制一个变量到自己的本地内存中。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//   一个简单ThreadLocal示例</span></span><br><span class="line">    <span class="keyword">static</span> ThreadLocal&lt;String&gt; localVal=<span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        localVal.set(<span class="string">"main THREAD"</span>);</span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            System.out.println(localVal.get());</span><br><span class="line">            localVal.set(<span class="string">"THREAD 1"</span>);</span><br><span class="line">            System.out.println(localVal.get());</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            localVal.set(<span class="string">"THREAD 2"</span>);</span><br><span class="line">            System.out.println(localVal.get());</span><br><span class="line">        &#125;).start();</span><br><span class="line">        </span><br><span class="line">        localVal.remove();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://image.onebug.tech/image-20211010191615958.png" alt="image-20211010191615958"></p>
-<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p><img src="http://image.onebug.tech/image-20211010191911770.png" alt="image-20211010191911770"></p>
-<p><code>Thread</code> 类中有一个<code>threadLocals</code> 和一个<code>inheritableThreadLocals</code> ， 它们都是<code>ThreadLocalMap</code> 类型的变量， 而<code>ThreadLocalMap</code> 是一个定制化的<code>Hashmap</code> 。其实每个线程的本地变量不是存放在<code>ThreadLocal</code> 实例里面，而是存放在调用线程的<code>threadLocals</code> 变量里面。也就是说， <code>ThreadLocal</code> 类型的本地变量存放在具体的线程内存空间中。而<code>ThreadLocal</code> 就是一个工具壳类，它通过<code>set</code> 方法把<code>value</code> 值放入调用线程的<code>threadLocals</code> 里面并存放起来，当调用线程调用它的get 方法时，再从当前线程的<code>threadLocals</code> 变量里面将其拿出来使用。</p>
-<p><code>ThreadLocal</code>工具类的<code>set</code>方法：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//获取当前线程</span></span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    <span class="comment">//获取线程对应的ThreadLocalMap</span></span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">    <span class="comment">// 将this作为key,写入ThreadLocalMap </span></span><br><span class="line">    map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>ThreadLocal</code>工具类的<code>get</code>方法：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">    ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li><p>内存泄露与预防：每个线程的本地变量存放在线程自己的内存变量<code>threadLocals</code> 中，如果当前线程一直不消亡， 那么这些本地变量会一直存在， 所以可能会造成内存溢出， 因此使用完毕后要记得调用<code>ThreadLocal</code> 的<code>remove</code> 方法删除对应线程的<code>threadLocals</code> 中的本地变量。</p>
-</li>
-<li><p><code>InheritableThreadLocal</code>：<code>InheritableThreadLocal</code>继承自<code>ThreadLocal</code> ， 其提供了一个特性，就是让子线程可以访问在父线程中设置的本地变量。它的实现原理是当父线程创建子线程时，构造函数会把父线程中<code>inheritableThreadLocals</code> 变量里面的本地变量复制一份保存到子线程的<code>inheritableThreadLocals</code> 变量里面。</p>
-</li>
-</ul>
 ]]></content>
       <categories>
         <category>读书笔记</category>
