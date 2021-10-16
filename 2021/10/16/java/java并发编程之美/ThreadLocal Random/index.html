@@ -22,17 +22,25 @@
     var CONFIG = {"hostname":"www.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="渺沧海之一粟">
-<meta property="og:type" content="website">
-<meta property="og:title" content="冰冻橘子的自留地">
-<meta property="og:url" content="http://www.onebug.tech/categories/netty/index.html">
+  <meta name="description" content="Random类的局限性每个Random 实例里面都有一个原子性的种子变量用来记录当前的种子值，当要生成新的随机数时需要根据当前种子计算新的种子并更新回原子变量。在多线程下使用单个Random 实例生成随机数时，当多个线程同时计算随机数来计算新的种子时，多个线程会竞争同一个原子变量的更新操作，由于原子变量的更新是CAS 操作，同时只有一个线程会成功，所以会造成大量线程进行自旋重试， 这会降低并发性能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高并发下随机数的获取">
+<meta property="og:url" content="http://www.onebug.tech/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/index.html">
 <meta property="og:site_name" content="冰冻橘子的自留地">
-<meta property="og:description" content="渺沧海之一粟">
+<meta property="og:description" content="Random类的局限性每个Random 实例里面都有一个原子性的种子变量用来记录当前的种子值，当要生成新的随机数时需要根据当前种子计算新的种子并更新回原子变量。在多线程下使用单个Random 实例生成随机数时，当多个线程同时计算随机数来计算新的种子时，多个线程会竞争同一个原子变量的更新操作，由于原子变量的更新是CAS 操作，同时只有一个线程会成功，所以会造成大量线程进行自旋重试， 这会降低并发性能">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://image.onebug.tech/image-20211016224505557.png">
+<meta property="article:published_time" content="2021-10-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-16T14:49:21.291Z">
 <meta property="article:author" content="冰冻橘子">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="并发">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="java并发编程之美">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://image.onebug.tech/image-20211016224505557.png">
 
-<link rel="canonical" href="http://www.onebug.tech/categories/netty/">
+<link rel="canonical" href="http://www.onebug.tech/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/">
 
 
 <script id="page-configurations">
@@ -40,12 +48,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>分类: netty | 冰冻橘子的自留地</title>
+  <title>高并发下随机数的获取 | 冰冻橘子的自留地</title>
   
 
 
@@ -196,131 +204,104 @@
         <div class="content-wrap">
           
 
-          <div class="content category">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">netty
-          <small>分类</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.onebug.tech/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          高并发下随机数的获取
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-16 00:00:00 / 修改时间：22:49:21" itemprop="dateCreated datePublished" datetime="2021-10-16T00:00:00+08:00">2021-10-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
-    </div>
+        <h1 id="Random类的局限性"><a href="#Random类的局限性" class="headerlink" title="Random类的局限性"></a>Random类的局限性</h1><p>每个Random 实例里面都有一个原子性的种子变量用来记录当前的种子值，当要生成新的随机数时需要根据当前种子计算新的种子并更新回原子变量。在多线程下使用单个Random 实例生成随机数时，当多个线程同时计算随机数来计算新的种子时，多个线程会竞争同一个原子变量的更新操作，由于原子变量的更新是CAS 操作，同时只有一个线程会成功，所以会造成大量线程进行自旋重试， 这会降低并发性能，所以<code>ThreadLocalRandom</code> 应运而生。</p>
+<a id="more"></a>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Random类的核心方法，CAS操作会导致高竞用情况下的性能下降</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">next</span><span class="params">(<span class="keyword">int</span> bits)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">long</span> oldseed, nextseed;</span><br><span class="line">       AtomicLong seed = <span class="keyword">this</span>.seed;</span><br><span class="line">       <span class="keyword">do</span> &#123;</span><br><span class="line">           oldseed = seed.get();</span><br><span class="line">           nextseed = (oldseed * multiplier + addend) &amp; mask;</span><br><span class="line">       &#125; <span class="keyword">while</span> (!seed.compareAndSet(oldseed, nextseed));</span><br><span class="line">       <span class="keyword">return</span> (<span class="keyword">int</span>)(nextseed &gt;&gt;&gt; (<span class="number">48</span> - bits));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-09-30T00:00:00+08:00"
-              content="2021-09-30">
-          09-30
-        </time>
-      </div>
+<h1 id="ThreadlocalRandom"><a href="#ThreadlocalRandom" class="headerlink" title="ThreadlocalRandom"></a>ThreadlocalRandom</h1><p>为了弥补多线程高并发情况下Random 的缺陷， <code>ThreadLocalRandom</code>类应运而生。<code>ThreadLocalRandom</code> 使用<code>ThreadLocal</code>的原理，让每个线程都持有一个本地的种子变量，该种子变量只有在使用随机数时才会被初始化。在多线程下计算新种子时是根据自己线程内维护的种子变量进行更新，从而避免了竞争。<br><code>ThreadLocalRandom</code> 类似于<code>ThreadLocal</code> 类，就是个工具类。当线程调用<code>ThreadLocalRandom</code> 的<code>current</code>方法时， <code>ThreadLocalRandom</code> 负责初始化调用线程的<code>threadLocalRandomSeed</code> 变量， 也就是初始化种子。<br>当调用<code>ThreadLocalRandom</code> 的<code>nextlnt</code> 方法时，实际上是获取当前线程的<code>threadLocalRandomSeed</code> 变量作为当前种子来计算新的种子，然后更新新的种子到当前线程的<code>threadLocalRandomSeed</code> 变量，而后再根据新种子并使用具体算法计算随机数。</p>
+<blockquote>
+<p><code>threadLocalRandomSeed</code> 变量是Thread 类里面的一个普通long 变量</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">//ThreadLocalRandom类的核心代码</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">long</span> <span class="title">nextSeed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       Thread t; <span class="keyword">long</span> r; <span class="comment">// read and update per-thread seed</span></span><br><span class="line">       UNSAFE.putLong(t = Thread.currentThread(), SEED,</span><br><span class="line">                      r = UNSAFE.getLong(t, SEED) + GAMMA);</span><br><span class="line">       <span class="keyword">return</span> r;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/" itemprop="url">
-            <span itemprop="name">Netty的优化</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-09-30T00:00:00+08:00"
-              content="2021-09-30">
-          09-30
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/09/30/java/netty/%E5%BF%83%E8%B7%B3%E4%B8%8E%E7%A9%BA%E9%97%B2%E6%A3%80%E6%B5%8B/" itemprop="url">
-            <span itemprop="name">心跳与空闲检测</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-09-06T00:00:00+08:00"
-              content="2021-09-06">
-          09-06
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/09/06/java/netty/%E6%8B%86%E5%8C%85%E4%B8%8E%E7%B2%98%E5%8C%85/" itemprop="url">
-            <span itemprop="name">TCP的拆包和粘包</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-09-05T00:00:00+08:00"
-              content="2021-09-05">
-          09-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/09/05/java/netty/pipeline%E5%92%8CchannelHandler/" itemprop="url">
-            <span itemprop="name">Netty的责任链</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-09-04T00:00:00+08:00"
-              content="2021-09-04">
-          09-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/09/04/java/netty/ByteBuf/" itemprop="url">
-            <span itemprop="name">Netty的字节容器---ByteBuf</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+<p><img src="http://image.onebug.tech/image-20211016224505557.png" alt="image-20211016224505557"></p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/" rel="tag"><i class="fa fa-tag"></i> java并发编程之美</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/15/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="java多线程编程基础（二）">
+      <i class="fa fa-chevron-left"></i> java多线程编程基础（二）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -373,6 +354,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Random类的局限性"><span class="nav-number">1.</span> <span class="nav-text">Random类的局限性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadlocalRandom"><span class="nav-number">2.</span> <span class="nav-text">ThreadlocalRandom</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

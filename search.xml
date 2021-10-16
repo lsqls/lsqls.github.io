@@ -3306,6 +3306,24 @@ public class DeadLock implements Runnable {
 <li><code>void park(boolean isAbsolute, long time）</code> 方法： 阻塞当前线程</li>
 <li><code>void unpark(Object thread）</code> 方法：唤醒调用<code>park</code>后阻塞的线程。</li>
 </ul>
+<h1 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h1><h2 id="乐观锁和悲观锁"><a href="#乐观锁和悲观锁" class="headerlink" title="乐观锁和悲观锁"></a>乐观锁和悲观锁</h2><ul>
+<li><p>悲观锁指对数据被外界修改持保守态度，认为数据很容易就会被其他线程修改，所以在数据被处理前先对数据进行加锁，并在整个数据处理过程中，使数据处于锁定状态。悲观锁的实现往往依靠数据库提供的锁机制，即在数据库中，在对数据记录操作前给记录加排它锁。如果获取锁失败， 则说明数据正在被其他线程修改， 当前线程则等待或者抛出异常。如果获取锁成功，则对记录进行操作，然后提交事务后释放排它锁。</p>
+</li>
+<li><p>乐观锁是相对悲观锁来说的，它认为数据在一般情况下不会造成冲突，所以在访问记录前不会加排它锁，而是在进行数据提交更新时，才会正式对数据冲突与否进行检测。</p>
+</li>
+</ul>
+<h2 id="公平锁和非公平锁"><a href="#公平锁和非公平锁" class="headerlink" title="公平锁和非公平锁"></a>公平锁和非公平锁</h2><p>根据线程获取锁的抢占机制，锁可以分为公平锁和非公平锁：</p>
+<ul>
+<li>公平锁表示线程获取锁的顺序是按照线程请求锁的时间早晚来决定的，也就是最早请求锁的线程将最早获取到锁。</li>
+<li>非公平锁可以在运行时闯入，也就是先来不一定先得。</li>
+</ul>
+<h2 id="独占锁和共享锁"><a href="#独占锁和共享锁" class="headerlink" title="独占锁和共享锁"></a>独占锁和共享锁</h2><p>根据锁只能被单个线程持有还是能被多个线程共同持有，锁可以分为独占锁和共享锁：</p>
+<ul>
+<li>独占锁保证任何时候都只有一个线程能得到锁， <code>ReentrantLock</code> 就是以独占方式实现的。独占锁是一种悲观锁，由于每次访问资源都先加上互斥锁，这限制了并发性，因为读操作并不会影响数据的一致性，而独占锁只允许在同一时间由一个线程读取数据，其他线程必须等待当前线程释放锁才能进行读取。</li>
+<li>共享锁则可以同时由多个线程持有，例如<code>ReadWriteLock</code> 读写锁，它允许一个资源可以被多线程同时进行读操作。共享锁则是一种乐观锁，它放宽了加锁的条件，允许多个线程同时进行读操作</li>
+</ul>
+<h2 id="可重入锁"><a href="#可重入锁" class="headerlink" title="可重入锁"></a>可重入锁</h2><p>当一个线程要获取一个被其他线程持有的独占锁时，该线程会被阻塞，那么当一个线程再次获取它自己己经获取的锁时，如果不被阻塞，那么我们说该锁是可重入的，也就是只要该线程获取了该锁，那么可以无限次数（严格来说是有限次数）地进入被该锁锁住的代码。</p>
+<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><p>由于Java 中的线程是与操作系统中的线程一一对应的，所以当一个线程在获取锁（比如独占锁）失败后，会被切换到内核状态而被挂起。当该线程获取到锁时又需要将其切换到内核状态而唤醒该线程。而从用户状态切换到内核状态的开销是比较大的，在一定程度上会影响并发性能。自旋锁则是，当前线程在获取锁时，如果发现锁已经被其他线程占有，它不马上阻塞自己，在不放弃CPU 使用权的情况下，多次尝试获取，很有可能在后面几次尝试中其他线程己经释放了锁。如果尝试指定的次数后仍没有获取到锁则当前线程才会被阻塞挂起。由此看来自旋锁是使用CPU 时间换取线程阻塞与调度的开销，但是很有可能这些CPU 时间白白浪费了。</p>
 ]]></content>
       <categories>
         <category>读书笔记</category>
@@ -3379,6 +3397,32 @@ public class DeadLock implements Runnable {
 <p>如图所示，<code>threadA</code>和<code>threadB</code>形成了线程死锁。</p>
 <p><img src="http://image.onebug.tech/image-20211008213421323.png" alt="image-20211008213421323"></p>
 <p>关于如何避免线程死锁，操作系统中有详细介绍，这里不赘述。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>并发</tag>
+        <tag>笔记</tag>
+        <tag>java并发编程之美</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>高并发下随机数的获取</title>
+    <url>/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/</url>
+    <content><![CDATA[<h1 id="Random类的局限性"><a href="#Random类的局限性" class="headerlink" title="Random类的局限性"></a>Random类的局限性</h1><p>每个Random 实例里面都有一个原子性的种子变量用来记录当前的种子值，当要生成新的随机数时需要根据当前种子计算新的种子并更新回原子变量。在多线程下使用单个Random 实例生成随机数时，当多个线程同时计算随机数来计算新的种子时，多个线程会竞争同一个原子变量的更新操作，由于原子变量的更新是CAS 操作，同时只有一个线程会成功，所以会造成大量线程进行自旋重试， 这会降低并发性能，所以<code>ThreadLocalRandom</code> 应运而生。</p>
+<a id="more"></a>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Random类的核心方法，CAS操作会导致高竞用情况下的性能下降</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">next</span><span class="params">(<span class="keyword">int</span> bits)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">long</span> oldseed, nextseed;</span><br><span class="line">       AtomicLong seed = <span class="keyword">this</span>.seed;</span><br><span class="line">       <span class="keyword">do</span> &#123;</span><br><span class="line">           oldseed = seed.get();</span><br><span class="line">           nextseed = (oldseed * multiplier + addend) &amp; mask;</span><br><span class="line">       &#125; <span class="keyword">while</span> (!seed.compareAndSet(oldseed, nextseed));</span><br><span class="line">       <span class="keyword">return</span> (<span class="keyword">int</span>)(nextseed &gt;&gt;&gt; (<span class="number">48</span> - bits));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="ThreadlocalRandom"><a href="#ThreadlocalRandom" class="headerlink" title="ThreadlocalRandom"></a>ThreadlocalRandom</h1><p>为了弥补多线程高并发情况下Random 的缺陷， <code>ThreadLocalRandom</code>类应运而生。<code>ThreadLocalRandom</code> 使用<code>ThreadLocal</code>的原理，让每个线程都持有一个本地的种子变量，该种子变量只有在使用随机数时才会被初始化。在多线程下计算新种子时是根据自己线程内维护的种子变量进行更新，从而避免了竞争。<br><code>ThreadLocalRandom</code> 类似于<code>ThreadLocal</code> 类，就是个工具类。当线程调用<code>ThreadLocalRandom</code> 的<code>current</code>方法时， <code>ThreadLocalRandom</code> 负责初始化调用线程的<code>threadLocalRandomSeed</code> 变量， 也就是初始化种子。<br>当调用<code>ThreadLocalRandom</code> 的<code>nextlnt</code> 方法时，实际上是获取当前线程的<code>threadLocalRandomSeed</code> 变量作为当前种子来计算新的种子，然后更新新的种子到当前线程的<code>threadLocalRandomSeed</code> 变量，而后再根据新种子并使用具体算法计算随机数。</p>
+<blockquote>
+<p><code>threadLocalRandomSeed</code> 变量是Thread 类里面的一个普通long 变量</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">   <span class="comment">//ThreadLocalRandom类的核心代码</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">long</span> <span class="title">nextSeed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       Thread t; <span class="keyword">long</span> r; <span class="comment">// read and update per-thread seed</span></span><br><span class="line">       UNSAFE.putLong(t = Thread.currentThread(), SEED,</span><br><span class="line">                      r = UNSAFE.getLong(t, SEED) + GAMMA);</span><br><span class="line">       <span class="keyword">return</span> r;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://image.onebug.tech/image-20211016224505557.png" alt="image-20211016224505557"></p>
 ]]></content>
       <categories>
         <category>读书笔记</category>
