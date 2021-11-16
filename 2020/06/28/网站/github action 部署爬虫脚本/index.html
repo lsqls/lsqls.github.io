@@ -19,13 +19,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="很久之前写了一个爬虫脚本，每10分钟获取一次比特币价格，当价格波动较大时，使用邮件通知我进行交易。之前的脚本部署在学校的群晖上，由于会时不时地停电，爬虫脚本运行状态很不稳定，这段时间接触了github action ，感觉正好满足我的需求，于是将爬虫迁移到到GitHub Action上，并弃用原来Python实现的邮件发送功能，改为利用Github Action实现邮件通知。 项目地址：https">
 <meta property="og:type" content="article">
 <meta property="og:title" content="github action 部署爬虫脚本">
-<meta property="og:url" content="http://www.onebug.tech/2020/06/28/%E7%BD%91%E7%AB%99/github%20action%20%E9%83%A8%E7%BD%B2%E7%88%AC%E8%99%AB%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:url" content="http://blog.onebug.tech/2020/06/28/%E7%BD%91%E7%AB%99/github%20action%20%E9%83%A8%E7%BD%B2%E7%88%AC%E8%99%AB%E8%84%9A%E6%9C%AC/index.html">
 <meta property="og:site_name" content="冰冻橘子的自留地">
 <meta property="og:description" content="很久之前写了一个爬虫脚本，每10分钟获取一次比特币价格，当价格波动较大时，使用邮件通知我进行交易。之前的脚本部署在学校的群晖上，由于会时不时地停电，爬虫脚本运行状态很不稳定，这段时间接触了github action ，感觉正好满足我的需求，于是将爬虫迁移到到GitHub Action上，并弃用原来Python实现的邮件发送功能，改为利用Github Action实现邮件通知。 项目地址：https">
 <meta property="og:locale" content="zh_CN">
@@ -39,7 +39,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://image.onebug.tech/image-20200628210633551.png-d">
 
-<link rel="canonical" href="http://www.onebug.tech/2020/06/28/%E7%BD%91%E7%AB%99/github%20action%20%E9%83%A8%E7%BD%B2%E7%88%AC%E8%99%AB%E8%84%9A%E6%9C%AC/">
+<link rel="canonical" href="http://blog.onebug.tech/2020/06/28/%E7%BD%91%E7%AB%99/github%20action%20%E9%83%A8%E7%BD%B2%E7%88%AC%E8%99%AB%E8%84%9A%E6%9C%AC/">
 
 
 <script id="page-configurations">
@@ -210,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.onebug.tech/2020/06/28/%E7%BD%91%E7%AB%99/github%20action%20%E9%83%A8%E7%BD%B2%E7%88%AC%E8%99%AB%E8%84%9A%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2020/06/28/%E7%BD%91%E7%AB%99/github%20action%20%E9%83%A8%E7%BD%B2%E7%88%AC%E8%99%AB%E8%84%9A%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
