@@ -191,6 +191,7 @@
 <li>更改配置目录的权限：<code>chown -R git:git /var/www/hexoblog/public/</code></li>
 <li>注意，<code>/var/www/hexoblog/public</code> 要换成你自己的部署目录</li>
 </ul>
+<p>可以尝试手动执行脚本，验证是否正常工作。</p>
 </li>
 </ul>
 <h4 id="nginx服务器"><a href="#nginx服务器" class="headerlink" title="nginx服务器"></a>nginx服务器</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/nginx/conf.d/</span><br><span class="line">vi blog.conf</span><br></pre></td></tr></table></figure>
