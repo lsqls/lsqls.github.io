@@ -183,7 +183,7 @@
 <li><p><a href="https://www.liaoxuefeng.com/wiki/896043488029600/899998870925664" target="_blank" rel="noopener">搭建git服务器</a></p>
 </li>
 <li><p>配置钩子</p>
-<p>在 <code>/home/git/lsqls/public.git/hook</code>  目录下新建一个 <code>post-receive</code> 文件，编辑这个文件，写入如下内容：</p>
+<p>在 <code>/home/git/lsqls/public.git/hooks</code>  目录下新建一个 <code>post-receive</code> 可执行文件，编辑这个文件，写入如下内容：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">git --work-tree=/var/www/hexoblog/public --git-dir=/home/git/lsqls/public.git checkout -f</span><br></pre></td></tr></table></figure>
 
 <ul>
