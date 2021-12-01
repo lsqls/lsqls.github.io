@@ -202,6 +202,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">Netty的优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-09-30 00:00:00 / 修改时间：10:23:47" itemprop="dateCreated datePublished" datetime="2021-09-30T00:00:00+08:00">2021-09-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/netty/" itemprop="url" rel="index"><span itemprop="name">netty</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="共享Handler"><a href="#共享Handler" class="headerlink" title="共享Handler"></a>共享Handler</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">serverBootstrap</span><br><span class="line">                .childHandler(<span class="keyword">new</span> ChannelInitializer&lt;NioSocketChannel&gt;() &#123;</span><br><span class="line">                    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(NioSocketChannel ch)</span> </span>&#123;</span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> Spliter());<span class="comment">//帧解码器</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> PacketDecoder());<span class="comment">//数据包解码器</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> HandlerA());<span class="comment">//业务Handler</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> HandlerB());<span class="comment">//业务Handler</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> HandlerC());<span class="comment">//业务Handler</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> PacketEncoder());<span class="comment">//数据包编码器</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>每次有新连接到来的时候，都会调用 <code>ChannelInitializer</code> 的 <code>initChannel()</code> 方法，然后这里相关的 <code>handler</code> 都会被 <code>new</code> 一次。许多 <code>handler</code>，他们内部都是没有成员变量的，也就是说是无状态的，我们完全可以使用单例模式，即调用 <code>pipeline().addLast()</code> 方法的时候，都直接使用单例，不需要每次都 <code>new</code>，提高效率，也避免了创建很多小的对象。</p>
+<p>单例改造：对于无状态<code>Handler</code>，使用单例模式，多个channel共享一个实例</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2021/09/30/java/netty/%E5%BF%83%E8%B7%B3%E4%B8%8E%E7%A9%BA%E9%97%B2%E6%A3%80%E6%B5%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -928,88 +1006,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2021/05/06/java/javaIO/Java%20IO%E6%B5%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
-      <meta itemprop="name" content="冰冻橘子">
-      <meta itemprop="description" content="渺沧海之一粟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="冰冻橘子的自留地">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/06/java/javaIO/Java%20IO%E6%B5%81/" class="post-title-link" itemprop="url">JAVA IO流详解</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-06 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-06T00:00:00+08:00">2021-05-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-08 17:58:19" itemprop="dateModified" datetime="2021-05-08T17:58:19+08:00">2021-05-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javaio/" itemprop="url" rel="index"><span itemprop="name">javaio</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="JAVA-IO流"><a href="#JAVA-IO流" class="headerlink" title="JAVA IO流"></a>JAVA IO流</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h3><p>数据的传输，可以看做是一种数据的流动，按照流动的方向，<strong>以内存为基准</strong>，分为输入Input 和输出Output ，即流向内存是输入流，流出内存的输出流，统称为 IO流。 Java中I/O操作主要是指使用java.io包下的内容，进行输入、输出操作。输入也叫做读取数据，输出也叫做作写出数据。</p>
-<h3 id="流"><a href="#流" class="headerlink" title="流"></a>流</h3><p>流代表任何有能力产出数据的数据源对象或者是有能力接受数据的接收端对象；流的本质是数据传输，我们根据数据传输特性将流抽象为各种类，方便更直观的进行数据操作。流的具体作用是数据源和目的地建立一个输送通道。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/06/java/javaIO/Java%20IO%E6%B5%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1081,7 +1077,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
