@@ -201,6 +201,29 @@
 
 <p>编辑<code>nginx.conf</code>，开启gzip</p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line">gzip on;</span><br><span class="line"></span><br><span class="line">#设置允许压缩的页面最小字节数;</span><br><span class="line">gzip_min_length 1k;</span><br><span class="line"></span><br><span class="line">#设置压缩缓冲区大小，此处设置为4个16K内存作为压缩结果流缓存</span><br><span class="line">gzip_buffers 4 16k;</span><br><span class="line"></span><br><span class="line">#压缩版本</span><br><span class="line">gzip_http_version 1.1;</span><br><span class="line"></span><br><span class="line">#设置压缩比率，最小为1，处理速度快，传输速度慢；9为最大压缩比，处理速度慢，传输速度快;级别越高，压缩就越小</span><br><span class="line">gzip_comp_level 6;</span><br><span class="line"></span><br><span class="line">#制定压缩的类型</span><br><span class="line">gzip_types text/plain application/x-javascript text/css application/xml text/javascript application/javascript application/json image/svg+xml application/x-font-ttf font/opentype image/x-icon;</span><br><span class="line"></span><br><span class="line">#配置禁用gzip条件，支持正则。此处表示ie6及以下不启用gzip（因为ie低版本不支持）</span><br><span class="line">gzip_disable "MSIE [1-6]\.";</span><br><span class="line"></span><br><span class="line">#选择支持vary header；改选项可以让前端的缓存服务器缓存经过gzip压缩的页面; 这个可以不写</span><br><span class="line">gzip_vary on;</span><br></pre></td></tr></table></figure>
+<h4 id="七牛云"><a href="#七牛云" class="headerlink" title="七牛云"></a>七牛云</h4><ul>
+<li><p>下载qshell：<a href="https://developer.qiniu.com/kodo/1302/qshell#2" target="_blank" rel="noopener">命令行工具(qshell)_实用工具_对象存储 - 七牛开发者中心 (qiniu.com)</a></p>
+</li>
+<li><p>添加账户：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">qshell account [&lt;AccessKey&gt; &lt;SecretKey&gt; &lt;Name 任意字符串&gt;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加储存空间<code>lbshexoblog</code>，并做一些配置：</p>
+<p><img src="http://image.onebug.tech/202203071106734.png" alt="image-20220307110635645"></p>
+</li>
+<li><p>在<code>hexo</code>目录配置文件 <code>qiniu.conf</code>：</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "src_dir": "D:\\hexoblog\\public",</span><br><span class="line">   //储存空间名称</span><br><span class="line">  "bucket": "lbshexoblog",</span><br><span class="line">  //是否覆盖  </span><br><span class="line">  "overwrite" : true,</span><br><span class="line">  //检查新增文件</span><br><span class="line">  "rescan_local" : true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加CDN刷新文件列表<code>cdnrefresh.txt</code>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http:&#x2F;&#x2F;www.onebug.tech</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>上传命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">qshell qupload qiniuyun.conf</span><br><span class="line">qshell cdnrefresh -i cdnrefresh.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一键部署，修改<code>package.json</code>，今后只需要 <code>npm run publish</code> 就可实现一键打包部署到七牛云</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;scripts&quot;:&#123;</span><br><span class="line">    &quot;publish&quot;: &quot;hexo g &amp;&amp; qshell qupload qiniuyun.conf &amp;&amp; qshell cdnrefresh -i cdnrefresh.txt&quot;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 <h2 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h2><p>图床能够很大程度降低响应延迟，本站使用的是七牛云作为图床。可以参考该<a href="https://www.imczw.com/post/tech/hexo-on-oss-all.html" target="_blank" rel="noopener">文章</a>搭建。</p>
 ]]></content>
       <categories>
@@ -3779,6 +3802,780 @@ public class DeadLock implements Runnable {
         <tag>并发</tag>
         <tag>笔记</tag>
         <tag>java并发编程之美</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ROS2备忘录</title>
+    <url>/2022/02/13/ROS/ROS2/</url>
+    <content><![CDATA[<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>ubuntu 20.04</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt install ros-rolling-desktop</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a href="http://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html#" target="_blank" rel="noopener">http://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html#</a></p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h1><ul>
+<li>“workspace”是一个ROS术语，表示在系统上使用ROS2进行开发的位置。</li>
+<li>核心ROS工作区被称为”underlay“，本地ROS工作区称为 ”overlays“</li>
+</ul>
+<p>环境设置脚本自启动</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;source &#x2F;opt&#x2F;ros&#x2F;rolling&#x2F;setup.bash&quot; &gt;&gt; ~&#x2F;.bashrc</span><br><span class="line">printenv | grep -i ROS</span><br></pre></td></tr></table></figure>
+
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p>ROS图（ROS graph）是一个由ROS 2元素组成的网络，在同一时间一起处理数据。图中包括所有的可执行文件和它们之间的联系。</p>
+<p>ROS中的每个节点（ROS Node）应该只负责单一模块化的用途（例如，一个节点负责控制车轮马达，一个节点负责控制激光测距仪等等）。每个节点可以通过主题（topics）、服务（services）、行动（actions）或参数（parameters）向其他节点发送和接收数据。</p>
+<p><img src="http://image.onebug.tech/202203062319650.gif" alt="../_images/Nodes-TopicandService.gif"></p>
+<p>一个完整的机器人系统由许多协同工作的节点组成。在ROS2中，单个可执行文件（C++程序、Python程序等）可以包含一个或多个节点。</p>
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><p><code>ros2 run &lt;package_name&gt; &lt;executable_name&gt;</code>：从包启动可执行文件。</p>
+</li>
+<li><p><code>ros2 node list</code>：显示所有运行节点的名称，当您想要与一个节点交互时，或者当您的系统运行许多节点并且需要跟踪它们时，这尤其有用。</p>
+</li>
+<li><p>使用<code>Remapping</code>可以指定节点属性（如节点名称、主题名称、服务名称等）</p>
+<p>例：<code>ros2 run turtlesim turtlesim_node --ros-args --remap __node:=my_turtle</code></p>
+</li>
+<li><p><code>ros2 node info &lt;node_name&gt;</code>  ：知道了节点的名称，可以通过该命令访问有关节点的更多信息</p>
+</li>
+</ul>
+<h2 id="Topics"><a href="#Topics" class="headerlink" title="Topics"></a>Topics</h2><p>ROS2将复杂系统分解为许多模块化节点。主题（Topics）是ROS图的一个重要元素，充当节点交换消息的总线。</p>
+<p><img src="http://image.onebug.tech/202203062319555.gif" alt="../../_images/Topic-SinglePublisherandSingleSubscriber.gif"></p>
+<p>节点可以将数据发布到任意数量的主题，同时可以订阅任意数量的主题。主题是在节点之间以及系统不同部分之间移动数据的主要方式之一。也就是说，主题可以不只是点对点的交流，它可以是一对多、多对一或多对多。</p>
+<p><img src="http://image.onebug.tech/202203062319254.gif" alt="../../_images/Topic-MultiplePublisherandMultipleSubscriber.gif"></p>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p>我们可以使用<code>rqt_graph</code>来可视化不断变化的节点和主题，以及它们之间的连接。</p>
+<p><img src="http://image.onebug.tech/202203062319960.png" alt="../../_images/rqt_graph.png"></p>
+<p>上图描述了<code>/turtlesim</code>节点和<code>/teleop_turtle</code>节点如何通过主题相互通信。<code>/teleop_turtle</code>节点将数据发布到<code>/turtle1/cmd_vel</code>主题中（输入用于移动海龟的按键），并且<code>/turtlesim</code>节点订阅该主题以接收数据。</p>
+<h3 id="命令-1"><a href="#命令-1" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><p><code>ros2 topic list</code>：返回系统中当前活动的所有主题的列表</p>
+</li>
+<li><p><code>ros2 topic list -t</code>：将返回相同的主题列表，返回结果括号中的是主题类型。</p>
+</li>
+<li><p><code>ros2 topic echo &lt;topic_name&gt;</code>：查看主题上正在发布的数据</p>
+</li>
+<li><p><code>ros2 topic info &lt;topic_name&gt;</code>：返回主题信息（有多少个订阅者，有多少个发布者）</p>
+</li>
+<li><p><code>ros2 interface show &lt;type&gt;</code>：节点使用消息通过主题发送数据。发布者和订阅者必须发送和接收相同类型的消息才能进行通信。如果主题<code>/turtle1/cmd_vel</code>的类型是<code>geometry_msgs/msg/Twist</code>，这意味着在<code>geometry_msgs</code>包中有一个名为<code>Twist</code>的消息。<code>ros2 interface show &lt;msg type&gt;</code>可以查看该类型的细节，假设得到的类型细节为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Vector3  linear</span><br><span class="line">        float64 x</span><br><span class="line">        float64 y</span><br><span class="line">        float64 z</span><br><span class="line">Vector3  angular</span><br><span class="line">        float64 x</span><br><span class="line">        float64 y</span><br><span class="line">        float64 z</span><br></pre></td></tr></table></figure>
+
+<p>这说明<code>/turtlesim</code>节点需要一条消息，该消息包含两个向量，即<code>linear</code>向量和<code>angular</code>向量，每个向量包含三个元素。</p>
+</li>
+<li><p><code>ros2 topic pub &lt;topic_name&gt; &lt;msg_type&gt; &#39;&lt;args&gt;&#39;</code>：使用该命令直接将数据发布到主题，前提是数据的具体结构。需要注意的是，<code>args</code>需要符合YAML语法规范，例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ros2 topic pub --once  &#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;msg&#x2F;Twist &quot;&#123;linear: &#123;x: 2.0, y: 0.0, z: 0.0&#125;, angular: &#123;x: 0.0, y: 0.0, z: 1.8&#125;&#125;&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>ros2 topic hz</code>：查看数据发布的速率</p>
+</li>
+</ul>
+<h2 id="Services"><a href="#Services" class="headerlink" title="Services"></a>Services</h2><p>服务（services）是ROS图中节点的另一种通信方法。服务基于呼叫和响应（call-and-response）模型，而不是发布者-订阅者（publisher-subscriber）模型。虽然主题允许节点订阅数据流并获得持续更新，但服务仅在客户端专门调用时提供数据。</p>
+<p><img src="http://image.onebug.tech/202203062319118.gif" alt="../../_images/Service-SingleServiceClient.gif"></p>
+<p><img src="http://image.onebug.tech/202203062319686.gif" alt="../../_images/Service-MultipleServiceClient.gif"></p>
+<h3 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><code>ros2 service list</code>：返回系统中当前活动的所有服务的列表</li>
+<li><code>ros2 service type &lt;service_name&gt;</code>：服务类型的定义与主题类型类似，只是服务类型有两部分：一部分用于请求，另一部分用于响应。假如一个服务的类型是<code>std_srvs/srv/Empty</code>，这表示服务调用在发出请求时不发送数据，在接收响应时不接收数据。</li>
+<li><code>ros2 service find &lt;service_type&gt;</code>：查找特定类型的所有服务</li>
+<li><code>ros2 interface show &lt;service_type_name&gt;</code> ：返回类型的具体结构，返回结果的<code>---</code>将请求结构（上面）与响应结构（下面）分开。</li>
+<li><code>ros2 service call &lt;service_name&gt; &lt;service_type&gt; &lt;arguments&gt;</code>：调用服务</li>
+</ul>
+<h2 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters"></a>Parameters</h2><p>参数（parameters）是节点的配置值。节点可以将参数存储为整数、浮点、布尔、字符串和列表。在ROS2中，每个节点维护自己的参数。所有参数都可动态重新配置，并基于ROS 2服务构建。</p>
+<h3 id="命令-3"><a href="#命令-3" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><p><code>ros2 param list</code>：查看参数列表</p>
+</li>
+<li><p><code>ros2 param get &lt;node_name&gt; &lt;parameter_name&gt;</code>：查看参数类型和当前值</p>
+</li>
+<li><p><code>ros2 param set &lt;node_name&gt; &lt;parameter_name&gt; &lt;value&gt;</code>：设置参数值</p>
+</li>
+<li><p><code>ros2 param dump &gt; dumpfile</code>：查看节点的所有当前参数值</p>
+</li>
+<li><p><code>ros2 param load &lt;node_name&gt; &lt;parameter_file&gt;</code>：将参数从文件加载到当前运行的节点</p>
+<blockquote>
+<p>只读参数只能在启动前修改，启动后修改有可能会出现问题（比如一些QOS参数）</p>
+</blockquote>
+</li>
+<li><p><code>ros2 run &lt;package_name&gt; &lt;executable_name&gt; --ros-args --params-file &lt;file_name&gt;</code>：在启动时加载参数</p>
+</li>
+</ul>
+<h2 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h2><p>Actions是ROS 2中的通信类型之一，用于长时间运行的任务。它们由三部分组成：目标（goal）、反馈（feedback）和结果（result）</p>
+<p><img src="http://image.onebug.tech/202203062319195.gif" alt="../_images/Action-SingleActionClient.gif"></p>
+<p>行动建立在主题和服务之上，功能与服务类似，只是可以取消操作。它们还提供稳定的反馈，而不是像服务一样只返回单一响应。</p>
+<p>Actions使用client-server模型，类似于pubsub模型（在主题教程中介绍）。“action client”节点向“action server”节点发送目标，后者确认目标并返回反馈流和结果。</p>
+<h3 id="命令-4"><a href="#命令-4" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><p><code>ros2 action list -t</code></p>
+</li>
+<li><p><code>ros2 action info</code></p>
+</li>
+<li><p><code>ros2 interface show</code>：返回结果被<code>---</code>分为三个部分，分别是目标请求的结构、结果的结构、反馈的结构。</p>
+</li>
+<li><p><code>ros2 action send_goal &lt;action_name&gt; &lt;action_type&gt; &lt;values&gt; --feedback</code> ：发生Action中的目标</p>
+</li>
+</ul>
+<h1 id="工作区"><a href="#工作区" class="headerlink" title="工作区"></a>工作区</h1><p>工作区（workspace）是包含ROS2包的目录。</p>
+<ul>
+<li><p>source ROS2环境：<code>source /opt/ros/rolling/setup.bash</code></p>
+</li>
+<li><p>创建目录：最好是为每个新的工作区创建新目录，并将所有的包都放置在<code>src</code>文件夹</p>
+<blockquote>
+<p>在<code>src</code>文件夹执行：<code>git clone https://github.com/ros/ros_tutorials.git -b rolling-devel</code></p>
+</blockquote>
+</li>
+<li><p>在构建工作区之前，您需要解析包依赖关系：<code>rosdep install -i --from-path src --rosdistro rolling -y</code>，</p>
+<blockquote>
+<p>找不到<code>rosdep</code>命令 的解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;apt install python3-rosdep2</span><br></pre></td></tr></table></figure>
+<p><code>rosdep update</code> 失败的解决方法：</p>
+<ol>
+<li>使用rosdepc：<a href="https://www.guyuehome.com/35408" target="_blank" rel="noopener">本文之后，世上再无rosdep更新失败问题！如果有….小鱼就… - 古月居 (guyuehome.com)</a></li>
+<li>使用github proxy：<a href="https://zhuanlan.zhihu.com/p/392082731" target="_blank" rel="noopener">ROS安装过程中如何解决 rosdep update 命令出现错误 - 知乎 (zhihu.com)</a></li>
+</ol>
+</blockquote>
+</li>
+<li><p>使用<code>colcon</code>构建工作空间：<code>colcon build</code>。<code>build</code>完成后会生成三个文件夹，<code>build</code>、<code>install</code>、<code>log</code>，其中<code>install</code>目录是您的工作区的安装文件所在的位置，您可以使用它来source overlay。</p>
+<blockquote>
+<ul>
+<li><p>找不到<code>colcon</code>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt install -y \</span><br><span class="line">build-essential \</span><br><span class="line">cmake \</span><br><span class="line">git \</span><br><span class="line">python3-colcon-common-extensions \</span><br><span class="line">python3-flake8 \</span><br><span class="line">python3-pip \</span><br><span class="line">python3-pytest-cov \</span><br><span class="line">python3-rosdep \</span><br><span class="line">python3-setuptools \</span><br><span class="line">python3-vcstool \</span><br><span class="line">wget</span><br><span class="line"><span class="comment"># install some pip packages needed for testing</span></span><br><span class="line">python3 -m pip install -U \</span><br><span class="line">flake8-blind-except \</span><br><span class="line">flake8-builtins \</span><br><span class="line">flake8-class-newline \</span><br><span class="line">flake8-comprehensions \</span><br><span class="line">flake8-deprecated \</span><br><span class="line">flake8-docstrings \</span><br><span class="line">flake8-import-order \</span><br><span class="line">flake8-quotes \</span><br><span class="line">pytest-repeat \</span><br><span class="line">pytest-rerunfailures \</span><br><span class="line">pytest</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>build 失败的解决办法：</p>
+<p>python版本的问题，将<code>/usr/bin</code>中的python3.5执行文件改成其他文件名，只留下python3.8执行文件</p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li><p>source overlay（本地工作区）：<code>. install/local_setup.bash</code></p>
+<blockquote>
+<p>在source本地工作区之前，需要打开一个新的终端，与构建工作区的终端分开，这一点非常重要，不然有可能会产生复杂的问题</p>
+</blockquote>
+</li>
+<li><p>修改本地工作区的代码：</p>
+<ol>
+<li>将<code>~/dev_ws/src/ros_tutorials/turtlesim/src/turtle_frame.cpp</code>中52行的<code>setWindowTitle(&quot;TurtleSim&quot;);</code>修改为<code>setWindowTitle(&quot;MyTurtleSim&quot;);</code></li>
+<li><code>colcon build</code></li>
+<li><code>. install/local_setup.bash</code>、<code>ros2 run turtlesim turtlesim_node</code></li>
+</ol>
+</li>
+</ul>
+<h1 id="ROS包"><a href="#ROS包" class="headerlink" title="ROS包"></a>ROS包</h1><p>包（package）可以被认为是你的ROS 2代码的容器。如果你希望能够安装你的代码或与他人分享，那么你就需要把它组织在一个包里。通过包，你可以发布你的ROS 2工作，并允许其他人轻松构建和使用它。</p>
+<p>ROS 2的软件包创建使用<code>ament</code>作为其构建系统，<code>colcon</code>作为其构建工具，你可以使用官方支持的CMake或Python来创建一个软件包。除了这些，也存在其他的构建方式。</p>
+<blockquote>
+<p>Ament是catkin编译工具的优化迭代版本。 </p>
+<p>colcon是一个构建软件包集合的命令行工具，是ros构建工具catkin_make, catkin_make_isolated, catkin_tools 和ament_tools的迭代版本。</p>
+</blockquote>
+<p>Python构建软件包需要：</p>
+<ul>
+<li><code>package.xml</code>文件，包含关于包的元信息。</li>
+<li><code>setup.py</code>，包含如何安装软件包的说明</li>
+<li><code>setup.cfg</code> 在软件包有可执行文件时是必需的，这样 ros2 run 可以找到它们。</li>
+<li><code>/&lt;package_name&gt;</code> 一个与你的软件包同名的目录，被ROS 2工具用来寻找你的软件包，包含<code>__init__.py</code></li>
+</ul>
+<p>最简单的Python包文件结构：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">my_package&#x2F;</span><br><span class="line">      setup.py</span><br><span class="line">      package.xml</span><br><span class="line">      resource&#x2F;my_package</span><br></pre></td></tr></table></figure>
+
+<p>CMake构建软件包需要：</p>
+<ul>
+<li><p><code>package.xml</code>文件，包含关于包的元信息。</p>
+</li>
+<li><p><code>CMakeLists.txt</code>文件，描述了如何构建包内的代码</p>
+</li>
+</ul>
+<p>最简单的的C/C++包文件结构：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">my_package&#x2F;</span><br><span class="line">      setup.py</span><br><span class="line">      package.xml</span><br><span class="line">      resource&#x2F;my_package</span><br></pre></td></tr></table></figure>
+
+<p>一个工作区可以包含你想要的任何数量的包，每个包都在自己的文件夹里。你也可以在一个工作区中拥有不同构建类型的包（CMake、Python等），但是不能有嵌套的包。最好的做法是在你的工作区里有一个src文件夹，并在那里创建你的包。这样可以保持工作区顶层的干净。</p>
+<p>一个典型的工作空间可能看起来是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">workspace_folder&#x2F;</span><br><span class="line">    src&#x2F;</span><br><span class="line">      package_1&#x2F;</span><br><span class="line">          CMakeLists.txt</span><br><span class="line">          package.xml</span><br><span class="line"></span><br><span class="line">      package_2&#x2F;</span><br><span class="line">          setup.py</span><br><span class="line">          package.xml</span><br><span class="line">          resource&#x2F;package_2</span><br><span class="line">      ...</span><br><span class="line">      package_n&#x2F;</span><br><span class="line">          CMakeLists.txt</span><br><span class="line">          package.xml</span><br></pre></td></tr></table></figure>
+
+<p>在ROS 2中创建一个新包的命令语法是：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake &lt;package_name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_python &lt;package_name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake --node-name my_node my_package</span><br></pre></td></tr></table></figure>
+
+<p>把软件包放在工作区是一件有意义的事，因为你可以通过在工作区根目录下运行<code>colcon build</code>来一次性构建所有软件包，而不用单独构建每个包。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">colcon build --packages-select my_package</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>build失败，原因是email和maintainer包含反斜杆，去掉就行</p>
+</blockquote>
+<p>尝试运行，<code>ros2 run my_package my_node</code>会看到输出。修改<code>my_node.cpp</code>，重新编译运行，可以看到不同的输出。</p>
+<h1 id="pubsub模型"><a href="#pubsub模型" class="headerlink" title="pubsub模型"></a>pubsub模型</h1><h2 id="C-版本"><a href="#C-版本" class="headerlink" title="C++版本"></a>C++版本</h2><h2 id="Python版本"><a href="#Python版本" class="headerlink" title="Python版本"></a>Python版本</h2><h3 id="创建包"><a href="#创建包" class="headerlink" title="创建包"></a>创建包</h3><p>在<code>src</code>文件下执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_python py_pubsub</span><br></pre></td></tr></table></figure>
+
+<h3 id="发布Node"><a href="#发布Node" class="headerlink" title="发布Node"></a>发布Node</h3><p>在<code>src/py_pubsub/py_pubsub</code>目录下添加文件<code>publisher_member_function.py</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> rclpy</span><br><span class="line"><span class="keyword">from</span> rclpy.node <span class="keyword">import</span> Node</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># import内置的字符串消息类型，Node使用可以该类型来结构化它在Topic上传递的数据。</span></span><br><span class="line"><span class="keyword">from</span> std_msgs.msg <span class="keyword">import</span> String</span><br><span class="line"></span><br><span class="line"><span class="comment"># MinimalPublisher继承自Node类型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinimalPublisher</span><span class="params">(Node)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 指定node名称是minimal_publisher</span></span><br><span class="line">        super().__init__(<span class="string">'minimal_publisher'</span>)</span><br><span class="line">        <span class="comment"># 声明该节点在一个名为topic的主题上发布String类型的消息,并且 "队列大小 "为10。</span></span><br><span class="line">        self.publisher_ = self.create_publisher(String, <span class="string">'topic'</span>, <span class="number">10</span>)</span><br><span class="line">        timer_period = <span class="number">0.5</span>  <span class="comment"># seconds</span></span><br><span class="line">        <span class="comment"># 创建了一个定时器，它的回调每0.5秒执行一次</span></span><br><span class="line">        self.timer = self.create_timer(timer_period, self.timer_callback)</span><br><span class="line">        self.i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># timer_callback函数创建一个附加有计数器值的消息，并在控制台打印该值。</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">timer_callback</span><span class="params">(self)</span>:</span></span><br><span class="line">        msg = String()</span><br><span class="line">        msg.data = <span class="string">'Hello World: %d'</span> % self.i</span><br><span class="line">        self.publisher_.publish(msg)</span><br><span class="line">        self.get_logger().info(<span class="string">': "%s"'</span> % msg.data)</span><br><span class="line">        self.i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(args=None)</span>:</span></span><br><span class="line">    <span class="comment"># 初始化 rclpy 库</span></span><br><span class="line">    rclpy.init(args=args)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建节点</span></span><br><span class="line">    minimal_publisher = MinimalPublisher()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># "spin"节点，使其回调被调用。</span></span><br><span class="line">    <span class="comment"># </span></span><br><span class="line">    rclpy.spin(minimal_publisher)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Destroy the node explicitly</span></span><br><span class="line">    <span class="comment"># (optional - otherwise it will be done automatically</span></span><br><span class="line">    <span class="comment"># when the garbage collector destroys the node object)</span></span><br><span class="line">    minimal_publisher.destroy_node()</span><br><span class="line">    rclpy.shutdown()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>spin与ROS线程调度：<a href="https://levelup.gitconnected.com/ros-spinning-threading-queuing-aac9c0a793f" target="_blank" rel="noopener">ROS publisher queue, subscriber queue, callback queue and spinner threads tutorial | Level Up Coding (gitconnected.com)</a></p>
+</blockquote>
+<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><p>在<code>package.xml</code>中添加依赖：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;exec_depend&gt;rclpy&lt;&#x2F;exec_depend&gt;</span><br><span class="line">&lt;exec_depend&gt;std_msgs&lt;&#x2F;exec_depend&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加入口点（entry-point）"><a href="#添加入口点（entry-point）" class="headerlink" title="添加入口点（entry point）"></a>添加入口点（entry point）</h3><p>打开<code>setup.py</code>，将信息修改为<code>package.xml</code>中的信息。并修改以下字段：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">entry_points&#x3D;&#123;</span><br><span class="line">        &#39;console_scripts&#39;: [</span><br><span class="line">                &#39;talker &#x3D; py_pubsub.publisher_member_function:main&#39;,</span><br><span class="line">        ],</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<h3 id="检查setup-cfg"><a href="#检查setup-cfg" class="headerlink" title="检查setup.cfg"></a>检查setup.cfg</h3><p>一般来说，<code>setup.cfg</code>的文件内容是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[develop]</span><br><span class="line">script_dir=<span class="variable">$base</span>/lib/py_pubsub</span><br><span class="line">[install]</span><br><span class="line">install_scripts=<span class="variable">$base</span>/lib/py_pubsub</span><br></pre></td></tr></table></figure>
+
+<p>含义是告诉 <code>setuptools</code> 要把你的可执行文件放在 <code>lib</code> 中，因为 ros2 run 会在那里寻找可执行文件。</p>
+<h3 id="订阅Node"><a href="#订阅Node" class="headerlink" title="订阅Node"></a>订阅Node</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> rclpy</span><br><span class="line"><span class="keyword">from</span> rclpy.node <span class="keyword">import</span> Node</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> std_msgs.msg <span class="keyword">import</span> String</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinimalSubscriber</span><span class="params">(Node)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__(<span class="string">'minimal_subscriber'</span>)</span><br><span class="line">        <span class="comment"># 订阅者的代码不需要定时器,因为一旦收到消息，它的回调就会被调用。</span></span><br><span class="line">        self.subscription = self.create_subscription(</span><br><span class="line">            String,</span><br><span class="line">            <span class="string">'topic'</span>,</span><br><span class="line">            self.listener_callback,</span><br><span class="line">            <span class="number">10</span>)</span><br><span class="line">        self.subscription  <span class="comment"># prevent unused variable warning</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 回调函数简单地将消息的数据打印到控制台。</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">listener_callback</span><span class="params">(self, msg)</span>:</span></span><br><span class="line">        self.get_logger().info(<span class="string">'I heard: "%s"'</span> % msg.data)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(args=None)</span>:</span></span><br><span class="line">    rclpy.init(args=args)</span><br><span class="line"></span><br><span class="line">    minimal_subscriber = MinimalSubscriber()</span><br><span class="line"></span><br><span class="line">    rclpy.spin(minimal_subscriber)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Destroy the node explicitly</span></span><br><span class="line">    <span class="comment"># (optional - otherwise it will be done automatically</span></span><br><span class="line">    <span class="comment"># when the garbage collector destroys the node object)</span></span><br><span class="line">    minimal_subscriber.destroy_node()</span><br><span class="line">    rclpy.shutdown()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>在<code>setup.py</code>添加入口点：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">'listener = py_pubsub.subscriber_member_function:main'</span>,</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译运行"><a href="#编译运行" class="headerlink" title="编译运行"></a>编译运行</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#检查依赖</span></span><br><span class="line">rosdep install -i --from-path src --rosdistro rolling -y</span><br><span class="line"><span class="comment">#编译安装</span></span><br><span class="line">colcon build --packages-select py_pubsub</span><br><span class="line"></span><br><span class="line"><span class="comment">#运行</span></span><br><span class="line"><span class="comment">#terminal1</span></span><br><span class="line">. install/setup.bash</span><br><span class="line">ros2 run py_pubsub talker</span><br><span class="line"></span><br><span class="line"><span class="comment">#terminal2</span></span><br><span class="line">. install/setup.bash</span><br><span class="line">ros2 run py_pubsub listener</span><br></pre></td></tr></table></figure>
+
+<h1 id="CS模型"><a href="#CS模型" class="headerlink" title="CS模型"></a>CS模型</h1><h2 id="C-版本-1"><a href="#C-版本-1" class="headerlink" title="C++版本"></a>C++版本</h2><p>请求和响应的结构由一个<code>.srv</code>文件决定。</p>
+<h3 id="创建包-1"><a href="#创建包-1" class="headerlink" title="创建包"></a>创建包</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake cpp_srvcli --dependencies rclcpp example_interfaces</span><br></pre></td></tr></table></figure>
+
+<p>参数<code>--dependencies</code>将自动在<code>package.xml</code>和<code>CMakeLists.txt</code>中添加必要的依赖关系行。</p>
+<p><code>example_interfaces</code>包中有我们将需要的<code>.srv</code>文件的包。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int64 a</span><br><span class="line">int64 b</span><br><span class="line">---</span><br><span class="line">int64 sum</span><br></pre></td></tr></table></figure>
+
+<h3 id="服务端Node"><a href="#服务端Node" class="headerlink" title="服务端Node"></a>服务端Node</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"rclcpp/rclcpp.hpp"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"example_interfaces/srv/add_two_ints.hpp"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// add函数将请求中的两个整数相加，并将sum交给响应，同时在控制台打印信息。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;example_interfaces::srv::AddTwoInts::Request&gt; request,</span></span></span><br><span class="line"><span class="function"><span class="params">          <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;example_interfaces::srv::AddTwoInts::Response&gt;      response)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  response-&gt;sum = request-&gt;a + request-&gt;b;</span><br><span class="line">  RCLCPP_INFO(rclcpp::get_logger(<span class="string">"rclcpp"</span>), <span class="string">"Incoming request\na: %ld"</span> <span class="string">" b: %ld"</span>,</span><br><span class="line">                request-&gt;a, request-&gt;b);</span><br><span class="line">  RCLCPP_INFO(rclcpp::get_logger(<span class="string">"rclcpp"</span>), <span class="string">"sending back response: [%ld]"</span>, (<span class="keyword">long</span> <span class="keyword">int</span>)response-&gt;sum);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化ROS 2 C++客户端库</span></span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line">    <span class="comment">// 创建一个名为add_two_ints_server的节点</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;rclcpp::Node&gt; node = rclcpp::Node::make_shared(<span class="string">"add_two_ints_server"</span>);</span><br><span class="line">    <span class="comment">// 为该节点创建一个名为add_two_ints的服务,并与 add 方法绑定</span></span><br><span class="line">  rclcpp::Service&lt;example_interfaces::srv::AddTwoInts&gt;::SharedPtr service =</span><br><span class="line">    node-&gt;create_service&lt;example_interfaces::srv::AddTwoInts&gt;(<span class="string">"add_two_ints"</span>, &amp;add);</span><br><span class="line"></span><br><span class="line">  RCLCPP_INFO(rclcpp::get_logger(<span class="string">"rclcpp"</span>), <span class="string">"Ready to add two ints."</span>);</span><br><span class="line">    <span class="comment">// spin节点，使服务可用。</span></span><br><span class="line"></span><br><span class="line">  rclcpp::spin(node);</span><br><span class="line">  rclcpp::<span class="built_in">shutdown</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加入口"><a href="#添加入口" class="headerlink" title="添加入口"></a>添加入口</h3><p><code>add_executable</code>宏会生成一个可以用ros2 run来运行的执行文件，在<code>CMakeLists.txt</code>中添加以下代码块，以创建一个名为server的可执行文件。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">add_executable(server src&#x2F;add_two_ints_server.cpp)</span><br><span class="line">ament_target_dependencies(server</span><br><span class="line">rclcpp example_interfaces)</span><br></pre></td></tr></table></figure>
+
+<p>为了让ros2运行能够找到可执行文件，需要在文件末尾添加以下几行，就在<code>ament_package()</code>之前。</p>
+<h3 id="客户端Node"><a href="#客户端Node" class="headerlink" title="客户端Node"></a>客户端Node</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &quot;rclcpp&#x2F;rclcpp.hpp&quot;</span><br><span class="line">#include &quot;example_interfaces&#x2F;srv&#x2F;add_two_ints.hpp&quot;</span><br><span class="line"></span><br><span class="line">#include &lt;chrono&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line">#include &lt;memory&gt;</span><br><span class="line"></span><br><span class="line">using namespace std::chrono_literals;</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv)</span><br><span class="line">&#123;</span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">  if (argc !&#x3D; 3) &#123;</span><br><span class="line">      RCLCPP_INFO(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;usage: add_two_ints_client X Y&quot;);</span><br><span class="line">      return 1;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::shared_ptr&lt;rclcpp::Node&gt; node &#x3D; rclcpp::Node::make_shared(&quot;add_two_ints_client&quot;);</span><br><span class="line">  rclcpp::Client&lt;example_interfaces::srv::AddTwoInts&gt;::SharedPtr client &#x3D;</span><br><span class="line">    node-&gt;create_client&lt;example_interfaces::srv::AddTwoInts&gt;(&quot;add_two_ints&quot;);</span><br><span class="line"></span><br><span class="line">  auto request &#x3D; std::make_shared&lt;example_interfaces::srv::AddTwoInts::Request&gt;();</span><br><span class="line">  request-&gt;a &#x3D; atoll(argv[1]);</span><br><span class="line">  request-&gt;b &#x3D; atoll(argv[2]);</span><br><span class="line"></span><br><span class="line">  while (!client-&gt;wait_for_service(1s)) &#123;</span><br><span class="line">    if (!rclcpp::ok()) &#123;</span><br><span class="line">      RCLCPP_ERROR(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;Interrupted while waiting for the service. Exiting.&quot;);</span><br><span class="line">      return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    RCLCPP_INFO(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;service not available, waiting again...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  auto result &#x3D; client-&gt;async_send_request(request);</span><br><span class="line">  &#x2F;&#x2F; Wait for the result.</span><br><span class="line">  if (rclcpp::spin_until_future_complete(node, result) &#x3D;&#x3D;</span><br><span class="line">    rclcpp::FutureReturnCode::SUCCESS)</span><br><span class="line">  &#123;</span><br><span class="line">    RCLCPP_INFO(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;Sum: %ld&quot;, result.get()-&gt;sum);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    RCLCPP_ERROR(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;Failed to call service add_two_ints&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  rclcpp::shutdown();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一样需要添加入口</p>
+<h3 id="编译运行-1"><a href="#编译运行-1" class="headerlink" title="编译运行"></a>编译运行</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">colcon build --packages-select cpp_srvcli</span><br><span class="line"></span><br><span class="line">. install&#x2F;setup.bash</span><br><span class="line">ros2 run cpp_srvcli server</span><br><span class="line"></span><br><span class="line">. install&#x2F;setup.bash</span><br><span class="line">ros2 run cpp_srvcli client 2 3</span><br></pre></td></tr></table></figure>
+
+<h2 id="Python版本-1"><a href="#Python版本-1" class="headerlink" title="Python版本"></a>Python版本</h2><h1 id="自定义的msg和srv"><a href="#自定义的msg和srv" class="headerlink" title="自定义的msg和srv"></a>自定义的msg和srv</h1><h2 id="创建包-2"><a href="#创建包-2" class="headerlink" title="创建包"></a>创建包</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake tutorial_interfaces</span><br></pre></td></tr></table></figure>
+
+<p>注意必须是一个CMake包。</p>
+<p>好的做法是将<code>.msg</code>和<code>.srv</code>文件放在软件包内各自的目录中。</p>
+<h2 id="创建自定义的definitions"><a href="#创建自定义的definitions" class="headerlink" title="创建自定义的definitions"></a>创建自定义的definitions</h2><p>注意<code>msg</code>、<code>srv</code>、<code>src</code>文件夹在同一层级</p>
+<ul>
+<li><p><code>Num.msg</code>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int64 num</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>AddThreeInts.srv</code>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int64 a</span><br><span class="line">int64 b</span><br><span class="line">int64 c</span><br><span class="line">---</span><br><span class="line">int64 sum</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>CMakeLists.txt</code>：将定义的接口转换为特定语言的代码（如C++和Python），以便它们可以在这些语言中使用，需要添加以下代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find_package(rosidl_default_generators REQUIRED)</span><br><span class="line"></span><br><span class="line">rosidl_generate_interfaces($&#123;PROJECT_NAME&#125;</span><br><span class="line">  &quot;msg&#x2F;Num.msg&quot;</span><br><span class="line">  &quot;srv&#x2F;AddThreeInts.srv&quot;</span><br><span class="line"> )</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>package.xml</code>：接口依赖<code>rosidl_default_generators</code>来生成特定语言的代码，你需要声明对它的依赖性。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;build_depend&gt;rosidl_default_generators&lt;&#x2F;build_depend&gt;</span><br><span class="line"></span><br><span class="line">&lt;exec_depend&gt;rosidl_default_runtime&lt;&#x2F;exec_depend&gt;</span><br><span class="line"></span><br><span class="line">&lt;member_of_group&gt;rosidl_interface_packages&lt;&#x2F;member_of_group&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="编译查看"><a href="#编译查看" class="headerlink" title="编译查看"></a>编译查看</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">colcon build --packages-select tutorial_interfaces</span><br><span class="line"></span><br><span class="line">. install&#x2F;setup.bash</span><br><span class="line">ros2 interface show tutorial_interfaces&#x2F;msg&#x2F;Num</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h3><ul>
+<li><p>源码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &quot;tutorial_interfaces&#x2F;msg&#x2F;num.hpp&quot;                      # CHANGE</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CMakeLists.txt</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find_package(tutorial_interfaces REQUIRED)                      # CHANGE</span><br><span class="line">ament_target_dependencies(talker rclcpp tutorial_interfaces)    # CHANGE</span><br><span class="line">ament_target_dependencies(listener rclcpp tutorial_interfaces)  # CHANGE</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>package.xml</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;depend&gt;tutorial_interfaces&lt;&#x2F;depend&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><ul>
+<li><p>源码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">from tutorial_interfaces.msg import Num                        # CHANGE</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>package.xml</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;exec_depend&gt;tutorial_interfaces&lt;&#x2F;exec_depend&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="拓展ROS-2的接口-interface"><a href="#拓展ROS-2的接口-interface" class="headerlink" title="拓展ROS 2的接口(interface)"></a>拓展ROS 2的接口(interface)</h1><p>你可以在一个新的接口定义中使用一个现有的接口定义。</p>
+<h1 id="ROS-Launch"><a href="#ROS-Launch" class="headerlink" title="ROS Launch"></a>ROS Launch</h1><h2 id="ROS2-启动系统"><a href="#ROS2-启动系统" class="headerlink" title="ROS2 启动系统"></a>ROS2 启动系统</h2><p>ROS 2中的启动系统负责帮助用户描述其系统的配置，然后按照描述执行。系统的配置包括运行什么程序，在哪里运行，向它们传递什么参数，以及ROS特定的约定，通过给它们各自不同的配置，使整个系统中的组件易于重复使用。它还负责监控启动的进程的状态，并报告和/或对这些进程的状态变化做出反应。</p>
+<p>用Python编写的启动文件可以启动和停止不同的节点，也可以触发各种事件并对其采取行动。提供这个框架的包是 launch_ros，它在下面使用非ROS专用的启动框架。</p>
+<h2 id="编写ROS-2启动文件"><a href="#编写ROS-2启动文件" class="headerlink" title="编写ROS 2启动文件"></a>编写ROS 2启动文件</h2><p>如果你还没有，请确保你浏览了关于如何创建ROS 2软件包的快速入门教程。在ROS 2中创建启动文件的一种方法是使用Python文件，这些文件由ROS 2 CLI工具ros2 launch来执行。我们首先使用<code>ros2 pkg create &lt;pkg-name&gt; --dependencies [deps]</code> 在我们的工作区创建一个ROS 2软件包，并创建一个新的启动目录。</p>
+<h3 id="C-包"><a href="#C-包" class="headerlink" title="C++ 包"></a>C++ 包</h3><p>如果你正在创建一个C++包，我们将只调整CMakeLists.txt文件，添加：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Install launch files.</span><br><span class="line">install(DIRECTORY</span><br><span class="line">  launch</span><br><span class="line">  DESTINATION share&#x2F;$&#123;PROJECT_NAME&#125;&#x2F;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>到文件的末尾（但在<code>ament_package()</code>之前）。</p>
+<h3 id="编写启动文件"><a href="#编写启动文件" class="headerlink" title="编写启动文件"></a>编写启动文件</h3><p>在你的启动目录中，创建一个后缀为<code>.launch.py</code>的新启动文件。例如：<code>my_script.launch.py</code>。</p>
+<p>你的启动文件应该定义<code>generate_launch_description()</code>，它返回一个 launch.LaunchDescription()，供 <code>ros2 launch</code>使用。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> launch</span><br><span class="line"><span class="keyword">import</span> launch.actions</span><br><span class="line"><span class="keyword">import</span> launch.substitutions</span><br><span class="line"><span class="keyword">import</span> launch_ros.actions</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_launch_description</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> launch.LaunchDescription([</span><br><span class="line">        launch.actions.DeclareLaunchArgument(</span><br><span class="line">            <span class="string">'node_prefix'</span>,</span><br><span class="line">            default_value=[launch.substitutions.EnvironmentVariable(<span class="string">'USER'</span>), <span class="string">'_'</span>],</span><br><span class="line">            description=<span class="string">'Prefix for node names'</span>),</span><br><span class="line">        launch_ros.actions.Node(</span><br><span class="line">            package=<span class="string">'demo_nodes_cpp'</span>, node_executable=<span class="string">'talker'</span>, output=<span class="string">'screen'</span>,</span><br><span class="line">            node_name=[launch.substitutions.LaunchConfiguration(<span class="string">'node_prefix'</span>), <span class="string">'talker'</span>]),</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ros2 launch my_package script.launch.py</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>ROS2</category>
+      </categories>
+      <tags>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ROS的基础——DDS</title>
+    <url>/2022/02/01/ROS/DDS/</url>
+    <content><![CDATA[<p>DDS（数据分发服务）是一套通信协议和API标准，以数据为中心是他的特点，它基于发布-订阅模型进行设计。而FastRTPS是<em>eProsima</em>公司对DDS的一个开源实现。DDS是一套中间件，提供介于操作系统和应用程序之间的功能，提供了低延迟、高可靠的通信以及可扩展的架构。DDS其实分为两部分，一部分是DDS规范，一部份则是DDSI-RTPS协议，是一个互操作性协议，也就是真正实现通讯机制的部分，在ROS2中，也正是这部分，取代了ROS1的TCPROS和UDPROS。</p>
+<a id="more"></a>
+
+<blockquote>
+<p>所谓互操作性协议，就是为了满足互操作性而产生的一个协议，互操作性就是指两个实体的通信能力，如果两个实体之间能够在任何情况下都无误解的进行通信，那么我们就说这两个实体可以正确的互操作。</p>
+</blockquote>
+<p>DDS的架构是这个样子的：</p>
+<p><img src="http://image.onebug.tech/202202241359562.svg+xml" alt="../../_images/library_overview.svg"></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><strong>DDS实现的数据共享可以理解成一个抽象的全局数据空间，任何应用程序，不论开发语言，或者运行的操作系统类型，都可以通过相同的方式访问这个全局数据空间，就好像访问本地的存储空间一样。</strong>当然全局数据空间仅仅是一个抽象的概念，在实现时仍然是分别存储在每个应用程序的本地空间当中。在系统运行时，数据是按需传输或存储的，数据的发布者仅仅发送对方需要的数据，而订阅者仅接收并存储本地应用程序当前需要的数据。</p>
+<p><strong>DDS还提供了非常灵活的QoS策略</strong>，以满足用户对数据共享方式的不同需求，比如可靠性，故障处理等等。针对数据安全性要求比较高的系统，<strong>DDS还提供了细颗粒度的数据安全控制</strong>，包括应用程序身份认证，权限控制，数据加密等等。</p>
+<p><strong>DDS提供了对数据发布者和订阅者的动态发现机制</strong>，这意味着用户不必去配置通信节点的地址或其他属性信息，因为他们在运行的过程中会自动发现对方，并自动完成相关配置，即实现了即插即用。</p>
+<h1 id="专业名词"><a href="#专业名词" class="headerlink" title="专业名词"></a>专业名词</h1><ul>
+<li><strong>Domain：</strong>代表一个通信平面，由Domain ID唯一标识，只有在同一个域内的通信实体才可以通信；如果考虑车内通信，可以只划分1个Domain，也可以按照交互规则或其他规则，定义多个Domain；</li>
+<li><strong>Domain Participant：</strong>代表域内通信的应用程序的本地成员身份，简单来说，就是说明同一数据域内的通信成员；</li>
+<li><strong>Topic：</strong>是数据的抽象概念，由TopicName标识，关联相应数据的数据类型(DataType)，如果把车内所涉及的所有Topic集合在一起，这样就形成一个虚拟的全局数据空间“Global Data Space”，进一步弱化了节点的概念，所以域参与者已经不是节点的概念了；</li>
+<li><strong>DataWriter：</strong>数据写入者，类似缓存，把需要发布的主题数据从应用层写入到DataWriter中；</li>
+<li><strong>DataReader：</strong>数据读取者，同样可以理解为一种缓存，从订阅者得到主题数据，随之传给应用层；</li>
+<li><strong>Publisher：</strong>发布者，发布主题数据，至少与1个DataWriter关联，通过调用DataWriter的相关函数将数据发出去；</li>
+<li><strong>Subscriber：</strong>订阅者，订阅主题数据，至少与1个DataReader关联。当数据到达时，应用程序可能忙于执行其他操作或应用程序只是等待该消息时，这样就会存在两种情况，同步访问和异步通知。</li>
+</ul>
+<h1 id="DPSC模型"><a href="#DPSC模型" class="headerlink" title="DPSC模型"></a>DPSC模型</h1><p><strong>DCPS（Data-Centric Publish-Subscribe）是DDS标准中定义的以数据为中心的订阅-发布模型。在这个模型中，向全局数据空间写入数据的一方称为Publishers和DataWriter，同样地，在全局数据空间中读取数据的一方称为Subscriber和DataReader</strong>。下图中展示了它们之间的逻辑关系。除了DCPS模型，DDS标准中还定义了一套完整的应用程序接口（API），该接口标准是与平台无关的，这意味着不论应用程序使用什么开发语言，或运行在什么平台之上，只要DDS中间件的实现符合DDS标准，那么相关的应用程序即可实现不同平台间的移植。</p>
+<p><img src="http://image.onebug.tech/20220225121143.svg+xml" alt="../../_images/rtps_domain.svg"></p>
+<p>数据的发送过程，简单来说就是应用程序调用DataWriter对象提供的write方法，把数据传递给Publisher对象，而Publisher负责将数据在网络上发送出去。</p>
+<blockquote>
+<p>一个DataWriter只能从属一个Publisher，而Publisher可以拥有多个DataWriter，每一个DataWriter都绑定一个Topic。</p>
+</blockquote>
+<p>数据的接收过程，简单来说就是Subscriber负责从网络上接收数据，并把它存储在对应的DataReader中。</p>
+<blockquote>
+<p>一个DataReader只能从属一个Subscriber，而Subscriber可以拥有多个DataReader，每一个DataReader都绑定一个Topic。</p>
+</blockquote>
+<h1 id="Qos策略"><a href="#Qos策略" class="headerlink" title="Qos策略"></a>Qos策略</h1><p><strong>用户可以通过设置QoS策略来控制数据在应用程序之间共享的方式</strong>，每个DCPS实体，包括Topic，DataWriter，Publisher，DataReader，Subscriber等，都能够独立配置相应的QoS策略。</p>
+<p>下面是几种常用的QoS策略（略）：</p>
+<ul>
+<li>DEADLINE(Topic周期更新)</li>
+<li>LIFESPAN（DataWriter写入的数据样本具有到期时间）</li>
+<li>HISTORY（DataWriter保存并发送旧的采样数据）</li>
+<li>RELIABILITY（”可靠传输”）</li>
+</ul>
+<p><img src="http://image.onebug.tech/202203062318832.jpeg" alt="img"></p>
+<h1 id="RTSP协议"><a href="#RTSP协议" class="headerlink" title="RTSP协议"></a>RTSP协议</h1><p>DDS的标准中并不包含传输层协议，RTPS（Real-Time Publish Subscribe）能够很好的契合DDS协议特点。<strong>RTPS基于多播、无连接的传输模型，这个模型可以映射到不同的传输协议上，如UDP/IP（这也是目前RTPS标准中唯一被标准化的传输协议）。</strong></p>
+<p><img src="http://image.onebug.tech/202203062318265.svg+xml" alt="../../_images/transport_comparison.svg"></p>
+<blockquote>
+<p>组播的原理：组播IP地址到底是谁的IP？？ - 车小胖的回答 - 知乎 <a href="https://www.zhihu.com/question/27233903/answer/108374395" target="_blank" rel="noopener">https://www.zhihu.com/question/27233903/answer/108374395</a></p>
+</blockquote>
+<p><img src="http://image.onebug.tech/202203062318554.svg+xml" alt="../_images/DDS_concept.svg"></p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>ros</tag>
+        <tag>dds</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git备忘录</title>
+    <url>/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/</url>
+    <content><![CDATA[<h1 id="Git-LFS"><a href="#Git-LFS" class="headerlink" title="Git LFS"></a>Git LFS</h1><p>Git LFS（Large File Storage，大文件存储）协议，可以把音乐、图片、视频等指定的任意大文件资源存储在Git仓库之外，对于使用者而言，类似在操作一个完整的Git仓库，非常方便。通过将大文件存储在Git原有的数据结构之中，可以减小Git仓库本身的体积，使克隆Git仓库的速度加快，也使得Git不会因为仓库中充满大文件而损失性能。</p>
+<a id="more"></a>
+
+<p><img src="http://image.onebug.tech/202202241351274.gif" alt="a diagram showing how Git LFS works"></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash</span><br><span class="line">sudo apt-get install git-lfs</span><br><span class="line">git lfs install</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置追踪文件"><a href="#配置追踪文件" class="headerlink" title="配置追踪文件"></a>配置追踪文件</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#追踪所有后缀名为“.mp4”的文件：</span></span><br><span class="line">git lfs track <span class="string">"*.MP4"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看已追踪的文件，已经追踪的文件保存在“.gitattributes”中</span></span><br><span class="line">git lfs track</span><br></pre></td></tr></table></figure>
+
+<h2 id="提交大文件"><a href="#提交大文件" class="headerlink" title="提交大文件"></a>提交大文件</h2><p>提交代码时需要将“.gitattributes”文件也提交到仓库，提交完成后，就可以和原有操作一样使用git的提交功能。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#提交</span></span><br><span class="line">git push origin master</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看 LFS 跟踪的文件列表</span></span><br><span class="line">git lfs ls-files</span><br></pre></td></tr></table></figure>
+
+<h1 id="Gitlab-CI-CD"><a href="#Gitlab-CI-CD" class="headerlink" title="Gitlab CI/CD"></a>Gitlab CI/CD</h1><p>GitLab CI/CD 是一个内置在GitLab中的工具，用于通过持续方法进行软件开发：</p>
+<ul>
+<li>Continuous Integration (CI) 持续集成</li>
+<li>Continuous Delivery (CD)   持续交付</li>
+<li>Continuous Deployment (CD)  持续部署</li>
+</ul>
+<p>持续集成的工作原理是将小的代码块推送到Git仓库中托管的应用程序代码库中，并且每次推送时，都要运行一系列脚本来构建、测试和验证代码更改，然后再将其合并到主分支中。</p>
+<p>持续交付和部署相当于更进一步的CI，可以在每次推送到仓库默认分支的同时将应用程序部署到生产环境。</p>
+<p><img src="http://image.onebug.tech/202202241351844.png" alt="img"></p>
+<h2 id="gitlab-ci-yml"><a href="#gitlab-ci-yml" class="headerlink" title=".gitlab-ci.yml"></a>.gitlab-ci.yml</h2><p>了使用GitLab CI/CD，你需要一个托管在GitLab上的应用程序代码库，并且在根目录中的.gitlab-ci.yml文件中指定构建、测试和部署的脚本。一旦你已经添加了.gitlab-ci.yml到仓库中，GitLab将检测到该文件，并使用名为GitLab Runner的工具运行你的脚本。该工具的操作与终端类似。这些脚本被分组到jobs，它们共同组成一个pipeline。一个最简单的.gitlab-ci.yml文件可能是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">before_script: </span><br><span class="line">  - apt-get install rubygems ruby-dev -y </span><br><span class="line"></span><br><span class="line">run-test: </span><br><span class="line">  script: </span><br><span class="line">    - ruby --version 6</span><br></pre></td></tr></table></figure>
+
+<p>before_script属性将在运行任何内容之前为你的应用安装依赖，一个名为run-test的job（作业）将打印当前系统的Ruby版本。二者共同构成了在每次推送到仓库的任何分支时都会被触发的Pipeline（管道）。</p>
+<h2 id="Runner"><a href="#Runner" class="headerlink" title="Runner"></a>Runner</h2><p>在GitLab中，Runner运行你定义在.gitlab-ci.yml中的作业（job）。一个Runner可以是一个虚拟机、物理机、docker容器，或者一个容器集群。GitLab与Runner之间通过API进行通信，因此只需要Runner所在的机器有网络并且可以访问GitLab服务器即可。在成功配置Runner以后，你应该可以看到你最近的提交的状态 。</p>
+<blockquote>
+<p><a href="https://support.huaweicloud.com/usermanual-codehub/devcloud_hlp_0960.html" target="_blank" rel="noopener">Git LFS使用_代码托管 CodeHub_用户指南_更多Git知识_华为云 (huaweicloud.com)</a></p>
+<p><a href="https://www.cnblogs.com/cjsblog/p/12256843.html" target="_blank" rel="noopener">GitLab CI/CD - 废物大师兄 - 博客园 (cnblogs.com)</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>git lfs</tag>
+        <tag>ci/cd</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多类型设备时间同步方案</title>
+    <url>/2022/02/21/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/</url>
+    <content><![CDATA[<h1 id="PTP"><a href="#PTP" class="headerlink" title="PTP"></a>PTP</h1><h2 id="安装linuxptp"><a href="#安装linuxptp" class="headerlink" title="安装linuxptp"></a>安装linuxptp</h2><h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> http://git.code.sf.net/p/linuxptp/code linuxptp</span><br><span class="line"><span class="built_in">cd</span> linuxptp</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="deb-安装"><a href="#deb-安装" class="headerlink" title="deb 安装"></a>deb 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install linuxptp</span><br></pre></td></tr></table></figure>
+
+<h2 id="检查网卡状态"><a href="#检查网卡状态" class="headerlink" title="检查网卡状态"></a>检查网卡状态</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ethtool -T enp0s31f6</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://image.onebug.tech/202203062307735.png" alt="image-20220216102002147"></p>
+<h2 id="配置PTP时钟"><a href="#配置PTP时钟" class="headerlink" title="配置PTP时钟"></a>配置PTP时钟</h2><h3 id="设备端"><a href="#设备端" class="headerlink" title="设备端"></a>设备端</h3><h4 id="禾赛雷达"><a href="#禾赛雷达" class="headerlink" title="禾赛雷达"></a>禾赛雷达</h4><p><img src="http://image.onebug.tech/image-20220216102230988.png" alt="image-20220216102230988"></p>
+<h4 id="Livox"><a href="#Livox" class="headerlink" title="Livox"></a>Livox</h4><p>不需要配置</p>
+<h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ptp4l -i enp0s31f6 -m</span><br></pre></td></tr></table></figure>
+
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>如果网络中出现 <code>Sync Message</code> 数据，说明服务端ptp4l程序的master时钟功能正常运行，如果网络中出现 <code>Delay_Req Message</code> 数据，说明设备端slave时钟功能正常运行。</p>
+<p><img src="http://image.onebug.tech/image-20220216103826706.png" alt="image-20220216103826706"></p>
+<h1 id="接入NTP"><a href="#接入NTP" class="headerlink" title="接入NTP"></a>接入NTP</h1><h2 id="配置PTP硬件时间"><a href="#配置PTP硬件时间" class="headerlink" title="配置PTP硬件时间"></a>配置PTP硬件时间</h2><p>让PTP硬件时钟和系统时间同步</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo phc2sys -c enp0s31f6 -s CLOCK_REALTIME -O 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="搭建NTP服务"><a href="#搭建NTP服务" class="headerlink" title="搭建NTP服务"></a>搭建NTP服务</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install ntp</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vi &#x2F;etc&#x2F;ntp.conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># For more information about this file, see the man pages</span></span><br><span class="line"><span class="comment"># ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).</span></span><br><span class="line"> </span><br><span class="line"><span class="attribute">driftfile</span> /var/lib/ntp/drift  <span class="comment">#默认即可。driftfile用来指定记录本机与上层NTP server之间的频率误差。单位是百万分之一秒。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Permit time synchronization with our time source, but do not</span></span><br><span class="line"><span class="comment"># permit the source to query or modify the service on this system.</span></span><br><span class="line">restrict default nomodify notrap nopeer noquery 　　　　</span><br><span class="line"><span class="comment">#restrict用来管理权限控制。</span></span><br><span class="line"><span class="comment">#格式为 restrict [单个ip|网络|default] parameter　　　　　　</span></span><br><span class="line"><span class="comment">#parameter：　　　　　　　　</span></span><br><span class="line"><span class="comment">#	ignore：拒绝所有的ntp连接　　　　　　　　</span></span><br><span class="line"><span class="comment">#	nomodify：客户端不能使用ntpc和ntpq这两个程序来更改服务器的时间参数，但客户端可以通过此主机来进行网络校时。　　　　　　　　</span></span><br><span class="line"><span class="comment">#	noquery：客户端不能使用ntpc和ntpq等命令来查询时间服务器，等于不提供网络校时服务。　　　　　　　　</span></span><br><span class="line"><span class="comment">#	notrap：不提供trap这个网络时间登陆的功能　　　　　　　　</span></span><br><span class="line"><span class="comment">#	notrust：拒绝没有认证的客户端　　</span></span><br><span class="line"><span class="comment">#	示例：restrict 156.0.26.7  nomodify 9 </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Permit all access over the loopback interface.  This could</span></span><br><span class="line"><span class="comment"># be tightened as well, but to do so would effect some of</span></span><br><span class="line"><span class="comment"># the administrative functions.</span></span><br><span class="line">restrict <span class="number">127.0.0.1</span>  <span class="comment">#以下两条默认，放行本机来源</span></span><br><span class="line">restrict ::<span class="number">1</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Hosts on local network are less restricted.</span></span><br><span class="line">restrict <span class="number">10.0.0.0</span> mask <span class="number">255.0.0.0</span> nomodify notrap</span><br><span class="line">restrict <span class="number">192.168.1.0</span> mask <span class="number">255.255.255.0</span> nomodify notrap</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use public servers from the pool.ntp.org project.</span></span><br><span class="line"><span class="comment"># Please consider joining the pool (http://www.pool.ntp.org/join.html).</span></span><br><span class="line"><span class="comment">#server 0.centos.pool.ntp.org iburst #以下四条为默认，注释掉即可</span></span><br><span class="line"><span class="comment">#server 1.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="comment">#server 2.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="comment">#server 3.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="comment">#server：用来设置上层NTP服务器，说白了就是client向谁请求NTP时间同步。　　　　</span></span><br><span class="line"><span class="comment">#特别注意，在内网环境中由于无法连接到内网，所以没有办法向例如国家授时服务中心210.72.145.44同步时间　　　　</span></span><br><span class="line"><span class="comment">#只能将内网中的某台主机设置为server,用以向其他内网服务器提供NTP服务。</span></span><br><span class="line"></span><br><span class="line">server <span class="number">127.127.1.0</span> prefer </span><br><span class="line"><span class="comment">#以本机时间作为时间服务。内网中这个配置一定要加上，否则会导致NTP服务不可用　#prefer代表这台主机优先级最高。</span></span><br><span class="line"><span class="comment">#broadcast 192.168.1.255 autokey    # broadcast server</span></span><br><span class="line"><span class="comment">#broadcastclient            # broadcast client</span></span><br><span class="line"><span class="comment">#broadcast 224.0.1.1 autokey        # multicast server</span></span><br><span class="line"><span class="comment">#multicastclient 224.0.1.1        # multicast client</span></span><br><span class="line"><span class="comment">#manycastserver 239.255.254.254        # manycast server</span></span><br><span class="line"><span class="comment">#manycastclient 239.255.254.254 autokey # manycast client</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Enable public key cryptography.</span></span><br><span class="line"><span class="comment">#crypto</span></span><br><span class="line"></span><br><span class="line">includefile /etc/ntp/crypto/pw</span><br><span class="line"></span><br><span class="line"><span class="comment"># Key file containing the keys and key identifiers used when operating</span></span><br><span class="line"><span class="comment"># with symmetric key cryptography. </span></span><br><span class="line">keys /etc/ntp/keys <span class="comment">##除了restrict来限制客户端连接外，还可以通过秘钥方式来给客户端认证。</span></span><br><span class="line"><span class="comment"># Specify the key identifiers which are trusted.</span></span><br><span class="line"><span class="comment">#trustedkey 4 8 42</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Specify the key identifier to use with the ntpdc utility.</span></span><br><span class="line"><span class="comment">#requestkey 8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Specify the key identifier to use with the ntpq utility.</span></span><br><span class="line"><span class="comment">#controlkey 8</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Enable writing of statistics records.</span></span><br><span class="line"><span class="comment">#statistics clockstats cryptostats loopstats peerstats</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Disable the monitoring facility to prevent amplification attacks using ntpdc</span></span><br><span class="line"><span class="comment"># monlist command when default restrict does not include the noquery flag. See</span></span><br><span class="line"><span class="comment"># CVE-2013-5211 for more details.</span></span><br><span class="line"><span class="comment"># Note: Monitoring will not be disabled with the limited restriction flag.</span></span><br><span class="line">disable monitor</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动NTP服务"><a href="#启动NTP服务" class="headerlink" title="启动NTP服务"></a>启动NTP服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl start ntp</span><br></pre></td></tr></table></figure>
+
+<h2 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h2><h3 id="海康威视"><a href="#海康威视" class="headerlink" title="海康威视"></a>海康威视</h3><p><img src="http://image.onebug.tech/image-20220216114540564.png" alt="image-20220216114540564"></p>
+<h2 id="验证-1"><a href="#验证-1" class="headerlink" title="验证"></a>验证</h2><p><img src="http://image.onebug.tech/image-20220216120052949.png" alt="image-20220216120052949"></p>
+<blockquote>
+<p><a href="http://yang.observer/2020/07/11/time-ntp/" target="_blank" rel="noopener">计算机的时钟（一）：NTP协议 - Yang Blog</a></p>
+<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-configuring_ptp_using_ptp4l" target="_blank" rel="noopener">Chapter 23. Configuring PTP Using ptp4l Red Hat Enterprise Linux 6 | Red Hat Customer Portal</a></p>
+<p><a href="https://livox-wiki-cn.readthedocs.io/zh_CN/latest/tutorials/timestamp_sychronization.html#id14" target="_blank" rel="noopener">5. Livox设备时间同步 — Livox wiki 0.1 文档 (livox-wiki-cn.readthedocs.io)</a></p>
+<p><a href="https://www.cnblogs.com/wxxjianchi/p/10531582.html" target="_blank" rel="noopener">内网环境搭建NTP服务器 - HowOldAreYou - 博客园 (cnblogs.com)</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>gpu</tag>
+        <tag>gui</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GTEST</title>
+    <url>/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/</url>
+    <content><![CDATA[<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p><strong>TODO</strong></p>
+<a id="more"></a>
+
+<h1 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h1><p>gtest中，断言的宏根据作用效果可以理解为分为两类：</p>
+<ul>
+<li><code>ASSERT_*</code> 系列的断言，当检查点失败时，退出当前函数（注意：并非退出当前案例）。</li>
+<li><code>_EXPECT_*</code> 系列的断言，当检查点失败时，继续往下执行。</li>
+</ul>
+<p>根据作用区分，可以分为几大类</p>
+<ul>
+<li><p>数值类型数据检查：<code>ASSERT_EQ(expected, actual)</code></p>
+</li>
+<li><p>布尔值检查：<code>ASSERT_TRUE(condition)</code></p>
+</li>
+<li><p>字符串检查：<code>ASSERT_STREQ（str1,str2）</code></p>
+</li>
+<li><p>异常检查：<code>ASSERT_THROW(</code><em>statement</em>, <em>exception_type</em><code>)</code></p>
+</li>
+<li><p>浮点型检查：<code>ASSERT_NEAR(val1, val2, abs_error)</code></p>
+</li>
+<li><p>类型检查</p>
+</li>
+<li><p>…….</p>
+</li>
+</ul>
+<p>GTEST中包含非常丰富的断言，这里不赘述，详细内容请参考<a href="https://google.github.io/googletest/reference/assertions.html" target="_blank" rel="noopener">Assertions Reference | GoogleTest</a>。</p>
+<blockquote>
+<p>如果你对自动输出的出错信息不满意的话，你还可以通过操作符<code>&lt;&lt;</code>将一些自定义的信息输出，通常，这对于调试或是对一些检查点的补充说明来说，非常有用！</p>
+<p>EXPECT_EQ(x[i], y[i]) &lt;&lt; “Vectors x and y differ at index “ &lt;&lt; i;</p>
+</blockquote>
+<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>gtest提供了多种事件机制，非常方便我们在案例之前或之后做一些操作。</p>
+<h2 id="全局事件"><a href="#全局事件" class="headerlink" title="全局事件"></a>全局事件</h2><p>全局的时间在所有案例前后执行。要实现全局事件，必须写一个类，继承<code>testing::Environment</code>类，实现里面的<code>SetUp</code>和<code>TearDown</code>方法。</p>
+<ol>
+<li><p><code>SetUp()</code>方法在所有案例执行前执行</p>
+</li>
+<li><p><code>TearDown()</code>方法在所有案例执行后执行</p>
+</li>
+</ol>
+<p>我们还需要告诉gtest添加这个全局事件，我们需要在main函数中通过<code>testing::AddGlobalTestEnvironment</code>方法将事件挂进来，也就是说，我们可以写很多个这样的类，然后将他们的事件都挂上去。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooEnvironment</span> :</span> <span class="keyword">public</span> testing::Environment</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">SetUp</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Foo FooEnvironment SetUP"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">TearDown</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Foo FooEnvironment TearDown"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, _TCHAR* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    testing::AddGlobalTestEnvironment(<span class="keyword">new</span> FooEnvironment);</span><br><span class="line">    testing::InitGoogleTest(&amp;argc, argv);</span><br><span class="line">    <span class="keyword">return</span> RUN_ALL_TESTS();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="TestSuite事件"><a href="#TestSuite事件" class="headerlink" title="TestSuite事件"></a>TestSuite事件</h2><p>我们需要写一个类，继承<code>testing::Test</code>，然后实现<code>SetUpTestCase()</code>和<code>TearDownTestCase()</code>两个静态方法。在编写测试案例时，我们需要使用<code>TEST_F</code>这个宏，第一个参数必须是我们上面<strong>类的名字</strong>，代表一个TestSuite。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooTest</span> :</span> <span class="keyword">public</span> testing::Test &#123;</span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetUpTestCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    shared_resource_ = <span class="keyword">new</span> ;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TearDownTestCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">delete</span> shared_resource_;</span><br><span class="line">    shared_resource_ = <span class="literal">NULL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Some expensive resource shared by all tests.</span></span><br><span class="line">  <span class="keyword">static</span> T* shared_resource_;</span><br><span class="line">&#125;;</span><br><span class="line">TEST_F(FooTest, Test1)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="comment">// you can refer to shared_resource here </span></span><br><span class="line">&#125;</span><br><span class="line">TEST_F(FooTest, Test2)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="comment">// you can refer to shared_resource here </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="TestCase事件"><a href="#TestCase事件" class="headerlink" title="TestCase事件"></a>TestCase事件</h2><p>TestCase事件是挂在每个案例执行前后的，实现方式和上面的几乎一样，不过需要实现的是<code>SetUp</code>方法和<code>TearDown</code>方法。</p>
+<h1 id="参数化"><a href="#参数化" class="headerlink" title="参数化"></a>参数化</h1><p>在设计测试案例时，经常需要考虑给被测函数传入不同的值的情况，GTEST提供了一个灵活的参数化测试的方案。如果我们测试一个素数检查函数<code>bool isPrime(int )</code>，我们需要进行以下的步骤：</p>
+<ol>
+<li>添加一个类，继承<code>testing::TestWithParam&lt;T&gt;</code>，其中T就是你需要参数化的参数类型，比如上面的例子，需要参数化一个<code>int</code>型的参数。</li>
+<li>告诉gtest拿到参数的值后，具体做些什么样的测试。我们需要引入一个新的宏<code>TEST_P</code>，关于这个”P”的含义，可以理解为”parameterized” 或者 “pattern”。</li>
+<li>告诉gtest你想要测试的参数范围是什么，然后使用<code>INSTANTIATE_TEST_CASE_P</code>宏来告诉gtest你要测试的参数范围。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">INSTANTIATE_TEST_CASE_P(TrueReturn, IsPrimeParamTest, testing::Values(3, 5, 11, 23, 17));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>第一个参数是测试案例的前缀，可以任意取。</p>
+</li>
+<li><p>第二个参数是测试案例的名称，需要和之前定义的参数化的类的名称相同，</p>
+</li>
+<li><p>第三个参数是可以理解为参数生成器，上面的例子使用test::Values表示使用括号内的参数。Google提供了一系列的参数生成的函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Range(begin, end[, step])</td>
+<td>范围在begin~end之间，步长为step，不包括end</td>
+</tr>
+<tr>
+<td>Values(v1, v2, …, vN)</td>
+<td>v1,v2到vN的值</td>
+</tr>
+<tr>
+<td>ValuesIn(container) and ValuesIn(begin,end)</td>
+<td>从一个C类型的数组或是STL容器，或是迭代器中取值</td>
+</tr>
+<tr>
+<td>Bool()</td>
+<td>取false 和 true 两个值</td>
+</tr>
+<tr>
+<td>Combine(g1, g2, …, gN)</td>
+<td>它将g1,g2,…gN进行排列组合，g1,g2,…gN本身是一个参数生成器，每次分别从g1,g2,..gN中各取出一个值，组合成一个元组(Tuple)作为一个参数</td>
+</tr>
+</tbody></table>
+<p>综上所述，我们可以完成对素数检查函数的测试：</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IsPrimeParamTest</span> :</span> <span class="keyword">public</span>::testing::TestWithParam&lt;<span class="keyword">int</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">TEST_P(IsPrimeParamTest, HandleTrueReturn)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> n =  GetParam();</span><br><span class="line">    EXPECT_TRUE(IsPrime(n));</span><br><span class="line">&#125;</span><br><span class="line">INSTANTIATE_TEST_CASE_P(TrueReturn, IsPrimeParamTest, testing::Values(<span class="number">3</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">23</span>, <span class="number">17</span>));</span><br></pre></td></tr></table></figure>
+
+<p>gtest还提供了应付各种不同类型的数据时的方案，以及参数化类型的方案。这里不详细展开。</p>
+<h1 id="参数列表"><a href="#参数列表" class="headerlink" title="参数列表"></a>参数列表</h1><table>
+<thead>
+<tr>
+<th><strong>命令行参数</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–gtest_list_tests</td>
+<td>使用这个参数时，将不会执行里面的测试案例，而是输出一个案例的列表。</td>
+</tr>
+<tr>
+<td>–gtest_filter</td>
+<td>对执行的测试案例进行过滤，支持通配符</td>
+</tr>
+<tr>
+<td>–gtest_also_run_disabled_tests</td>
+<td>执行案例时，同时也执行被置为无效的测试案例。</td>
+</tr>
+<tr>
+<td>–gtest_repeat=[COUNT]</td>
+<td>设置案例重复运行次数</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>执行案例时，同时也执行被置为无效的测试案例。关于设置测试案例无效的方法为：</p>
+<p>在测试案例名称或测试名称中添加DISABLED前缀，比如：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">&gt;TEST(FooTest, DISABLED_DoesAbc) &#123;  &#125;</span><br><span class="line">  </span><br><span class="line">&gt;<span class="class"><span class="keyword">class</span> <span class="title">DISABLED_BarTest</span> :</span> <span class="keyword">public</span> testing::Test &#123;  &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;TEST_F(DISABLED_BarTest, DoesXyz) &#123;  &#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>[玩转Google开源C++单元测试框架Google Test系列(gtest)之一 - 初识gtest - CoderZh - 博客园 (cnblogs.com)](<a href="https://www.cnblogs.com/coderzh/archive/2009/04/06/1426758.html" target="_blank" rel="noopener">https://www.cnblogs.com/coderzh/archive/2009/04/06/1426758.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+        <tag>gtest</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ros2与dds</title>
+    <url>/2022/02/13/ROS/ros2dds/</url>
+    <content><![CDATA[<p>在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour/Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。</p>
+<p>使用端到端中间件（如DDS）的好处是，需要维护的代码要少得多，而且中间件的行为和确切规格已经被提炼成文档。有了这种具体的规范，第三方可以审查、审计和实施具有不同程度的互操作性的中间件。此外，如果要从现有的库中构建一个新的中间件，无论如何都需要创建这种类型的规范。</p>
+<a id="more"></a>
+
+<h1 id="什么是DDS"><a href="#什么是DDS" class="headerlink" title="什么是DDS"></a>什么是DDS</h1><p><strong>DDS提供了一个发布-订阅的传输（publish-subscribe transport ）</strong>，这与ROS1的发布-订阅的传输非常相似。<strong>DDS使用OMG定义的接口描述语言进行消息定义和序列化。</strong></p>
+<p>类似于ROS的服务系统，DDS有一个请求-响应式的传输（request-response style transport）。</p>
+<p><strong>DDS提供的发现系统是一个分布式发现系统，这允许任何两个DDS程序进行通信，而不需要像ROS1 master那样的工具。</strong>这使得系统的容错性和灵活性更高。同时，DDS不需要使用动态发现机制，多个DDS供应商提供了静态发现的选项。</p>
+<h2 id="技术上的可行性"><a href="#技术上的可行性" class="headerlink" title="技术上的可行性"></a>技术上的可行性</h2><p>DDSI-RTPS非常灵活，允许它用于可靠的、高水平的系统集成以及嵌入式设备上的实时应用。<strong>由于DDS默认是在UDP上实现的，它不依赖于可靠的传输或硬件进行通信。这意味着DDS必须重新发明可靠性轮子（基本上是TCP加上或减去一些功能），但作为交换，DDS获得了便携性和对行为的控制。通过对几个可靠性参数的控制，即DDS所说的服务质量（QoS），为控制通信行为提供了最大的灵活性。</strong></p>
+<blockquote>
+<p>尽管DDS的默认实现是通过UDP，并且只要求传输的功能水平，但有供应商支持通过TCP实现的DDS。</p>
+</blockquote>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><strong>eProsima的FastRTPS实现可在GitHub上获得</strong>，并获得LGPL许可。</p>
+<p><a href="https://github.com/eProsima/Fast-RTPS" target="_blank" rel="noopener">https://github.com/eProsima/Fast-RTPS</a></p>
+<h1 id="构建在DDS上的ROS"><a href="#构建在DDS上的ROS" class="headerlink" title="构建在DDS上的ROS"></a>构建在DDS上的ROS</h1><p>ROS 2将在DDS之上提供一个类似于ROS 1的接口，为大多数ROS用户隐藏了DDS的复杂性，但又为那些有极端用例或需要与其他现有DDS系统集成的用户单独提供对底层DDS实现的访问。</p>
+<p><img src="http://image.onebug.tech/202203062322524.png" alt="DDS and ROS API Layout"></p>
+<h2 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h2><p>DDS将完全取代ROS1基于主控的发现系统。ROS需要利用DDS的API来获取信息，如所有节点的列表，所有主题的列表，以及它们是如何连接的。对这些信息的访问将被隐藏在ROS定义的API后面，防止用户直接调用DDS。</p>
+<p><strong>DDS发现系统的优点是，在默认情况下，它是完全分布式的，不会出现中央故障点</strong>。DDS还允许用户在其发现系统中定义元数据，这将使ROS能够在发布-订阅上附加更高级别的概念。</p>
+<h2 id="发布-订阅传输"><a href="#发布-订阅传输" class="headerlink" title="发布-订阅传输"></a>发布-订阅传输</h2><p>DDSI-RTPS协议取代ROS的TCPROS和UDPROS线协议，用于发布/订阅。DDS API为ROS的典型发布/订阅模式提供了更多的参与者。 </p>
+<p>DDS的主题（Topic）与ROS中的主题概念相似。</p>
+<p><strong>DDS中的参与者（Participant）ROS的节点（Node）概念相似</strong>。但在DDS中，节点会被表示为独立的代码对象，既不是订阅者也不是发布者。</p>
+<p><img src="http://image.onebug.tech/202202241356558.svg+xml" alt="../../_images/dds_domain.svg"></p>
+<h2 id="高效的传输方式"><a href="#高效的传输方式" class="headerlink" title="高效的传输方式"></a>高效的传输方式</h2><p>在ROS 1中，没有一个标准的共享内存传输，如果有任务需要比本地主机TCP更快的速度时，可以使用Nodelets。Nodelets允许发布者和订阅者通过传递<code>boost::shared_ptrs</code>到消息中来共享数据。这种进程内的通信几乎比任何进程间的通信选项更快，而且与网络发布-订阅实现向兼容。</p>
+<p><strong>大多数DDS供应商会以透明的方式使用共享内存来优化消息流量（甚至在进程之间），只在离开Localhost时使用有线协议和UDP套接字</strong>，这为DDS提供了相当大的性能提升。</p>
+<h2 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h2><p>目前的ROS消息定义有很大的价值。格式很简单，而且消息本身已经在机器人社区的多年使用中得到了发展。当前ROS代码的大部分语义内容都是由这些消息的结构和内容驱动的，因此保留消息的格式和内存表示法具有很大的价值。为了达到这个目标，<strong>ROS 2保留ROS 1那样的消息定义和内存表示</strong>。</p>
+<p>因此，<strong>ROS 1的<code>.msg</code>文件将继续使用，.msg文件会被转换为<code>.idl</code>文件，以便它们可以被DDS使用。</strong>ROS 2 API将专门处理内存中的<code>.msg</code>风格的消息对象，并在发布前将其转换为.idl对象。</p>
+<p><img src="http://image.onebug.tech/202203062320088.png" alt="Message Generation Diagram"></p>
+<blockquote>
+<p>在每次调用发布时将消息逐字段转换为另一种对象类型的似乎是一个巨大的性能问题，但实验表明，与序列化的成本相比，这种转换的成本是微不足道的。</p>
+</blockquote>
+<h2 id="语言支持"><a href="#语言支持" class="headerlink" title="语言支持"></a>语言支持</h2><p>DDS供应商通常至少提供C、C++和Java的实现，因为这些语言的API是由DDS规范明确定义的。ROS 2系统的其中一个目标是提供功能完整的C语言API，开发人员可以将C语言的API包装成一个像Python、Ruby和Lisp这样的语言。</p>
+<h2 id="DDS实现的依赖"><a href="#DDS实现的依赖" class="headerlink" title="DDS实现的依赖"></a>DDS实现的依赖</h2><p>ROS 2的目标之一是要尽量减少依赖的数量，以提高可移植性并保持精简的依赖列表。</p>
+<p>DDS的一个亮点，就是依赖的精简。DDS的C语言实现只依赖于系统库，C++实现只依赖于C++03编译器，而Java实现只需要JVM和Java标准库。在Ubuntu和OS X上，OpenSplice（其中一种实现）的C、C++、Java和C#实现加在一起，其大小不到3兆字节，并且没有其他依赖性。就依赖的精简性而言，DDS非常有吸引力。</p>
+]]></content>
+      <categories>
+        <category>ROS2</category>
+      </categories>
+      <tags>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker使用大全</title>
+    <url>/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/</url>
+    <content><![CDATA[<h1 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>以Ubuntu为例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg \</span><br><span class="line">    lsb-release</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</span><br><span class="line"><span class="built_in">echo</span> \</span><br><span class="line">  <span class="string">"deb [arch=<span class="variable">$(dpkg --print-architecture)</span> signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \</span></span><br><span class="line"><span class="string">  <span class="variable">$(lsb_release -cs)</span> stable"</span> | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="image"><a href="#image" class="headerlink" title="image"></a>image</h3><p>Docker的镜像可以理解是一个只读的静态模板，类似于我们在装系统的时候用到的.iso文件。</p>
+<p>列出所有的镜像：<code>docker images</code>。</p>
+<h3 id="container"><a href="#container" class="headerlink" title="container"></a>container</h3><p><strong>container</strong>则相对而言是一个动态的instance，可以理解为我们装好了系统之后的某一台计算机，<strong>可以开机，关机，重启等等，也可以被格式化（删除）</strong>。</p>
+<p>列出所有的容器：<code>docker ps -a</code>。</p>
+<h3 id="Repository"><a href="#Repository" class="headerlink" title="Repository"></a>Repository</h3><p>我们可以把构建后的镜像上传到服务器，从而可以在任何地方使用到这个镜像。一个Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。我们可以通过<code>&lt;仓库名&gt;:&lt;标签&gt;</code>的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以<code>latest</code>作为默认标签。<br>最常使用的Registry公开服务是官方的<a href="http://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a> ，这也是默认的Registry，并拥有大量的高质量的官方镜像。</p>
+<p>登录Registry：<code>docker login xxx</code></p>
+<h2 id="基本的使用"><a href="#基本的使用" class="headerlink" title="基本的使用"></a>基本的使用</h2><h3 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h3><ul>
+<li>拉取镜像：<code>docker pull ubuntu</code></li>
+<li>推送镜像：<code>docker push username/repository:tag</code></li>
+</ul>
+<h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><ul>
+<li><p>运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run  -d --name <span class="string">"test"</span> -it ubuntu bash</span><br><span class="line"><span class="comment">#-d 后台运行</span></span><br><span class="line">docker <span class="built_in">exec</span> -it <span class="built_in">test</span> bash</span><br><span class="line"><span class="comment">#-i 以交互模式运行容器</span></span><br><span class="line"><span class="comment">#-t 为容器重新分配一个伪输入终端</span></span><br><span class="line"><span class="comment">#在容器内执行/bin/bash命令</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>停止：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker stop <span class="built_in">test</span></span><br><span class="line"><span class="comment">#删除</span></span><br><span class="line"><span class="comment">#docker rm test</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>恢复（物理机关机重启）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker start <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>提交当前container为新镜像：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker commit <span class="built_in">test</span>  dev:cpp</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h1><h2 id="定制镜像"><a href="#定制镜像" class="headerlink" title="定制镜像"></a>定制镜像</h2><h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><p>镜像的定制实际上就是定制每一层所添加的配置、文件。如果我们可以把每一层修改、安装、构建、操作的命令都写入一个脚本，用这个脚本来构建、定制镜像，这个脚本就是 Dockerfile。Dockerfile 是一个文本文件，其内包含了一条条的指令(Instruction)，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> debian:stretch</span><br><span class="line"><span class="comment">#FROM 就是指定 基础镜像，因此一个 Dockerfile 中 FROM 是必备的指令，并且必须是第一条指令。</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">set</span> -x; buildDeps=<span class="string">'gcc libc6-dev make wget'</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y <span class="variable">$buildDeps</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; wget -O redis.tar.gz <span class="string">"http://download.redis.io/releases/redis-5.0.3.tar.gz"</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; mkdir -p /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis install \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/* \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm redis.tar.gz \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -r /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get purge -y --auto-remove <span class="variable">$buildDeps</span></span></span><br><span class="line"><span class="comment">#同一目的的所有命令应该归到同一层</span></span><br><span class="line"><span class="comment">#镜像构建时，一定要确保每一层只添加真正需要添加的东西，任何无关的东西都应该清理掉。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><p>在 <code>Dockerfile</code> 文件所在目录执行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker build -t redes:v3 . </span><br><span class="line"># . 是在指定上下文的目录，COPY需要用到该设置</span><br></pre></td></tr></table></figure>
+
+<h3 id="Dockerfile指令"><a href="#Dockerfile指令" class="headerlink" title="Dockerfile指令"></a>Dockerfile指令</h3><p><code>Dockerfile</code> 功能很强大，它提供了十多个指令：</p>
+<ul>
+<li><code>COPY  &lt;源路径&gt;... &lt;目标路径&gt;</code>：指令将从构建上下文目录中 <code>&lt;源路径&gt;</code> 的文件复制到新的一层的镜像内的 <code>&lt;目标路径&gt;</code> 位置</li>
+<li><code>ENV &lt;key1&gt;=&lt;value1&gt; &lt;key2&gt;=&lt;value2&gt;...</code>：设置环境变量</li>
+<li><code>CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]</code>：<code>CMD</code> 指令就是用于指定默认的容器主进程的启动命令的。容器内没有后台服务的概念，我们应该直接执行可执行文件，并且要求以前台形式运行。</li>
+</ul>
+<p>其他命令详见<a href="https://yeasy.gitbook.io/docker_practice/image/dockerfile" target="_blank" rel="noopener">Dockerfile 指令详解 - Docker —— 从入门到实践 (gitbook.io)</a></p>
+<h2 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h2><h3 id="noroot运行"><a href="#noroot运行" class="headerlink" title="noroot运行"></a>noroot运行</h3><p>vscode 使用docker必须设置rootless运行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dockerd-rootless-setuptool.sh install</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
+<li><p>安装Remote - Containers拓展</p>
+</li>
+<li><p>在远程服务器上启动Container</p>
+</li>
+<li><p>VSCode连接远程服务器</p>
+</li>
+<li><p>选择对应Container-&gt;Attach</p>
+</li>
+<li><p>打开文件夹</p>
+</li>
+</ul>
+<h2 id="高级配置"><a href="#高级配置" class="headerlink" title="高级配置"></a>高级配置</h2><h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><h4 id="网络模式"><a href="#网络模式" class="headerlink" title="网络模式"></a>网络模式</h4><p>Docker使用Linux桥接，在宿主机虚拟一个Docker容器网桥(docker0)，Docker启动一个容器时会根据Docker网桥的网段分配给容器一个IP地址，称为Container-IP，同时Docker网桥是每个容器的默认网关。因为在<strong>同一宿主机内的容器都接入同一个网桥</strong>，这样容器之间就能够通过容器的Container-IP直接通信。</p>
+<p>除了默认的bridge模式，docker还提供三种网络模式</p>
+<table>
+<thead>
+<tr>
+<th>网络模式</th>
+<th>配置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bridge模式</td>
+<td>–net=bridge</td>
+<td>（<strong>默认</strong>为该模式）此模式会为每一个容器分配、设置IP等，并将容器连接到一个docker0虚拟网桥。<img src="http://image.onebug.tech/202203062318773.png" alt="docker网络模式-bridge"></td>
+</tr>
+<tr>
+<td>host模式</td>
+<td>–net=host</td>
+<td>容器和宿主机共享网络空间。<img src="http://image.onebug.tech/202203062318271.png" alt="docker网络模式-host"></td>
+</tr>
+<tr>
+<td>container模式</td>
+<td>–net=container:NAME_or_ID</td>
+<td>容器和另外一个容器共享网络空间。<img src="http://image.onebug.tech/202203062317644.png" alt="docker网络模式container"></td>
+</tr>
+<tr>
+<td>none模式</td>
+<td>–net=none</td>
+<td>该模式关闭了容器的网络功能。</td>
+</tr>
+</tbody></table>
+<h4 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h4><p>默认的Docker网桥是宿主机虚拟出来的，并不是真实存在的网络设备，外部网络是无法寻址到的，这也意味着外部网络无法通过访问到容器。如果容器希望外部访问能够访问到，可以通过映射容器端口到宿主主机（端口映射），即<code>docker run</code>创建容器时候通过 <code>-p</code> 或 <code>-P</code> 参数来启用，访问容器的时候就通过 [宿主机IP]:[容器端口] 访问容器。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -p 8000:80 -it ubuntu /bin/bash</span><br><span class="line"><span class="comment">#将容器的80端口映射到宿主机的8000端口上</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h3><p>Docker容器启动的时候，如果要挂载宿主机的一个目录，可以用<code>-v</code>参数指定，冒号<code>:</code>前面的目录是宿主机目录，后面的目录是容器内目录。这样在容器启动后，容器内会自动创建<code>/project</code>的目录。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-v &#x2F;src&#x2F;myproject:&#x2F;project</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h3><ul>
+<li>设置工作目录：<code>-w /project</code></li>
+<li>退出时清除自动清理容器内部的文件系统：<code>-rm</code></li>
+</ul>
+<h2 id="在Docker中使用GPU"><a href="#在Docker中使用GPU" class="headerlink" title="在Docker中使用GPU"></a>在Docker中使用GPU</h2><h3 id="安装nvidia-docker2"><a href="#安装nvidia-docker2" class="headerlink" title="安装nvidia-docker2"></a>安装nvidia-docker2</h3><blockquote>
+<p>需要提前在宿主机上安装显卡<a href="https://www.nvidia.com/Download/index.aspx?lang=en-us" target="_blank" rel="noopener">驱动</a></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#设置NVIDIA Container Toolkit</span><br><span class="line">distribution&#x3D;$(. &#x2F;etc&#x2F;os-release;echo $ID$VERSION_ID) \</span><br><span class="line">   &amp;&amp; curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;gpgkey | sudo apt-key add - \</span><br><span class="line">   &amp;&amp; curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;$distribution&#x2F;nvidia-docker.list | sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;nvidia-docker.list</span><br><span class="line">#安装nvidia-docker2</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y nvidia-docker2</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><p>添加<code>--gpus &lt;device id&gt;</code>参数，<code>--gpus all</code>使用所有的GPU。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo docker run --rm --gpus all nvidia&#x2F;cuda:11.0-base nvidia-smi</span><br></pre></td></tr></table></figure>
+
+<h2 id="GUI程序的运行"><a href="#GUI程序的运行" class="headerlink" title="GUI程序的运行"></a>GUI程序的运行</h2><h3 id="X11"><a href="#X11" class="headerlink" title="X11"></a>X11</h3><p>最简单的方法是暴露宿主机的xhost，这样容器就可以通过对X11的unix套接字的读写间接渲染程序界面。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#调整Xserver权限</span></span><br><span class="line">xhost +<span class="built_in">local</span>:root</span><br><span class="line"><span class="comment">#docker 设置</span></span><br><span class="line">docker run -it \</span><br><span class="line">    --env=<span class="string">"DISPLAY"</span> \</span><br><span class="line">    --env=<span class="string">"QT_X11_NO_MITSHM=1"</span> \</span><br><span class="line">    --volume=<span class="string">"/tmp/.X11-unix:/tmp/.X11-unix:rw"</span> \</span><br><span class="line">    osrf/ros:indigo-desktop-full \</span><br><span class="line">    rqt</span><br></pre></td></tr></table></figure>
+
+<h3 id="x11docker"><a href="#x11docker" class="headerlink" title="x11docker"></a>x11docker</h3><p>x11docker允许在Linux容器中运行图形化桌面应用程序。</p>
+<ul>
+<li><p>安装：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -fsSL https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;mviereck&#x2F;x11docker&#x2F;master&#x2F;x11docker | sudo bash -s -- --update</span><br><span class="line">docker pull x11docker&#x2F;xserver</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">x11docker IMAGENAME [COMMAND]</span><br></pre></td></tr></table></figure>
+
+<p>可选参数：</p>
+<ul>
+<li><code>--desktop</code>提供桌面环境。</li>
+<li><code>--gpu</code>用于硬件加速</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener">Install Docker Engine | Docker Documentation</a></p>
+<p><a href="https://yeasy.gitbook.io/docker_practice/" target="_blank" rel="noopener">前言 - Docker —— 从入门到实践 (gitbook.io)</a></p>
+<p><a href="https://segmentfault.com/a/1190000040335988" target="_blank" rel="noopener">docker四种网络模式 - SegmentFault 思否</a></p>
+<p><a href="https://github.com/NVIDIA/nvidia-docker" target="_blank" rel="noopener">NVIDIA/nvidia-docker: Build and run Docker containers leveraging NVIDIA GPUs (github.com)</a></p>
+<p><a href="http://wiki.ros.org/docker/Tutorials/GUI" target="_blank" rel="noopener">docker/Tutorials/GUI - ROS Wiki</a></p>
+<p><a href="https://github.com/mviereck/x11docker" target="_blank" rel="noopener">mviereck/x11docker: Run GUI applications and desktops in docker and podman containers. Focus on security. (github.com)</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>gpu</tag>
+        <tag>gui</tag>
       </tags>
   </entry>
 </search>

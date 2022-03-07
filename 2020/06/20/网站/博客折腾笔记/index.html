@@ -29,13 +29,15 @@
 <meta property="og:site_name" content="冰冻橘子的自留地">
 <meta property="og:description" content="之前有拿Wordpress搭建过博客，感觉还是太臃肿了，Hexo这种静态博客刚好满足我的需求，记录下折腾博客的过程。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://image.onebug.tech/202203071106734.png">
 <meta property="article:published_time" content="2020-06-19T16:59:03.839Z">
-<meta property="article:modified_time" content="2021-11-16T14:28:16.234Z">
+<meta property="article:modified_time" content="2022-03-07T03:19:51.361Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="测试">
 <meta property="article:tag" content="博客">
 <meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://image.onebug.tech/202203071106734.png">
 
 <link rel="canonical" href="http://blog.onebug.tech/2020/06/20/%E7%BD%91%E7%AB%99/%E5%8D%9A%E5%AE%A2%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/">
 
@@ -238,7 +240,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-16 22:28:16" itemprop="dateModified" datetime="2021-11-16T22:28:16+08:00">2021-11-16</time>
+                <time title="修改时间：2022-03-07 11:19:51" itemprop="dateModified" datetime="2022-03-07T11:19:51+08:00">2022-03-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -371,6 +373,29 @@
 
 <p>编辑<code>nginx.conf</code>，开启gzip</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">gzip on;</span><br><span class="line"></span><br><span class="line">#设置允许压缩的页面最小字节数;</span><br><span class="line">gzip_min_length 1k;</span><br><span class="line"></span><br><span class="line">#设置压缩缓冲区大小，此处设置为4个16K内存作为压缩结果流缓存</span><br><span class="line">gzip_buffers 4 16k;</span><br><span class="line"></span><br><span class="line">#压缩版本</span><br><span class="line">gzip_http_version 1.1;</span><br><span class="line"></span><br><span class="line">#设置压缩比率，最小为1，处理速度快，传输速度慢；9为最大压缩比，处理速度慢，传输速度快;级别越高，压缩就越小</span><br><span class="line">gzip_comp_level 6;</span><br><span class="line"></span><br><span class="line">#制定压缩的类型</span><br><span class="line">gzip_types text/plain application/x-javascript text/css application/xml text/javascript application/javascript application/json image/svg+xml application/x-font-ttf font/opentype image/x-icon;</span><br><span class="line"></span><br><span class="line">#配置禁用gzip条件，支持正则。此处表示ie6及以下不启用gzip（因为ie低版本不支持）</span><br><span class="line">gzip_disable "MSIE [1-6]\.";</span><br><span class="line"></span><br><span class="line">#选择支持vary header；改选项可以让前端的缓存服务器缓存经过gzip压缩的页面; 这个可以不写</span><br><span class="line">gzip_vary on;</span><br></pre></td></tr></table></figure>
+<h4 id="七牛云"><a href="#七牛云" class="headerlink" title="七牛云"></a>七牛云</h4><ul>
+<li><p>下载qshell：<a href="https://developer.qiniu.com/kodo/1302/qshell#2" target="_blank" rel="noopener">命令行工具(qshell)_实用工具_对象存储 - 七牛开发者中心 (qiniu.com)</a></p>
+</li>
+<li><p>添加账户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qshell account [&lt;AccessKey&gt; &lt;SecretKey&gt; &lt;Name 任意字符串&gt;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加储存空间<code>lbshexoblog</code>，并做一些配置：</p>
+<p><img src="http://image.onebug.tech/202203071106734.png" alt="image-20220307110635645"></p>
+</li>
+<li><p>在<code>hexo</code>目录配置文件 <code>qiniu.conf</code>：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "src_dir": "D:\\hexoblog\\public",</span><br><span class="line">   //储存空间名称</span><br><span class="line">  "bucket": "lbshexoblog",</span><br><span class="line">  //是否覆盖  </span><br><span class="line">  "overwrite" : true,</span><br><span class="line">  //检查新增文件</span><br><span class="line">  "rescan_local" : true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加CDN刷新文件列表<code>cdnrefresh.txt</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;www.onebug.tech</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>上传命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">qshell qupload qiniuyun.conf</span><br><span class="line">qshell cdnrefresh -i cdnrefresh.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一键部署，修改<code>package.json</code>，今后只需要 <code>npm run publish</code> 就可实现一键打包部署到七牛云</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;scripts&quot;:&#123;</span><br><span class="line">    &quot;publish&quot;: &quot;hexo g &amp;&amp; qshell qupload qiniuyun.conf &amp;&amp; qshell cdnrefresh -i cdnrefresh.txt&quot;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 <h2 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h2><p>图床能够很大程度降低响应延迟，本站使用的是七牛云作为图床。可以参考该<a href="https://www.imczw.com/post/tech/hexo-on-oss-all.html" target="_blank" rel="noopener">文章</a>搭建。</p>
 
     </div>
@@ -458,7 +483,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期准备"><span class="nav-number">1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo"><span class="nav-number">2.</span> <span class="nav-text">Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo-的安装"><span class="nav-number">2.1.</span> <span class="nav-text">Hexo 的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-next-主题"><span class="nav-number">2.2.</span> <span class="nav-text">安装 next 主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-next-主题（可选）"><span class="nav-number">2.3.</span> <span class="nav-text">配置 next 主题（可选）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选择-Scheme"><span class="nav-number">2.3.1.</span> <span class="nav-text">选择 Scheme</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置头像"><span class="nav-number">2.3.2.</span> <span class="nav-text">设置头像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加标签页"><span class="nav-number">2.3.3.</span> <span class="nav-text">添加标签页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加分类页"><span class="nav-number">2.3.4.</span> <span class="nav-text">添加分类页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#侧边栏社交链接"><span class="nav-number">2.3.5.</span> <span class="nav-text">侧边栏社交链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置字体"><span class="nav-number">2.3.6.</span> <span class="nav-text">设置字体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置动画效果"><span class="nav-number">2.3.7.</span> <span class="nav-text">设置动画效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置页脚"><span class="nav-number">2.3.8.</span> <span class="nav-text">设置页脚</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置版权信息"><span class="nav-number">2.3.9.</span> <span class="nav-text">设置版权信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载进度条"><span class="nav-number">2.3.10.</span> <span class="nav-text">加载进度条</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显示当前浏览进度"><span class="nav-number">2.3.11.</span> <span class="nav-text">显示当前浏览进度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#搜索功能"><span class="nav-number">2.3.12.</span> <span class="nav-text">搜索功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#百度统计"><span class="nav-number">2.3.13.</span> <span class="nav-text">百度统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CDN"><span class="nav-number">2.3.14.</span> <span class="nav-text">CDN</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博客部署"><span class="nav-number">3.</span> <span class="nav-text">博客部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖"><span class="nav-number">3.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署"><span class="nav-number">3.2.</span> <span class="nav-text">部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#git服务器"><span class="nav-number">3.2.1.</span> <span class="nav-text">git服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nginx服务器"><span class="nav-number">3.2.2.</span> <span class="nav-text">nginx服务器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图床"><span class="nav-number">4.</span> <span class="nav-text">图床</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期准备"><span class="nav-number">1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo"><span class="nav-number">2.</span> <span class="nav-text">Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo-的安装"><span class="nav-number">2.1.</span> <span class="nav-text">Hexo 的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-next-主题"><span class="nav-number">2.2.</span> <span class="nav-text">安装 next 主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-next-主题（可选）"><span class="nav-number">2.3.</span> <span class="nav-text">配置 next 主题（可选）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选择-Scheme"><span class="nav-number">2.3.1.</span> <span class="nav-text">选择 Scheme</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置头像"><span class="nav-number">2.3.2.</span> <span class="nav-text">设置头像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加标签页"><span class="nav-number">2.3.3.</span> <span class="nav-text">添加标签页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加分类页"><span class="nav-number">2.3.4.</span> <span class="nav-text">添加分类页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#侧边栏社交链接"><span class="nav-number">2.3.5.</span> <span class="nav-text">侧边栏社交链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置字体"><span class="nav-number">2.3.6.</span> <span class="nav-text">设置字体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置动画效果"><span class="nav-number">2.3.7.</span> <span class="nav-text">设置动画效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置页脚"><span class="nav-number">2.3.8.</span> <span class="nav-text">设置页脚</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置版权信息"><span class="nav-number">2.3.9.</span> <span class="nav-text">设置版权信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载进度条"><span class="nav-number">2.3.10.</span> <span class="nav-text">加载进度条</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显示当前浏览进度"><span class="nav-number">2.3.11.</span> <span class="nav-text">显示当前浏览进度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#搜索功能"><span class="nav-number">2.3.12.</span> <span class="nav-text">搜索功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#百度统计"><span class="nav-number">2.3.13.</span> <span class="nav-text">百度统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CDN"><span class="nav-number">2.3.14.</span> <span class="nav-text">CDN</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博客部署"><span class="nav-number">3.</span> <span class="nav-text">博客部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖"><span class="nav-number">3.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署"><span class="nav-number">3.2.</span> <span class="nav-text">部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#git服务器"><span class="nav-number">3.2.1.</span> <span class="nav-text">git服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nginx服务器"><span class="nav-number">3.2.2.</span> <span class="nav-text">nginx服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#七牛云"><span class="nav-number">3.2.3.</span> <span class="nav-text">七牛云</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图床"><span class="nav-number">4.</span> <span class="nav-text">图床</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -474,20 +499,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -527,7 +552,7 @@
 <div class="copyright">
   
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

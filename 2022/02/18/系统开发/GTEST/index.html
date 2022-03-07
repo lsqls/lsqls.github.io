@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="基本使用安装Hello WorldTODO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GTEST">
+<meta property="og:url" content="http://blog.onebug.tech/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/index.html">
+<meta property="og:site_name" content="冰冻橘子的自留地">
+<meta property="og:description" content="基本使用安装Hello WorldTODO">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-07T01:55:27.503Z">
+<meta property="article:author" content="冰冻橘子">
+<meta property="article:tag" content="测试">
+<meta property="article:tag" content="gtest">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blog.onebug.tech/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>GTEST | 冰冻橘子的自留地</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ec0ec36f2e4e18c1a7fb6e0d2ac19053";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="冰冻橘子的自留地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">冰冻橘子的自留地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GTEST
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-18 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-18T00:00:00+08:00">2022-02-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-07 09:55:27" itemprop="dateModified" datetime="2022-03-07T09:55:27+08:00">2022-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p><strong>TODO</strong></p>
+<a id="more"></a>
+
+<h1 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h1><p>gtest中，断言的宏根据作用效果可以理解为分为两类：</p>
+<ul>
+<li><code>ASSERT_*</code> 系列的断言，当检查点失败时，退出当前函数（注意：并非退出当前案例）。</li>
+<li><code>_EXPECT_*</code> 系列的断言，当检查点失败时，继续往下执行。</li>
+</ul>
+<p>根据作用区分，可以分为几大类</p>
+<ul>
+<li><p>数值类型数据检查：<code>ASSERT_EQ(expected, actual)</code></p>
+</li>
+<li><p>布尔值检查：<code>ASSERT_TRUE(condition)</code></p>
+</li>
+<li><p>字符串检查：<code>ASSERT_STREQ（str1,str2）</code></p>
+</li>
+<li><p>异常检查：<code>ASSERT_THROW(</code><em>statement</em>, <em>exception_type</em><code>)</code></p>
+</li>
+<li><p>浮点型检查：<code>ASSERT_NEAR(val1, val2, abs_error)</code></p>
+</li>
+<li><p>类型检查</p>
+</li>
+<li><p>…….</p>
+</li>
+</ul>
+<p>GTEST中包含非常丰富的断言，这里不赘述，详细内容请参考<a href="https://google.github.io/googletest/reference/assertions.html" target="_blank" rel="noopener">Assertions Reference | GoogleTest</a>。</p>
+<blockquote>
+<p>如果你对自动输出的出错信息不满意的话，你还可以通过操作符<code>&lt;&lt;</code>将一些自定义的信息输出，通常，这对于调试或是对一些检查点的补充说明来说，非常有用！</p>
+<p>EXPECT_EQ(x[i], y[i]) &lt;&lt; “Vectors x and y differ at index “ &lt;&lt; i;</p>
+</blockquote>
+<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>gtest提供了多种事件机制，非常方便我们在案例之前或之后做一些操作。</p>
+<h2 id="全局事件"><a href="#全局事件" class="headerlink" title="全局事件"></a>全局事件</h2><p>全局的时间在所有案例前后执行。要实现全局事件，必须写一个类，继承<code>testing::Environment</code>类，实现里面的<code>SetUp</code>和<code>TearDown</code>方法。</p>
+<ol>
+<li><p><code>SetUp()</code>方法在所有案例执行前执行</p>
+</li>
+<li><p><code>TearDown()</code>方法在所有案例执行后执行</p>
+</li>
+</ol>
+<p>我们还需要告诉gtest添加这个全局事件，我们需要在main函数中通过<code>testing::AddGlobalTestEnvironment</code>方法将事件挂进来，也就是说，我们可以写很多个这样的类，然后将他们的事件都挂上去。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooEnvironment</span> :</span> <span class="keyword">public</span> testing::Environment</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">SetUp</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Foo FooEnvironment SetUP"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">TearDown</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Foo FooEnvironment TearDown"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, _TCHAR* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    testing::AddGlobalTestEnvironment(<span class="keyword">new</span> FooEnvironment);</span><br><span class="line">    testing::InitGoogleTest(&amp;argc, argv);</span><br><span class="line">    <span class="keyword">return</span> RUN_ALL_TESTS();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="TestSuite事件"><a href="#TestSuite事件" class="headerlink" title="TestSuite事件"></a>TestSuite事件</h2><p>我们需要写一个类，继承<code>testing::Test</code>，然后实现<code>SetUpTestCase()</code>和<code>TearDownTestCase()</code>两个静态方法。在编写测试案例时，我们需要使用<code>TEST_F</code>这个宏，第一个参数必须是我们上面<strong>类的名字</strong>，代表一个TestSuite。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooTest</span> :</span> <span class="keyword">public</span> testing::Test &#123;</span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetUpTestCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    shared_resource_ = <span class="keyword">new</span> ;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TearDownTestCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">delete</span> shared_resource_;</span><br><span class="line">    shared_resource_ = <span class="literal">NULL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Some expensive resource shared by all tests.</span></span><br><span class="line">  <span class="keyword">static</span> T* shared_resource_;</span><br><span class="line">&#125;;</span><br><span class="line">TEST_F(FooTest, Test1)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="comment">// you can refer to shared_resource here </span></span><br><span class="line">&#125;</span><br><span class="line">TEST_F(FooTest, Test2)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="comment">// you can refer to shared_resource here </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="TestCase事件"><a href="#TestCase事件" class="headerlink" title="TestCase事件"></a>TestCase事件</h2><p>TestCase事件是挂在每个案例执行前后的，实现方式和上面的几乎一样，不过需要实现的是<code>SetUp</code>方法和<code>TearDown</code>方法。</p>
+<h1 id="参数化"><a href="#参数化" class="headerlink" title="参数化"></a>参数化</h1><p>在设计测试案例时，经常需要考虑给被测函数传入不同的值的情况，GTEST提供了一个灵活的参数化测试的方案。如果我们测试一个素数检查函数<code>bool isPrime(int )</code>，我们需要进行以下的步骤：</p>
+<ol>
+<li>添加一个类，继承<code>testing::TestWithParam&lt;T&gt;</code>，其中T就是你需要参数化的参数类型，比如上面的例子，需要参数化一个<code>int</code>型的参数。</li>
+<li>告诉gtest拿到参数的值后，具体做些什么样的测试。我们需要引入一个新的宏<code>TEST_P</code>，关于这个”P”的含义，可以理解为”parameterized” 或者 “pattern”。</li>
+<li>告诉gtest你想要测试的参数范围是什么，然后使用<code>INSTANTIATE_TEST_CASE_P</code>宏来告诉gtest你要测试的参数范围。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSTANTIATE_TEST_CASE_P(TrueReturn, IsPrimeParamTest, testing::Values(3, 5, 11, 23, 17));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>第一个参数是测试案例的前缀，可以任意取。</p>
+</li>
+<li><p>第二个参数是测试案例的名称，需要和之前定义的参数化的类的名称相同，</p>
+</li>
+<li><p>第三个参数是可以理解为参数生成器，上面的例子使用test::Values表示使用括号内的参数。Google提供了一系列的参数生成的函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Range(begin, end[, step])</td>
+<td>范围在begin~end之间，步长为step，不包括end</td>
+</tr>
+<tr>
+<td>Values(v1, v2, …, vN)</td>
+<td>v1,v2到vN的值</td>
+</tr>
+<tr>
+<td>ValuesIn(container) and ValuesIn(begin,end)</td>
+<td>从一个C类型的数组或是STL容器，或是迭代器中取值</td>
+</tr>
+<tr>
+<td>Bool()</td>
+<td>取false 和 true 两个值</td>
+</tr>
+<tr>
+<td>Combine(g1, g2, …, gN)</td>
+<td>它将g1,g2,…gN进行排列组合，g1,g2,…gN本身是一个参数生成器，每次分别从g1,g2,..gN中各取出一个值，组合成一个元组(Tuple)作为一个参数</td>
+</tr>
+</tbody></table>
+<p>综上所述，我们可以完成对素数检查函数的测试：</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IsPrimeParamTest</span> :</span> <span class="keyword">public</span>::testing::TestWithParam&lt;<span class="keyword">int</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">TEST_P(IsPrimeParamTest, HandleTrueReturn)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> n =  GetParam();</span><br><span class="line">    EXPECT_TRUE(IsPrime(n));</span><br><span class="line">&#125;</span><br><span class="line">INSTANTIATE_TEST_CASE_P(TrueReturn, IsPrimeParamTest, testing::Values(<span class="number">3</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">23</span>, <span class="number">17</span>));</span><br></pre></td></tr></table></figure>
+
+<p>gtest还提供了应付各种不同类型的数据时的方案，以及参数化类型的方案。这里不详细展开。</p>
+<h1 id="参数列表"><a href="#参数列表" class="headerlink" title="参数列表"></a>参数列表</h1><table>
+<thead>
+<tr>
+<th><strong>命令行参数</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–gtest_list_tests</td>
+<td>使用这个参数时，将不会执行里面的测试案例，而是输出一个案例的列表。</td>
+</tr>
+<tr>
+<td>–gtest_filter</td>
+<td>对执行的测试案例进行过滤，支持通配符</td>
+</tr>
+<tr>
+<td>–gtest_also_run_disabled_tests</td>
+<td>执行案例时，同时也执行被置为无效的测试案例。</td>
+</tr>
+<tr>
+<td>–gtest_repeat=[COUNT]</td>
+<td>设置案例重复运行次数</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>执行案例时，同时也执行被置为无效的测试案例。关于设置测试案例无效的方法为：</p>
+<p>在测试案例名称或测试名称中添加DISABLED前缀，比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;TEST(FooTest, DISABLED_DoesAbc) &#123;  &#125;</span><br><span class="line">  </span><br><span class="line">&gt;<span class="class"><span class="keyword">class</span> <span class="title">DISABLED_BarTest</span> :</span> <span class="keyword">public</span> testing::Test &#123;  &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;TEST_F(DISABLED_BarTest, DoesXyz) &#123;  &#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>[玩转Google开源C++单元测试框架Google Test系列(gtest)之一 - 初识gtest - CoderZh - 博客园 (cnblogs.com)](<a href="https://www.cnblogs.com/coderzh/archive/2009/04/06/1426758.html" target="_blank" rel="noopener">https://www.cnblogs.com/coderzh/archive/2009/04/06/1426758.html</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 测试</a>
+              <a href="/tags/gtest/" rel="tag"><i class="fa fa-tag"></i> gtest</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/13/ROS/ROS2/" rel="prev" title="ROS2备忘录">
+      <i class="fa fa-chevron-left"></i> ROS2备忘录
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/" rel="next" title="git备忘录">
+      git备忘录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本使用"><span class="nav-number">1.</span> <span class="nav-text">基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-World"><span class="nav-number">1.2.</span> <span class="nav-text">Hello World</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#断言"><span class="nav-number">2.</span> <span class="nav-text">断言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#事件"><span class="nav-number">3.</span> <span class="nav-text">事件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#全局事件"><span class="nav-number">3.1.</span> <span class="nav-text">全局事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TestSuite事件"><span class="nav-number">3.2.</span> <span class="nav-text">TestSuite事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TestCase事件"><span class="nav-number">3.3.</span> <span class="nav-text">TestCase事件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参数化"><span class="nav-number">4.</span> <span class="nav-text">参数化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参数列表"><span class="nav-number">5.</span> <span class="nav-text">参数列表</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="冰冻橘子"
+      src="http://image.onebug.tech/avatar.png">
+  <p class="site-author-name" itemprop="name">冰冻橘子</p>
+  <div class="site-description" itemprop="description">渺沧海之一粟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lsqls" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lsqls" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:764666894@qq.com" title="邮箱 → mailto:764666894@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>邮箱</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备17073808-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冰冻橘子</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

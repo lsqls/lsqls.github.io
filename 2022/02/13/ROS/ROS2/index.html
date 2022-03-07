@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="安装ubuntu 20.04 1sudo apt install ros-rolling-desktop   http:&#x2F;&#x2F;docs.ros.org&#x2F;en&#x2F;rolling&#x2F;Installation&#x2F;Ubuntu-Install-Debians.html#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS2备忘录">
+<meta property="og:url" content="http://blog.onebug.tech/2022/02/13/ROS/ROS2/index.html">
+<meta property="og:site_name" content="冰冻橘子的自留地">
+<meta property="og:description" content="安装ubuntu 20.04 1sudo apt install ros-rolling-desktop   http:&#x2F;&#x2F;docs.ros.org&#x2F;en&#x2F;rolling&#x2F;Installation&#x2F;Ubuntu-Install-Debians.html#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://image.onebug.tech/202203062319650.gif">
+<meta property="og:image" content="http://image.onebug.tech/202203062319555.gif">
+<meta property="og:image" content="http://image.onebug.tech/202203062319254.gif">
+<meta property="og:image" content="http://image.onebug.tech/202203062319960.png">
+<meta property="og:image" content="http://image.onebug.tech/202203062319118.gif">
+<meta property="og:image" content="http://image.onebug.tech/202203062319686.gif">
+<meta property="og:image" content="http://image.onebug.tech/202203062319195.gif">
+<meta property="article:published_time" content="2022-02-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-07T01:55:45.042Z">
+<meta property="article:author" content="冰冻橘子">
+<meta property="article:tag" content="ros">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://image.onebug.tech/202203062319650.gif">
+
+<link rel="canonical" href="http://blog.onebug.tech/2022/02/13/ROS/ROS2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ROS2备忘录 | 冰冻橘子的自留地</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ec0ec36f2e4e18c1a7fb6e0d2ac19053";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="冰冻橘子的自留地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">冰冻橘子的自留地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2022/02/13/ROS/ROS2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS2备忘录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-13T00:00:00+08:00">2022-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-07 09:55:45" itemprop="dateModified" datetime="2022-03-07T09:55:45+08:00">2022-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ROS2/" itemprop="url" rel="index"><span itemprop="name">ROS2</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>ubuntu 20.04</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ros-rolling-desktop</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a href="http://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html#" target="_blank" rel="noopener">http://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html#</a></p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h1><ul>
+<li>“workspace”是一个ROS术语，表示在系统上使用ROS2进行开发的位置。</li>
+<li>核心ROS工作区被称为”underlay“，本地ROS工作区称为 ”overlays“</li>
+</ul>
+<p>环境设置脚本自启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;source &#x2F;opt&#x2F;ros&#x2F;rolling&#x2F;setup.bash&quot; &gt;&gt; ~&#x2F;.bashrc</span><br><span class="line">printenv | grep -i ROS</span><br></pre></td></tr></table></figure>
+
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p>ROS图（ROS graph）是一个由ROS 2元素组成的网络，在同一时间一起处理数据。图中包括所有的可执行文件和它们之间的联系。</p>
+<p>ROS中的每个节点（ROS Node）应该只负责单一模块化的用途（例如，一个节点负责控制车轮马达，一个节点负责控制激光测距仪等等）。每个节点可以通过主题（topics）、服务（services）、行动（actions）或参数（parameters）向其他节点发送和接收数据。</p>
+<p><img src="http://image.onebug.tech/202203062319650.gif" alt="../_images/Nodes-TopicandService.gif"></p>
+<p>一个完整的机器人系统由许多协同工作的节点组成。在ROS2中，单个可执行文件（C++程序、Python程序等）可以包含一个或多个节点。</p>
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><p><code>ros2 run &lt;package_name&gt; &lt;executable_name&gt;</code>：从包启动可执行文件。</p>
+</li>
+<li><p><code>ros2 node list</code>：显示所有运行节点的名称，当您想要与一个节点交互时，或者当您的系统运行许多节点并且需要跟踪它们时，这尤其有用。</p>
+</li>
+<li><p>使用<code>Remapping</code>可以指定节点属性（如节点名称、主题名称、服务名称等）</p>
+<p>例：<code>ros2 run turtlesim turtlesim_node --ros-args --remap __node:=my_turtle</code></p>
+</li>
+<li><p><code>ros2 node info &lt;node_name&gt;</code>  ：知道了节点的名称，可以通过该命令访问有关节点的更多信息</p>
+</li>
+</ul>
+<h2 id="Topics"><a href="#Topics" class="headerlink" title="Topics"></a>Topics</h2><p>ROS2将复杂系统分解为许多模块化节点。主题（Topics）是ROS图的一个重要元素，充当节点交换消息的总线。</p>
+<p><img src="http://image.onebug.tech/202203062319555.gif" alt="../../_images/Topic-SinglePublisherandSingleSubscriber.gif"></p>
+<p>节点可以将数据发布到任意数量的主题，同时可以订阅任意数量的主题。主题是在节点之间以及系统不同部分之间移动数据的主要方式之一。也就是说，主题可以不只是点对点的交流，它可以是一对多、多对一或多对多。</p>
+<p><img src="http://image.onebug.tech/202203062319254.gif" alt="../../_images/Topic-MultiplePublisherandMultipleSubscriber.gif"></p>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p>我们可以使用<code>rqt_graph</code>来可视化不断变化的节点和主题，以及它们之间的连接。</p>
+<p><img src="http://image.onebug.tech/202203062319960.png" alt="../../_images/rqt_graph.png"></p>
+<p>上图描述了<code>/turtlesim</code>节点和<code>/teleop_turtle</code>节点如何通过主题相互通信。<code>/teleop_turtle</code>节点将数据发布到<code>/turtle1/cmd_vel</code>主题中（输入用于移动海龟的按键），并且<code>/turtlesim</code>节点订阅该主题以接收数据。</p>
+<h3 id="命令-1"><a href="#命令-1" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><p><code>ros2 topic list</code>：返回系统中当前活动的所有主题的列表</p>
+</li>
+<li><p><code>ros2 topic list -t</code>：将返回相同的主题列表，返回结果括号中的是主题类型。</p>
+</li>
+<li><p><code>ros2 topic echo &lt;topic_name&gt;</code>：查看主题上正在发布的数据</p>
+</li>
+<li><p><code>ros2 topic info &lt;topic_name&gt;</code>：返回主题信息（有多少个订阅者，有多少个发布者）</p>
+</li>
+<li><p><code>ros2 interface show &lt;type&gt;</code>：节点使用消息通过主题发送数据。发布者和订阅者必须发送和接收相同类型的消息才能进行通信。如果主题<code>/turtle1/cmd_vel</code>的类型是<code>geometry_msgs/msg/Twist</code>，这意味着在<code>geometry_msgs</code>包中有一个名为<code>Twist</code>的消息。<code>ros2 interface show &lt;msg type&gt;</code>可以查看该类型的细节，假设得到的类型细节为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Vector3  linear</span><br><span class="line">        float64 x</span><br><span class="line">        float64 y</span><br><span class="line">        float64 z</span><br><span class="line">Vector3  angular</span><br><span class="line">        float64 x</span><br><span class="line">        float64 y</span><br><span class="line">        float64 z</span><br></pre></td></tr></table></figure>
+
+<p>这说明<code>/turtlesim</code>节点需要一条消息，该消息包含两个向量，即<code>linear</code>向量和<code>angular</code>向量，每个向量包含三个元素。</p>
+</li>
+<li><p><code>ros2 topic pub &lt;topic_name&gt; &lt;msg_type&gt; &#39;&lt;args&gt;&#39;</code>：使用该命令直接将数据发布到主题，前提是数据的具体结构。需要注意的是，<code>args</code>需要符合YAML语法规范，例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 topic pub --once  &#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;msg&#x2F;Twist &quot;&#123;linear: &#123;x: 2.0, y: 0.0, z: 0.0&#125;, angular: &#123;x: 0.0, y: 0.0, z: 1.8&#125;&#125;&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>ros2 topic hz</code>：查看数据发布的速率</p>
+</li>
+</ul>
+<h2 id="Services"><a href="#Services" class="headerlink" title="Services"></a>Services</h2><p>服务（services）是ROS图中节点的另一种通信方法。服务基于呼叫和响应（call-and-response）模型，而不是发布者-订阅者（publisher-subscriber）模型。虽然主题允许节点订阅数据流并获得持续更新，但服务仅在客户端专门调用时提供数据。</p>
+<p><img src="http://image.onebug.tech/202203062319118.gif" alt="../../_images/Service-SingleServiceClient.gif"></p>
+<p><img src="http://image.onebug.tech/202203062319686.gif" alt="../../_images/Service-MultipleServiceClient.gif"></p>
+<h3 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><code>ros2 service list</code>：返回系统中当前活动的所有服务的列表</li>
+<li><code>ros2 service type &lt;service_name&gt;</code>：服务类型的定义与主题类型类似，只是服务类型有两部分：一部分用于请求，另一部分用于响应。假如一个服务的类型是<code>std_srvs/srv/Empty</code>，这表示服务调用在发出请求时不发送数据，在接收响应时不接收数据。</li>
+<li><code>ros2 service find &lt;service_type&gt;</code>：查找特定类型的所有服务</li>
+<li><code>ros2 interface show &lt;service_type_name&gt;</code> ：返回类型的具体结构，返回结果的<code>---</code>将请求结构（上面）与响应结构（下面）分开。</li>
+<li><code>ros2 service call &lt;service_name&gt; &lt;service_type&gt; &lt;arguments&gt;</code>：调用服务</li>
+</ul>
+<h2 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters"></a>Parameters</h2><p>参数（parameters）是节点的配置值。节点可以将参数存储为整数、浮点、布尔、字符串和列表。在ROS2中，每个节点维护自己的参数。所有参数都可动态重新配置，并基于ROS 2服务构建。</p>
+<h3 id="命令-3"><a href="#命令-3" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><p><code>ros2 param list</code>：查看参数列表</p>
+</li>
+<li><p><code>ros2 param get &lt;node_name&gt; &lt;parameter_name&gt;</code>：查看参数类型和当前值</p>
+</li>
+<li><p><code>ros2 param set &lt;node_name&gt; &lt;parameter_name&gt; &lt;value&gt;</code>：设置参数值</p>
+</li>
+<li><p><code>ros2 param dump &gt; dumpfile</code>：查看节点的所有当前参数值</p>
+</li>
+<li><p><code>ros2 param load &lt;node_name&gt; &lt;parameter_file&gt;</code>：将参数从文件加载到当前运行的节点</p>
+<blockquote>
+<p>只读参数只能在启动前修改，启动后修改有可能会出现问题（比如一些QOS参数）</p>
+</blockquote>
+</li>
+<li><p><code>ros2 run &lt;package_name&gt; &lt;executable_name&gt; --ros-args --params-file &lt;file_name&gt;</code>：在启动时加载参数</p>
+</li>
+</ul>
+<h2 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h2><p>Actions是ROS 2中的通信类型之一，用于长时间运行的任务。它们由三部分组成：目标（goal）、反馈（feedback）和结果（result）</p>
+<p><img src="http://image.onebug.tech/202203062319195.gif" alt="../_images/Action-SingleActionClient.gif"></p>
+<p>行动建立在主题和服务之上，功能与服务类似，只是可以取消操作。它们还提供稳定的反馈，而不是像服务一样只返回单一响应。</p>
+<p>Actions使用client-server模型，类似于pubsub模型（在主题教程中介绍）。“action client”节点向“action server”节点发送目标，后者确认目标并返回反馈流和结果。</p>
+<h3 id="命令-4"><a href="#命令-4" class="headerlink" title="命令"></a>命令</h3><ul>
+<li><p><code>ros2 action list -t</code></p>
+</li>
+<li><p><code>ros2 action info</code></p>
+</li>
+<li><p><code>ros2 interface show</code>：返回结果被<code>---</code>分为三个部分，分别是目标请求的结构、结果的结构、反馈的结构。</p>
+</li>
+<li><p><code>ros2 action send_goal &lt;action_name&gt; &lt;action_type&gt; &lt;values&gt; --feedback</code> ：发生Action中的目标</p>
+</li>
+</ul>
+<h1 id="工作区"><a href="#工作区" class="headerlink" title="工作区"></a>工作区</h1><p>工作区（workspace）是包含ROS2包的目录。</p>
+<ul>
+<li><p>source ROS2环境：<code>source /opt/ros/rolling/setup.bash</code></p>
+</li>
+<li><p>创建目录：最好是为每个新的工作区创建新目录，并将所有的包都放置在<code>src</code>文件夹</p>
+<blockquote>
+<p>在<code>src</code>文件夹执行：<code>git clone https://github.com/ros/ros_tutorials.git -b rolling-devel</code></p>
+</blockquote>
+</li>
+<li><p>在构建工作区之前，您需要解析包依赖关系：<code>rosdep install -i --from-path src --rosdistro rolling -y</code>，</p>
+<blockquote>
+<p>找不到<code>rosdep</code>命令 的解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;apt install python3-rosdep2</span><br></pre></td></tr></table></figure>
+<p><code>rosdep update</code> 失败的解决方法：</p>
+<ol>
+<li>使用rosdepc：<a href="https://www.guyuehome.com/35408" target="_blank" rel="noopener">本文之后，世上再无rosdep更新失败问题！如果有….小鱼就… - 古月居 (guyuehome.com)</a></li>
+<li>使用github proxy：<a href="https://zhuanlan.zhihu.com/p/392082731" target="_blank" rel="noopener">ROS安装过程中如何解决 rosdep update 命令出现错误 - 知乎 (zhihu.com)</a></li>
+</ol>
+</blockquote>
+</li>
+<li><p>使用<code>colcon</code>构建工作空间：<code>colcon build</code>。<code>build</code>完成后会生成三个文件夹，<code>build</code>、<code>install</code>、<code>log</code>，其中<code>install</code>目录是您的工作区的安装文件所在的位置，您可以使用它来source overlay。</p>
+<blockquote>
+<ul>
+<li><p>找不到<code>colcon</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt install -y \</span><br><span class="line">build-essential \</span><br><span class="line">cmake \</span><br><span class="line">git \</span><br><span class="line">python3-colcon-common-extensions \</span><br><span class="line">python3-flake8 \</span><br><span class="line">python3-pip \</span><br><span class="line">python3-pytest-cov \</span><br><span class="line">python3-rosdep \</span><br><span class="line">python3-setuptools \</span><br><span class="line">python3-vcstool \</span><br><span class="line">wget</span><br><span class="line"><span class="comment"># install some pip packages needed for testing</span></span><br><span class="line">python3 -m pip install -U \</span><br><span class="line">flake8-blind-except \</span><br><span class="line">flake8-builtins \</span><br><span class="line">flake8-class-newline \</span><br><span class="line">flake8-comprehensions \</span><br><span class="line">flake8-deprecated \</span><br><span class="line">flake8-docstrings \</span><br><span class="line">flake8-import-order \</span><br><span class="line">flake8-quotes \</span><br><span class="line">pytest-repeat \</span><br><span class="line">pytest-rerunfailures \</span><br><span class="line">pytest</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>build 失败的解决办法：</p>
+<p>python版本的问题，将<code>/usr/bin</code>中的python3.5执行文件改成其他文件名，只留下python3.8执行文件</p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li><p>source overlay（本地工作区）：<code>. install/local_setup.bash</code></p>
+<blockquote>
+<p>在source本地工作区之前，需要打开一个新的终端，与构建工作区的终端分开，这一点非常重要，不然有可能会产生复杂的问题</p>
+</blockquote>
+</li>
+<li><p>修改本地工作区的代码：</p>
+<ol>
+<li>将<code>~/dev_ws/src/ros_tutorials/turtlesim/src/turtle_frame.cpp</code>中52行的<code>setWindowTitle(&quot;TurtleSim&quot;);</code>修改为<code>setWindowTitle(&quot;MyTurtleSim&quot;);</code></li>
+<li><code>colcon build</code></li>
+<li><code>. install/local_setup.bash</code>、<code>ros2 run turtlesim turtlesim_node</code></li>
+</ol>
+</li>
+</ul>
+<h1 id="ROS包"><a href="#ROS包" class="headerlink" title="ROS包"></a>ROS包</h1><p>包（package）可以被认为是你的ROS 2代码的容器。如果你希望能够安装你的代码或与他人分享，那么你就需要把它组织在一个包里。通过包，你可以发布你的ROS 2工作，并允许其他人轻松构建和使用它。</p>
+<p>ROS 2的软件包创建使用<code>ament</code>作为其构建系统，<code>colcon</code>作为其构建工具，你可以使用官方支持的CMake或Python来创建一个软件包。除了这些，也存在其他的构建方式。</p>
+<blockquote>
+<p>Ament是catkin编译工具的优化迭代版本。 </p>
+<p>colcon是一个构建软件包集合的命令行工具，是ros构建工具catkin_make, catkin_make_isolated, catkin_tools 和ament_tools的迭代版本。</p>
+</blockquote>
+<p>Python构建软件包需要：</p>
+<ul>
+<li><code>package.xml</code>文件，包含关于包的元信息。</li>
+<li><code>setup.py</code>，包含如何安装软件包的说明</li>
+<li><code>setup.cfg</code> 在软件包有可执行文件时是必需的，这样 ros2 run 可以找到它们。</li>
+<li><code>/&lt;package_name&gt;</code> 一个与你的软件包同名的目录，被ROS 2工具用来寻找你的软件包，包含<code>__init__.py</code></li>
+</ul>
+<p>最简单的Python包文件结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">my_package&#x2F;</span><br><span class="line">      setup.py</span><br><span class="line">      package.xml</span><br><span class="line">      resource&#x2F;my_package</span><br></pre></td></tr></table></figure>
+
+<p>CMake构建软件包需要：</p>
+<ul>
+<li><p><code>package.xml</code>文件，包含关于包的元信息。</p>
+</li>
+<li><p><code>CMakeLists.txt</code>文件，描述了如何构建包内的代码</p>
+</li>
+</ul>
+<p>最简单的的C/C++包文件结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">my_package&#x2F;</span><br><span class="line">      setup.py</span><br><span class="line">      package.xml</span><br><span class="line">      resource&#x2F;my_package</span><br></pre></td></tr></table></figure>
+
+<p>一个工作区可以包含你想要的任何数量的包，每个包都在自己的文件夹里。你也可以在一个工作区中拥有不同构建类型的包（CMake、Python等），但是不能有嵌套的包。最好的做法是在你的工作区里有一个src文件夹，并在那里创建你的包。这样可以保持工作区顶层的干净。</p>
+<p>一个典型的工作空间可能看起来是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">workspace_folder&#x2F;</span><br><span class="line">    src&#x2F;</span><br><span class="line">      package_1&#x2F;</span><br><span class="line">          CMakeLists.txt</span><br><span class="line">          package.xml</span><br><span class="line"></span><br><span class="line">      package_2&#x2F;</span><br><span class="line">          setup.py</span><br><span class="line">          package.xml</span><br><span class="line">          resource&#x2F;package_2</span><br><span class="line">      ...</span><br><span class="line">      package_n&#x2F;</span><br><span class="line">          CMakeLists.txt</span><br><span class="line">          package.xml</span><br></pre></td></tr></table></figure>
+
+<p>在ROS 2中创建一个新包的命令语法是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake &lt;package_name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_python &lt;package_name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake --node-name my_node my_package</span><br></pre></td></tr></table></figure>
+
+<p>把软件包放在工作区是一件有意义的事，因为你可以通过在工作区根目录下运行<code>colcon build</code>来一次性构建所有软件包，而不用单独构建每个包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colcon build --packages-select my_package</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>build失败，原因是email和maintainer包含反斜杆，去掉就行</p>
+</blockquote>
+<p>尝试运行，<code>ros2 run my_package my_node</code>会看到输出。修改<code>my_node.cpp</code>，重新编译运行，可以看到不同的输出。</p>
+<h1 id="pubsub模型"><a href="#pubsub模型" class="headerlink" title="pubsub模型"></a>pubsub模型</h1><h2 id="C-版本"><a href="#C-版本" class="headerlink" title="C++版本"></a>C++版本</h2><h2 id="Python版本"><a href="#Python版本" class="headerlink" title="Python版本"></a>Python版本</h2><h3 id="创建包"><a href="#创建包" class="headerlink" title="创建包"></a>创建包</h3><p>在<code>src</code>文件下执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_python py_pubsub</span><br></pre></td></tr></table></figure>
+
+<h3 id="发布Node"><a href="#发布Node" class="headerlink" title="发布Node"></a>发布Node</h3><p>在<code>src/py_pubsub/py_pubsub</code>目录下添加文件<code>publisher_member_function.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rclpy</span><br><span class="line"><span class="keyword">from</span> rclpy.node <span class="keyword">import</span> Node</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># import内置的字符串消息类型，Node使用可以该类型来结构化它在Topic上传递的数据。</span></span><br><span class="line"><span class="keyword">from</span> std_msgs.msg <span class="keyword">import</span> String</span><br><span class="line"></span><br><span class="line"><span class="comment"># MinimalPublisher继承自Node类型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinimalPublisher</span><span class="params">(Node)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 指定node名称是minimal_publisher</span></span><br><span class="line">        super().__init__(<span class="string">'minimal_publisher'</span>)</span><br><span class="line">        <span class="comment"># 声明该节点在一个名为topic的主题上发布String类型的消息,并且 "队列大小 "为10。</span></span><br><span class="line">        self.publisher_ = self.create_publisher(String, <span class="string">'topic'</span>, <span class="number">10</span>)</span><br><span class="line">        timer_period = <span class="number">0.5</span>  <span class="comment"># seconds</span></span><br><span class="line">        <span class="comment"># 创建了一个定时器，它的回调每0.5秒执行一次</span></span><br><span class="line">        self.timer = self.create_timer(timer_period, self.timer_callback)</span><br><span class="line">        self.i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># timer_callback函数创建一个附加有计数器值的消息，并在控制台打印该值。</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">timer_callback</span><span class="params">(self)</span>:</span></span><br><span class="line">        msg = String()</span><br><span class="line">        msg.data = <span class="string">'Hello World: %d'</span> % self.i</span><br><span class="line">        self.publisher_.publish(msg)</span><br><span class="line">        self.get_logger().info(<span class="string">': "%s"'</span> % msg.data)</span><br><span class="line">        self.i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(args=None)</span>:</span></span><br><span class="line">    <span class="comment"># 初始化 rclpy 库</span></span><br><span class="line">    rclpy.init(args=args)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建节点</span></span><br><span class="line">    minimal_publisher = MinimalPublisher()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># "spin"节点，使其回调被调用。</span></span><br><span class="line">    <span class="comment"># </span></span><br><span class="line">    rclpy.spin(minimal_publisher)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Destroy the node explicitly</span></span><br><span class="line">    <span class="comment"># (optional - otherwise it will be done automatically</span></span><br><span class="line">    <span class="comment"># when the garbage collector destroys the node object)</span></span><br><span class="line">    minimal_publisher.destroy_node()</span><br><span class="line">    rclpy.shutdown()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>spin与ROS线程调度：<a href="https://levelup.gitconnected.com/ros-spinning-threading-queuing-aac9c0a793f" target="_blank" rel="noopener">ROS publisher queue, subscriber queue, callback queue and spinner threads tutorial | Level Up Coding (gitconnected.com)</a></p>
+</blockquote>
+<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><p>在<code>package.xml</code>中添加依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;exec_depend&gt;rclpy&lt;&#x2F;exec_depend&gt;</span><br><span class="line">&lt;exec_depend&gt;std_msgs&lt;&#x2F;exec_depend&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加入口点（entry-point）"><a href="#添加入口点（entry-point）" class="headerlink" title="添加入口点（entry point）"></a>添加入口点（entry point）</h3><p>打开<code>setup.py</code>，将信息修改为<code>package.xml</code>中的信息。并修改以下字段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">entry_points&#x3D;&#123;</span><br><span class="line">        &#39;console_scripts&#39;: [</span><br><span class="line">                &#39;talker &#x3D; py_pubsub.publisher_member_function:main&#39;,</span><br><span class="line">        ],</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<h3 id="检查setup-cfg"><a href="#检查setup-cfg" class="headerlink" title="检查setup.cfg"></a>检查setup.cfg</h3><p>一般来说，<code>setup.cfg</code>的文件内容是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[develop]</span><br><span class="line">script_dir=<span class="variable">$base</span>/lib/py_pubsub</span><br><span class="line">[install]</span><br><span class="line">install_scripts=<span class="variable">$base</span>/lib/py_pubsub</span><br></pre></td></tr></table></figure>
+
+<p>含义是告诉 <code>setuptools</code> 要把你的可执行文件放在 <code>lib</code> 中，因为 ros2 run 会在那里寻找可执行文件。</p>
+<h3 id="订阅Node"><a href="#订阅Node" class="headerlink" title="订阅Node"></a>订阅Node</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rclpy</span><br><span class="line"><span class="keyword">from</span> rclpy.node <span class="keyword">import</span> Node</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> std_msgs.msg <span class="keyword">import</span> String</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinimalSubscriber</span><span class="params">(Node)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__(<span class="string">'minimal_subscriber'</span>)</span><br><span class="line">        <span class="comment"># 订阅者的代码不需要定时器,因为一旦收到消息，它的回调就会被调用。</span></span><br><span class="line">        self.subscription = self.create_subscription(</span><br><span class="line">            String,</span><br><span class="line">            <span class="string">'topic'</span>,</span><br><span class="line">            self.listener_callback,</span><br><span class="line">            <span class="number">10</span>)</span><br><span class="line">        self.subscription  <span class="comment"># prevent unused variable warning</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 回调函数简单地将消息的数据打印到控制台。</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">listener_callback</span><span class="params">(self, msg)</span>:</span></span><br><span class="line">        self.get_logger().info(<span class="string">'I heard: "%s"'</span> % msg.data)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(args=None)</span>:</span></span><br><span class="line">    rclpy.init(args=args)</span><br><span class="line"></span><br><span class="line">    minimal_subscriber = MinimalSubscriber()</span><br><span class="line"></span><br><span class="line">    rclpy.spin(minimal_subscriber)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Destroy the node explicitly</span></span><br><span class="line">    <span class="comment"># (optional - otherwise it will be done automatically</span></span><br><span class="line">    <span class="comment"># when the garbage collector destroys the node object)</span></span><br><span class="line">    minimal_subscriber.destroy_node()</span><br><span class="line">    rclpy.shutdown()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>在<code>setup.py</code>添加入口点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'listener = py_pubsub.subscriber_member_function:main'</span>,</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译运行"><a href="#编译运行" class="headerlink" title="编译运行"></a>编译运行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#检查依赖</span></span><br><span class="line">rosdep install -i --from-path src --rosdistro rolling -y</span><br><span class="line"><span class="comment">#编译安装</span></span><br><span class="line">colcon build --packages-select py_pubsub</span><br><span class="line"></span><br><span class="line"><span class="comment">#运行</span></span><br><span class="line"><span class="comment">#terminal1</span></span><br><span class="line">. install/setup.bash</span><br><span class="line">ros2 run py_pubsub talker</span><br><span class="line"></span><br><span class="line"><span class="comment">#terminal2</span></span><br><span class="line">. install/setup.bash</span><br><span class="line">ros2 run py_pubsub listener</span><br></pre></td></tr></table></figure>
+
+<h1 id="CS模型"><a href="#CS模型" class="headerlink" title="CS模型"></a>CS模型</h1><h2 id="C-版本-1"><a href="#C-版本-1" class="headerlink" title="C++版本"></a>C++版本</h2><p>请求和响应的结构由一个<code>.srv</code>文件决定。</p>
+<h3 id="创建包-1"><a href="#创建包-1" class="headerlink" title="创建包"></a>创建包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake cpp_srvcli --dependencies rclcpp example_interfaces</span><br></pre></td></tr></table></figure>
+
+<p>参数<code>--dependencies</code>将自动在<code>package.xml</code>和<code>CMakeLists.txt</code>中添加必要的依赖关系行。</p>
+<p><code>example_interfaces</code>包中有我们将需要的<code>.srv</code>文件的包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int64 a</span><br><span class="line">int64 b</span><br><span class="line">---</span><br><span class="line">int64 sum</span><br></pre></td></tr></table></figure>
+
+<h3 id="服务端Node"><a href="#服务端Node" class="headerlink" title="服务端Node"></a>服务端Node</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"rclcpp/rclcpp.hpp"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"example_interfaces/srv/add_two_ints.hpp"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// add函数将请求中的两个整数相加，并将sum交给响应，同时在控制台打印信息。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;example_interfaces::srv::AddTwoInts::Request&gt; request,</span></span></span><br><span class="line"><span class="function"><span class="params">          <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;example_interfaces::srv::AddTwoInts::Response&gt;      response)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  response-&gt;sum = request-&gt;a + request-&gt;b;</span><br><span class="line">  RCLCPP_INFO(rclcpp::get_logger(<span class="string">"rclcpp"</span>), <span class="string">"Incoming request\na: %ld"</span> <span class="string">" b: %ld"</span>,</span><br><span class="line">                request-&gt;a, request-&gt;b);</span><br><span class="line">  RCLCPP_INFO(rclcpp::get_logger(<span class="string">"rclcpp"</span>), <span class="string">"sending back response: [%ld]"</span>, (<span class="keyword">long</span> <span class="keyword">int</span>)response-&gt;sum);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化ROS 2 C++客户端库</span></span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line">    <span class="comment">// 创建一个名为add_two_ints_server的节点</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;rclcpp::Node&gt; node = rclcpp::Node::make_shared(<span class="string">"add_two_ints_server"</span>);</span><br><span class="line">    <span class="comment">// 为该节点创建一个名为add_two_ints的服务,并与 add 方法绑定</span></span><br><span class="line">  rclcpp::Service&lt;example_interfaces::srv::AddTwoInts&gt;::SharedPtr service =</span><br><span class="line">    node-&gt;create_service&lt;example_interfaces::srv::AddTwoInts&gt;(<span class="string">"add_two_ints"</span>, &amp;add);</span><br><span class="line"></span><br><span class="line">  RCLCPP_INFO(rclcpp::get_logger(<span class="string">"rclcpp"</span>), <span class="string">"Ready to add two ints."</span>);</span><br><span class="line">    <span class="comment">// spin节点，使服务可用。</span></span><br><span class="line"></span><br><span class="line">  rclcpp::spin(node);</span><br><span class="line">  rclcpp::<span class="built_in">shutdown</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加入口"><a href="#添加入口" class="headerlink" title="添加入口"></a>添加入口</h3><p><code>add_executable</code>宏会生成一个可以用ros2 run来运行的执行文件，在<code>CMakeLists.txt</code>中添加以下代码块，以创建一个名为server的可执行文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">add_executable(server src&#x2F;add_two_ints_server.cpp)</span><br><span class="line">ament_target_dependencies(server</span><br><span class="line">rclcpp example_interfaces)</span><br></pre></td></tr></table></figure>
+
+<p>为了让ros2运行能够找到可执行文件，需要在文件末尾添加以下几行，就在<code>ament_package()</code>之前。</p>
+<h3 id="客户端Node"><a href="#客户端Node" class="headerlink" title="客户端Node"></a>客户端Node</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;rclcpp&#x2F;rclcpp.hpp&quot;</span><br><span class="line">#include &quot;example_interfaces&#x2F;srv&#x2F;add_two_ints.hpp&quot;</span><br><span class="line"></span><br><span class="line">#include &lt;chrono&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line">#include &lt;memory&gt;</span><br><span class="line"></span><br><span class="line">using namespace std::chrono_literals;</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv)</span><br><span class="line">&#123;</span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">  if (argc !&#x3D; 3) &#123;</span><br><span class="line">      RCLCPP_INFO(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;usage: add_two_ints_client X Y&quot;);</span><br><span class="line">      return 1;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::shared_ptr&lt;rclcpp::Node&gt; node &#x3D; rclcpp::Node::make_shared(&quot;add_two_ints_client&quot;);</span><br><span class="line">  rclcpp::Client&lt;example_interfaces::srv::AddTwoInts&gt;::SharedPtr client &#x3D;</span><br><span class="line">    node-&gt;create_client&lt;example_interfaces::srv::AddTwoInts&gt;(&quot;add_two_ints&quot;);</span><br><span class="line"></span><br><span class="line">  auto request &#x3D; std::make_shared&lt;example_interfaces::srv::AddTwoInts::Request&gt;();</span><br><span class="line">  request-&gt;a &#x3D; atoll(argv[1]);</span><br><span class="line">  request-&gt;b &#x3D; atoll(argv[2]);</span><br><span class="line"></span><br><span class="line">  while (!client-&gt;wait_for_service(1s)) &#123;</span><br><span class="line">    if (!rclcpp::ok()) &#123;</span><br><span class="line">      RCLCPP_ERROR(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;Interrupted while waiting for the service. Exiting.&quot;);</span><br><span class="line">      return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    RCLCPP_INFO(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;service not available, waiting again...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  auto result &#x3D; client-&gt;async_send_request(request);</span><br><span class="line">  &#x2F;&#x2F; Wait for the result.</span><br><span class="line">  if (rclcpp::spin_until_future_complete(node, result) &#x3D;&#x3D;</span><br><span class="line">    rclcpp::FutureReturnCode::SUCCESS)</span><br><span class="line">  &#123;</span><br><span class="line">    RCLCPP_INFO(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;Sum: %ld&quot;, result.get()-&gt;sum);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    RCLCPP_ERROR(rclcpp::get_logger(&quot;rclcpp&quot;), &quot;Failed to call service add_two_ints&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  rclcpp::shutdown();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一样需要添加入口</p>
+<h3 id="编译运行-1"><a href="#编译运行-1" class="headerlink" title="编译运行"></a>编译运行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">colcon build --packages-select cpp_srvcli</span><br><span class="line"></span><br><span class="line">. install&#x2F;setup.bash</span><br><span class="line">ros2 run cpp_srvcli server</span><br><span class="line"></span><br><span class="line">. install&#x2F;setup.bash</span><br><span class="line">ros2 run cpp_srvcli client 2 3</span><br></pre></td></tr></table></figure>
+
+<h2 id="Python版本-1"><a href="#Python版本-1" class="headerlink" title="Python版本"></a>Python版本</h2><h1 id="自定义的msg和srv"><a href="#自定义的msg和srv" class="headerlink" title="自定义的msg和srv"></a>自定义的msg和srv</h1><h2 id="创建包-2"><a href="#创建包-2" class="headerlink" title="创建包"></a>创建包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake tutorial_interfaces</span><br></pre></td></tr></table></figure>
+
+<p>注意必须是一个CMake包。</p>
+<p>好的做法是将<code>.msg</code>和<code>.srv</code>文件放在软件包内各自的目录中。</p>
+<h2 id="创建自定义的definitions"><a href="#创建自定义的definitions" class="headerlink" title="创建自定义的definitions"></a>创建自定义的definitions</h2><p>注意<code>msg</code>、<code>srv</code>、<code>src</code>文件夹在同一层级</p>
+<ul>
+<li><p><code>Num.msg</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int64 num</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>AddThreeInts.srv</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int64 a</span><br><span class="line">int64 b</span><br><span class="line">int64 c</span><br><span class="line">---</span><br><span class="line">int64 sum</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>CMakeLists.txt</code>：将定义的接口转换为特定语言的代码（如C++和Python），以便它们可以在这些语言中使用，需要添加以下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find_package(rosidl_default_generators REQUIRED)</span><br><span class="line"></span><br><span class="line">rosidl_generate_interfaces($&#123;PROJECT_NAME&#125;</span><br><span class="line">  &quot;msg&#x2F;Num.msg&quot;</span><br><span class="line">  &quot;srv&#x2F;AddThreeInts.srv&quot;</span><br><span class="line"> )</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>package.xml</code>：接口依赖<code>rosidl_default_generators</code>来生成特定语言的代码，你需要声明对它的依赖性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;build_depend&gt;rosidl_default_generators&lt;&#x2F;build_depend&gt;</span><br><span class="line"></span><br><span class="line">&lt;exec_depend&gt;rosidl_default_runtime&lt;&#x2F;exec_depend&gt;</span><br><span class="line"></span><br><span class="line">&lt;member_of_group&gt;rosidl_interface_packages&lt;&#x2F;member_of_group&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="编译查看"><a href="#编译查看" class="headerlink" title="编译查看"></a>编译查看</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">colcon build --packages-select tutorial_interfaces</span><br><span class="line"></span><br><span class="line">. install&#x2F;setup.bash</span><br><span class="line">ros2 interface show tutorial_interfaces&#x2F;msg&#x2F;Num</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h3><ul>
+<li><p>源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;tutorial_interfaces&#x2F;msg&#x2F;num.hpp&quot;                      # CHANGE</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CMakeLists.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find_package(tutorial_interfaces REQUIRED)                      # CHANGE</span><br><span class="line">ament_target_dependencies(talker rclcpp tutorial_interfaces)    # CHANGE</span><br><span class="line">ament_target_dependencies(listener rclcpp tutorial_interfaces)  # CHANGE</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>package.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;depend&gt;tutorial_interfaces&lt;&#x2F;depend&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><ul>
+<li><p>源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from tutorial_interfaces.msg import Num                        # CHANGE</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>package.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;exec_depend&gt;tutorial_interfaces&lt;&#x2F;exec_depend&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="拓展ROS-2的接口-interface"><a href="#拓展ROS-2的接口-interface" class="headerlink" title="拓展ROS 2的接口(interface)"></a>拓展ROS 2的接口(interface)</h1><p>你可以在一个新的接口定义中使用一个现有的接口定义。</p>
+<h1 id="ROS-Launch"><a href="#ROS-Launch" class="headerlink" title="ROS Launch"></a>ROS Launch</h1><h2 id="ROS2-启动系统"><a href="#ROS2-启动系统" class="headerlink" title="ROS2 启动系统"></a>ROS2 启动系统</h2><p>ROS 2中的启动系统负责帮助用户描述其系统的配置，然后按照描述执行。系统的配置包括运行什么程序，在哪里运行，向它们传递什么参数，以及ROS特定的约定，通过给它们各自不同的配置，使整个系统中的组件易于重复使用。它还负责监控启动的进程的状态，并报告和/或对这些进程的状态变化做出反应。</p>
+<p>用Python编写的启动文件可以启动和停止不同的节点，也可以触发各种事件并对其采取行动。提供这个框架的包是 launch_ros，它在下面使用非ROS专用的启动框架。</p>
+<h2 id="编写ROS-2启动文件"><a href="#编写ROS-2启动文件" class="headerlink" title="编写ROS 2启动文件"></a>编写ROS 2启动文件</h2><p>如果你还没有，请确保你浏览了关于如何创建ROS 2软件包的快速入门教程。在ROS 2中创建启动文件的一种方法是使用Python文件，这些文件由ROS 2 CLI工具ros2 launch来执行。我们首先使用<code>ros2 pkg create &lt;pkg-name&gt; --dependencies [deps]</code> 在我们的工作区创建一个ROS 2软件包，并创建一个新的启动目录。</p>
+<h3 id="C-包"><a href="#C-包" class="headerlink" title="C++ 包"></a>C++ 包</h3><p>如果你正在创建一个C++包，我们将只调整CMakeLists.txt文件，添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Install launch files.</span><br><span class="line">install(DIRECTORY</span><br><span class="line">  launch</span><br><span class="line">  DESTINATION share&#x2F;$&#123;PROJECT_NAME&#125;&#x2F;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>到文件的末尾（但在<code>ament_package()</code>之前）。</p>
+<h3 id="编写启动文件"><a href="#编写启动文件" class="headerlink" title="编写启动文件"></a>编写启动文件</h3><p>在你的启动目录中，创建一个后缀为<code>.launch.py</code>的新启动文件。例如：<code>my_script.launch.py</code>。</p>
+<p>你的启动文件应该定义<code>generate_launch_description()</code>，它返回一个 launch.LaunchDescription()，供 <code>ros2 launch</code>使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> launch</span><br><span class="line"><span class="keyword">import</span> launch.actions</span><br><span class="line"><span class="keyword">import</span> launch.substitutions</span><br><span class="line"><span class="keyword">import</span> launch_ros.actions</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_launch_description</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> launch.LaunchDescription([</span><br><span class="line">        launch.actions.DeclareLaunchArgument(</span><br><span class="line">            <span class="string">'node_prefix'</span>,</span><br><span class="line">            default_value=[launch.substitutions.EnvironmentVariable(<span class="string">'USER'</span>), <span class="string">'_'</span>],</span><br><span class="line">            description=<span class="string">'Prefix for node names'</span>),</span><br><span class="line">        launch_ros.actions.Node(</span><br><span class="line">            package=<span class="string">'demo_nodes_cpp'</span>, node_executable=<span class="string">'talker'</span>, output=<span class="string">'screen'</span>,</span><br><span class="line">            node_name=[launch.substitutions.LaunchConfiguration(<span class="string">'node_prefix'</span>), <span class="string">'talker'</span>]),</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 launch my_package script.launch.py</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/ros/" rel="tag"><i class="fa fa-tag"></i> ros</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/13/ROS/ros2dds/" rel="prev" title="ros2与dds">
+      <i class="fa fa-chevron-left"></i> ros2与dds
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/" rel="next" title="GTEST">
+      GTEST <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置环境"><span class="nav-number">2.</span> <span class="nav-text">配置环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">3.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Node"><span class="nav-number">3.1.</span> <span class="nav-text">Node</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令"><span class="nav-number">3.1.1.</span> <span class="nav-text">命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Topics"><span class="nav-number">3.2.</span> <span class="nav-text">Topics</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工具"><span class="nav-number">3.2.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Services"><span class="nav-number">3.3.</span> <span class="nav-text">Services</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parameters"><span class="nav-number">3.4.</span> <span class="nav-text">Parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令-3"><span class="nav-number">3.4.1.</span> <span class="nav-text">命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Actions"><span class="nav-number">3.5.</span> <span class="nav-text">Actions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令-4"><span class="nav-number">3.5.1.</span> <span class="nav-text">命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工作区"><span class="nav-number">4.</span> <span class="nav-text">工作区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ROS包"><span class="nav-number">5.</span> <span class="nav-text">ROS包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pubsub模型"><span class="nav-number">6.</span> <span class="nav-text">pubsub模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-版本"><span class="nav-number">6.1.</span> <span class="nav-text">C++版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python版本"><span class="nav-number">6.2.</span> <span class="nav-text">Python版本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建包"><span class="nav-number">6.2.1.</span> <span class="nav-text">创建包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布Node"><span class="nav-number">6.2.2.</span> <span class="nav-text">发布Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加依赖"><span class="nav-number">6.2.3.</span> <span class="nav-text">添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加入口点（entry-point）"><span class="nav-number">6.2.4.</span> <span class="nav-text">添加入口点（entry point）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查setup-cfg"><span class="nav-number">6.2.5.</span> <span class="nav-text">检查setup.cfg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#订阅Node"><span class="nav-number">6.2.6.</span> <span class="nav-text">订阅Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译运行"><span class="nav-number">6.2.7.</span> <span class="nav-text">编译运行</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CS模型"><span class="nav-number">7.</span> <span class="nav-text">CS模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-版本-1"><span class="nav-number">7.1.</span> <span class="nav-text">C++版本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建包-1"><span class="nav-number">7.1.1.</span> <span class="nav-text">创建包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务端Node"><span class="nav-number">7.1.2.</span> <span class="nav-text">服务端Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加入口"><span class="nav-number">7.1.3.</span> <span class="nav-text">添加入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端Node"><span class="nav-number">7.1.4.</span> <span class="nav-text">客户端Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译运行-1"><span class="nav-number">7.1.5.</span> <span class="nav-text">编译运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python版本-1"><span class="nav-number">7.2.</span> <span class="nav-text">Python版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义的msg和srv"><span class="nav-number">8.</span> <span class="nav-text">自定义的msg和srv</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建包-2"><span class="nav-number">8.1.</span> <span class="nav-text">创建包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建自定义的definitions"><span class="nav-number">8.2.</span> <span class="nav-text">创建自定义的definitions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译查看"><span class="nav-number">8.3.</span> <span class="nav-text">编译查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">8.4.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C"><span class="nav-number">8.4.1.</span> <span class="nav-text">C++</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python"><span class="nav-number">8.4.2.</span> <span class="nav-text">Python</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拓展ROS-2的接口-interface"><span class="nav-number">9.</span> <span class="nav-text">拓展ROS 2的接口(interface)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ROS-Launch"><span class="nav-number">10.</span> <span class="nav-text">ROS Launch</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ROS2-启动系统"><span class="nav-number">10.1.</span> <span class="nav-text">ROS2 启动系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写ROS-2启动文件"><span class="nav-number">10.2.</span> <span class="nav-text">编写ROS 2启动文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-包"><span class="nav-number">10.2.1.</span> <span class="nav-text">C++ 包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写启动文件"><span class="nav-number">10.2.2.</span> <span class="nav-text">编写启动文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-1"><span class="nav-number">10.2.3.</span> <span class="nav-text">使用</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="冰冻橘子"
+      src="http://image.onebug.tech/avatar.png">
+  <p class="site-author-name" itemprop="name">冰冻橘子</p>
+  <div class="site-description" itemprop="description">渺沧海之一粟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lsqls" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lsqls" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:764666894@qq.com" title="邮箱 → mailto:764666894@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>邮箱</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备17073808-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冰冻橘子</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

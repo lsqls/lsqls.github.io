@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。 使用端到端中间件（如DDS）的好处是，需要维护">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ros2与dds">
+<meta property="og:url" content="http://blog.onebug.tech/2022/02/13/ROS/ros2dds/index.html">
+<meta property="og:site_name" content="冰冻橘子的自留地">
+<meta property="og:description" content="在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。 使用端到端中间件（如DDS）的好处是，需要维护">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://image.onebug.tech/202203062322524.png">
+<meta property="og:image" content="http://image.onebug.tech/202202241356558.svg+xml">
+<meta property="og:image" content="http://image.onebug.tech/202203062320088.png">
+<meta property="article:published_time" content="2022-02-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-07T01:55:41.053Z">
+<meta property="article:author" content="冰冻橘子">
+<meta property="article:tag" content="ros">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://image.onebug.tech/202203062322524.png">
+
+<link rel="canonical" href="http://blog.onebug.tech/2022/02/13/ROS/ros2dds/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ros2与dds | 冰冻橘子的自留地</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ec0ec36f2e4e18c1a7fb6e0d2ac19053";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="冰冻橘子的自留地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">冰冻橘子的自留地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2022/02/13/ROS/ros2dds/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ros2与dds
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-13T00:00:00+08:00">2022-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-07 09:55:41" itemprop="dateModified" datetime="2022-03-07T09:55:41+08:00">2022-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ROS2/" itemprop="url" rel="index"><span itemprop="name">ROS2</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour/Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。</p>
+<p>使用端到端中间件（如DDS）的好处是，需要维护的代码要少得多，而且中间件的行为和确切规格已经被提炼成文档。有了这种具体的规范，第三方可以审查、审计和实施具有不同程度的互操作性的中间件。此外，如果要从现有的库中构建一个新的中间件，无论如何都需要创建这种类型的规范。</p>
+<a id="more"></a>
+
+<h1 id="什么是DDS"><a href="#什么是DDS" class="headerlink" title="什么是DDS"></a>什么是DDS</h1><p><strong>DDS提供了一个发布-订阅的传输（publish-subscribe transport ）</strong>，这与ROS1的发布-订阅的传输非常相似。<strong>DDS使用OMG定义的接口描述语言进行消息定义和序列化。</strong></p>
+<p>类似于ROS的服务系统，DDS有一个请求-响应式的传输（request-response style transport）。</p>
+<p><strong>DDS提供的发现系统是一个分布式发现系统，这允许任何两个DDS程序进行通信，而不需要像ROS1 master那样的工具。</strong>这使得系统的容错性和灵活性更高。同时，DDS不需要使用动态发现机制，多个DDS供应商提供了静态发现的选项。</p>
+<h2 id="技术上的可行性"><a href="#技术上的可行性" class="headerlink" title="技术上的可行性"></a>技术上的可行性</h2><p>DDSI-RTPS非常灵活，允许它用于可靠的、高水平的系统集成以及嵌入式设备上的实时应用。<strong>由于DDS默认是在UDP上实现的，它不依赖于可靠的传输或硬件进行通信。这意味着DDS必须重新发明可靠性轮子（基本上是TCP加上或减去一些功能），但作为交换，DDS获得了便携性和对行为的控制。通过对几个可靠性参数的控制，即DDS所说的服务质量（QoS），为控制通信行为提供了最大的灵活性。</strong></p>
+<blockquote>
+<p>尽管DDS的默认实现是通过UDP，并且只要求传输的功能水平，但有供应商支持通过TCP实现的DDS。</p>
+</blockquote>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><strong>eProsima的FastRTPS实现可在GitHub上获得</strong>，并获得LGPL许可。</p>
+<p><a href="https://github.com/eProsima/Fast-RTPS" target="_blank" rel="noopener">https://github.com/eProsima/Fast-RTPS</a></p>
+<h1 id="构建在DDS上的ROS"><a href="#构建在DDS上的ROS" class="headerlink" title="构建在DDS上的ROS"></a>构建在DDS上的ROS</h1><p>ROS 2将在DDS之上提供一个类似于ROS 1的接口，为大多数ROS用户隐藏了DDS的复杂性，但又为那些有极端用例或需要与其他现有DDS系统集成的用户单独提供对底层DDS实现的访问。</p>
+<p><img src="http://image.onebug.tech/202203062322524.png" alt="DDS and ROS API Layout"></p>
+<h2 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h2><p>DDS将完全取代ROS1基于主控的发现系统。ROS需要利用DDS的API来获取信息，如所有节点的列表，所有主题的列表，以及它们是如何连接的。对这些信息的访问将被隐藏在ROS定义的API后面，防止用户直接调用DDS。</p>
+<p><strong>DDS发现系统的优点是，在默认情况下，它是完全分布式的，不会出现中央故障点</strong>。DDS还允许用户在其发现系统中定义元数据，这将使ROS能够在发布-订阅上附加更高级别的概念。</p>
+<h2 id="发布-订阅传输"><a href="#发布-订阅传输" class="headerlink" title="发布-订阅传输"></a>发布-订阅传输</h2><p>DDSI-RTPS协议取代ROS的TCPROS和UDPROS线协议，用于发布/订阅。DDS API为ROS的典型发布/订阅模式提供了更多的参与者。 </p>
+<p>DDS的主题（Topic）与ROS中的主题概念相似。</p>
+<p><strong>DDS中的参与者（Participant）ROS的节点（Node）概念相似</strong>。但在DDS中，节点会被表示为独立的代码对象，既不是订阅者也不是发布者。</p>
+<p><img src="http://image.onebug.tech/202202241356558.svg+xml" alt="../../_images/dds_domain.svg"></p>
+<h2 id="高效的传输方式"><a href="#高效的传输方式" class="headerlink" title="高效的传输方式"></a>高效的传输方式</h2><p>在ROS 1中，没有一个标准的共享内存传输，如果有任务需要比本地主机TCP更快的速度时，可以使用Nodelets。Nodelets允许发布者和订阅者通过传递<code>boost::shared_ptrs</code>到消息中来共享数据。这种进程内的通信几乎比任何进程间的通信选项更快，而且与网络发布-订阅实现向兼容。</p>
+<p><strong>大多数DDS供应商会以透明的方式使用共享内存来优化消息流量（甚至在进程之间），只在离开Localhost时使用有线协议和UDP套接字</strong>，这为DDS提供了相当大的性能提升。</p>
+<h2 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h2><p>目前的ROS消息定义有很大的价值。格式很简单，而且消息本身已经在机器人社区的多年使用中得到了发展。当前ROS代码的大部分语义内容都是由这些消息的结构和内容驱动的，因此保留消息的格式和内存表示法具有很大的价值。为了达到这个目标，<strong>ROS 2保留ROS 1那样的消息定义和内存表示</strong>。</p>
+<p>因此，<strong>ROS 1的<code>.msg</code>文件将继续使用，.msg文件会被转换为<code>.idl</code>文件，以便它们可以被DDS使用。</strong>ROS 2 API将专门处理内存中的<code>.msg</code>风格的消息对象，并在发布前将其转换为.idl对象。</p>
+<p><img src="http://image.onebug.tech/202203062320088.png" alt="Message Generation Diagram"></p>
+<blockquote>
+<p>在每次调用发布时将消息逐字段转换为另一种对象类型的似乎是一个巨大的性能问题，但实验表明，与序列化的成本相比，这种转换的成本是微不足道的。</p>
+</blockquote>
+<h2 id="语言支持"><a href="#语言支持" class="headerlink" title="语言支持"></a>语言支持</h2><p>DDS供应商通常至少提供C、C++和Java的实现，因为这些语言的API是由DDS规范明确定义的。ROS 2系统的其中一个目标是提供功能完整的C语言API，开发人员可以将C语言的API包装成一个像Python、Ruby和Lisp这样的语言。</p>
+<h2 id="DDS实现的依赖"><a href="#DDS实现的依赖" class="headerlink" title="DDS实现的依赖"></a>DDS实现的依赖</h2><p>ROS 2的目标之一是要尽量减少依赖的数量，以提高可移植性并保持精简的依赖列表。</p>
+<p>DDS的一个亮点，就是依赖的精简。DDS的C语言实现只依赖于系统库，C++实现只依赖于C++03编译器，而Java实现只需要JVM和Java标准库。在Ubuntu和OS X上，OpenSplice（其中一种实现）的C、C++、Java和C#实现加在一起，其大小不到3兆字节，并且没有其他依赖性。就依赖的精简性而言，DDS非常有吸引力。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/ros/" rel="tag"><i class="fa fa-tag"></i> ros</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/01/ROS/DDS/" rel="prev" title="ROS的基础——DDS">
+      <i class="fa fa-chevron-left"></i> ROS的基础——DDS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/13/ROS/ROS2/" rel="next" title="ROS2备忘录">
+      ROS2备忘录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是DDS"><span class="nav-number">1.</span> <span class="nav-text">什么是DDS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技术上的可行性"><span class="nav-number">1.1.</span> <span class="nav-text">技术上的可行性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">1.2.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构建在DDS上的ROS"><span class="nav-number">2.</span> <span class="nav-text">构建在DDS上的ROS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#发现"><span class="nav-number">2.1.</span> <span class="nav-text">发现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布-订阅传输"><span class="nav-number">2.2.</span> <span class="nav-text">发布-订阅传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高效的传输方式"><span class="nav-number">2.3.</span> <span class="nav-text">高效的传输方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息"><span class="nav-number">2.4.</span> <span class="nav-text">消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语言支持"><span class="nav-number">2.5.</span> <span class="nav-text">语言支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDS实现的依赖"><span class="nav-number">2.6.</span> <span class="nav-text">DDS实现的依赖</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="冰冻橘子"
+      src="http://image.onebug.tech/avatar.png">
+  <p class="site-author-name" itemprop="name">冰冻橘子</p>
+  <div class="site-description" itemprop="description">渺沧海之一粟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lsqls" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lsqls" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:764666894@qq.com" title="邮箱 → mailto:764666894@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>邮箱</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备17073808-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冰冻橘子</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

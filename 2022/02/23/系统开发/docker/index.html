@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="基本安装以Ubuntu为例： 1234567891011121314sudo apt-get remove docker docker-engine docker.io containerd runcsudo apt-get updatesudo apt-get install \    ca-certificates \    curl \    gnupg \    lsb-releasecu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker使用大全">
+<meta property="og:url" content="http://blog.onebug.tech/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/index.html">
+<meta property="og:site_name" content="冰冻橘子的自留地">
+<meta property="og:description" content="基本安装以Ubuntu为例： 1234567891011121314sudo apt-get remove docker docker-engine docker.io containerd runcsudo apt-get updatesudo apt-get install \    ca-certificates \    curl \    gnupg \    lsb-releasecu">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://image.onebug.tech/202203062318773.png">
+<meta property="og:image" content="http://image.onebug.tech/202203062318271.png">
+<meta property="og:image" content="http://image.onebug.tech/202203062317644.png">
+<meta property="article:published_time" content="2022-02-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-07T01:55:02.523Z">
+<meta property="article:author" content="冰冻橘子">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="gpu">
+<meta property="article:tag" content="gui">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://image.onebug.tech/202203062318773.png">
+
+<link rel="canonical" href="http://blog.onebug.tech/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Docker使用大全 | 冰冻橘子的自留地</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ec0ec36f2e4e18c1a7fb6e0d2ac19053";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="冰冻橘子的自留地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">冰冻橘子的自留地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker使用大全
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-23 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-23T00:00:00+08:00">2022-02-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-07 09:55:02" itemprop="dateModified" datetime="2022-03-07T09:55:02+08:00">2022-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>以Ubuntu为例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg \</span><br><span class="line">    lsb-release</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</span><br><span class="line"><span class="built_in">echo</span> \</span><br><span class="line">  <span class="string">"deb [arch=<span class="variable">$(dpkg --print-architecture)</span> signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \</span></span><br><span class="line"><span class="string">  <span class="variable">$(lsb_release -cs)</span> stable"</span> | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="image"><a href="#image" class="headerlink" title="image"></a>image</h3><p>Docker的镜像可以理解是一个只读的静态模板，类似于我们在装系统的时候用到的.iso文件。</p>
+<p>列出所有的镜像：<code>docker images</code>。</p>
+<h3 id="container"><a href="#container" class="headerlink" title="container"></a>container</h3><p><strong>container</strong>则相对而言是一个动态的instance，可以理解为我们装好了系统之后的某一台计算机，<strong>可以开机，关机，重启等等，也可以被格式化（删除）</strong>。</p>
+<p>列出所有的容器：<code>docker ps -a</code>。</p>
+<h3 id="Repository"><a href="#Repository" class="headerlink" title="Repository"></a>Repository</h3><p>我们可以把构建后的镜像上传到服务器，从而可以在任何地方使用到这个镜像。一个Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。我们可以通过<code>&lt;仓库名&gt;:&lt;标签&gt;</code>的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以<code>latest</code>作为默认标签。<br>最常使用的Registry公开服务是官方的<a href="http://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a> ，这也是默认的Registry，并拥有大量的高质量的官方镜像。</p>
+<p>登录Registry：<code>docker login xxx</code></p>
+<h2 id="基本的使用"><a href="#基本的使用" class="headerlink" title="基本的使用"></a>基本的使用</h2><h3 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h3><ul>
+<li>拉取镜像：<code>docker pull ubuntu</code></li>
+<li>推送镜像：<code>docker push username/repository:tag</code></li>
+</ul>
+<h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><ul>
+<li><p>运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run  -d --name <span class="string">"test"</span> -it ubuntu bash</span><br><span class="line"><span class="comment">#-d 后台运行</span></span><br><span class="line">docker <span class="built_in">exec</span> -it <span class="built_in">test</span> bash</span><br><span class="line"><span class="comment">#-i 以交互模式运行容器</span></span><br><span class="line"><span class="comment">#-t 为容器重新分配一个伪输入终端</span></span><br><span class="line"><span class="comment">#在容器内执行/bin/bash命令</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>停止：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker stop <span class="built_in">test</span></span><br><span class="line"><span class="comment">#删除</span></span><br><span class="line"><span class="comment">#docker rm test</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>恢复（物理机关机重启）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>提交当前container为新镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit <span class="built_in">test</span>  dev:cpp</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h1><h2 id="定制镜像"><a href="#定制镜像" class="headerlink" title="定制镜像"></a>定制镜像</h2><h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><p>镜像的定制实际上就是定制每一层所添加的配置、文件。如果我们可以把每一层修改、安装、构建、操作的命令都写入一个脚本，用这个脚本来构建、定制镜像，这个脚本就是 Dockerfile。Dockerfile 是一个文本文件，其内包含了一条条的指令(Instruction)，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> debian:stretch</span><br><span class="line"><span class="comment">#FROM 就是指定 基础镜像，因此一个 Dockerfile 中 FROM 是必备的指令，并且必须是第一条指令。</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">set</span> -x; buildDeps=<span class="string">'gcc libc6-dev make wget'</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y <span class="variable">$buildDeps</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; wget -O redis.tar.gz <span class="string">"http://download.redis.io/releases/redis-5.0.3.tar.gz"</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; mkdir -p /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis install \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/* \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm redis.tar.gz \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -r /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get purge -y --auto-remove <span class="variable">$buildDeps</span></span></span><br><span class="line"><span class="comment">#同一目的的所有命令应该归到同一层</span></span><br><span class="line"><span class="comment">#镜像构建时，一定要确保每一层只添加真正需要添加的东西，任何无关的东西都应该清理掉。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><p>在 <code>Dockerfile</code> 文件所在目录执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t redes:v3 . </span><br><span class="line"># . 是在指定上下文的目录，COPY需要用到该设置</span><br></pre></td></tr></table></figure>
+
+<h3 id="Dockerfile指令"><a href="#Dockerfile指令" class="headerlink" title="Dockerfile指令"></a>Dockerfile指令</h3><p><code>Dockerfile</code> 功能很强大，它提供了十多个指令：</p>
+<ul>
+<li><code>COPY  &lt;源路径&gt;... &lt;目标路径&gt;</code>：指令将从构建上下文目录中 <code>&lt;源路径&gt;</code> 的文件复制到新的一层的镜像内的 <code>&lt;目标路径&gt;</code> 位置</li>
+<li><code>ENV &lt;key1&gt;=&lt;value1&gt; &lt;key2&gt;=&lt;value2&gt;...</code>：设置环境变量</li>
+<li><code>CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]</code>：<code>CMD</code> 指令就是用于指定默认的容器主进程的启动命令的。容器内没有后台服务的概念，我们应该直接执行可执行文件，并且要求以前台形式运行。</li>
+</ul>
+<p>其他命令详见<a href="https://yeasy.gitbook.io/docker_practice/image/dockerfile" target="_blank" rel="noopener">Dockerfile 指令详解 - Docker —— 从入门到实践 (gitbook.io)</a></p>
+<h2 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h2><h3 id="noroot运行"><a href="#noroot运行" class="headerlink" title="noroot运行"></a>noroot运行</h3><p>vscode 使用docker必须设置rootless运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dockerd-rootless-setuptool.sh install</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
+<li><p>安装Remote - Containers拓展</p>
+</li>
+<li><p>在远程服务器上启动Container</p>
+</li>
+<li><p>VSCode连接远程服务器</p>
+</li>
+<li><p>选择对应Container-&gt;Attach</p>
+</li>
+<li><p>打开文件夹</p>
+</li>
+</ul>
+<h2 id="高级配置"><a href="#高级配置" class="headerlink" title="高级配置"></a>高级配置</h2><h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><h4 id="网络模式"><a href="#网络模式" class="headerlink" title="网络模式"></a>网络模式</h4><p>Docker使用Linux桥接，在宿主机虚拟一个Docker容器网桥(docker0)，Docker启动一个容器时会根据Docker网桥的网段分配给容器一个IP地址，称为Container-IP，同时Docker网桥是每个容器的默认网关。因为在<strong>同一宿主机内的容器都接入同一个网桥</strong>，这样容器之间就能够通过容器的Container-IP直接通信。</p>
+<p>除了默认的bridge模式，docker还提供三种网络模式</p>
+<table>
+<thead>
+<tr>
+<th>网络模式</th>
+<th>配置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bridge模式</td>
+<td>–net=bridge</td>
+<td>（<strong>默认</strong>为该模式）此模式会为每一个容器分配、设置IP等，并将容器连接到一个docker0虚拟网桥。<img src="http://image.onebug.tech/202203062318773.png" alt="docker网络模式-bridge"></td>
+</tr>
+<tr>
+<td>host模式</td>
+<td>–net=host</td>
+<td>容器和宿主机共享网络空间。<img src="http://image.onebug.tech/202203062318271.png" alt="docker网络模式-host"></td>
+</tr>
+<tr>
+<td>container模式</td>
+<td>–net=container:NAME_or_ID</td>
+<td>容器和另外一个容器共享网络空间。<img src="http://image.onebug.tech/202203062317644.png" alt="docker网络模式container"></td>
+</tr>
+<tr>
+<td>none模式</td>
+<td>–net=none</td>
+<td>该模式关闭了容器的网络功能。</td>
+</tr>
+</tbody></table>
+<h4 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h4><p>默认的Docker网桥是宿主机虚拟出来的，并不是真实存在的网络设备，外部网络是无法寻址到的，这也意味着外部网络无法通过访问到容器。如果容器希望外部访问能够访问到，可以通过映射容器端口到宿主主机（端口映射），即<code>docker run</code>创建容器时候通过 <code>-p</code> 或 <code>-P</code> 参数来启用，访问容器的时候就通过 [宿主机IP]:[容器端口] 访问容器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8000:80 -it ubuntu /bin/bash</span><br><span class="line"><span class="comment">#将容器的80端口映射到宿主机的8000端口上</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h3><p>Docker容器启动的时候，如果要挂载宿主机的一个目录，可以用<code>-v</code>参数指定，冒号<code>:</code>前面的目录是宿主机目录，后面的目录是容器内目录。这样在容器启动后，容器内会自动创建<code>/project</code>的目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-v &#x2F;src&#x2F;myproject:&#x2F;project</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h3><ul>
+<li>设置工作目录：<code>-w /project</code></li>
+<li>退出时清除自动清理容器内部的文件系统：<code>-rm</code></li>
+</ul>
+<h2 id="在Docker中使用GPU"><a href="#在Docker中使用GPU" class="headerlink" title="在Docker中使用GPU"></a>在Docker中使用GPU</h2><h3 id="安装nvidia-docker2"><a href="#安装nvidia-docker2" class="headerlink" title="安装nvidia-docker2"></a>安装nvidia-docker2</h3><blockquote>
+<p>需要提前在宿主机上安装显卡<a href="https://www.nvidia.com/Download/index.aspx?lang=en-us" target="_blank" rel="noopener">驱动</a></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#设置NVIDIA Container Toolkit</span><br><span class="line">distribution&#x3D;$(. &#x2F;etc&#x2F;os-release;echo $ID$VERSION_ID) \</span><br><span class="line">   &amp;&amp; curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;gpgkey | sudo apt-key add - \</span><br><span class="line">   &amp;&amp; curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;$distribution&#x2F;nvidia-docker.list | sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;nvidia-docker.list</span><br><span class="line">#安装nvidia-docker2</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y nvidia-docker2</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><p>添加<code>--gpus &lt;device id&gt;</code>参数，<code>--gpus all</code>使用所有的GPU。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --rm --gpus all nvidia&#x2F;cuda:11.0-base nvidia-smi</span><br></pre></td></tr></table></figure>
+
+<h2 id="GUI程序的运行"><a href="#GUI程序的运行" class="headerlink" title="GUI程序的运行"></a>GUI程序的运行</h2><h3 id="X11"><a href="#X11" class="headerlink" title="X11"></a>X11</h3><p>最简单的方法是暴露宿主机的xhost，这样容器就可以通过对X11的unix套接字的读写间接渲染程序界面。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#调整Xserver权限</span></span><br><span class="line">xhost +<span class="built_in">local</span>:root</span><br><span class="line"><span class="comment">#docker 设置</span></span><br><span class="line">docker run -it \</span><br><span class="line">    --env=<span class="string">"DISPLAY"</span> \</span><br><span class="line">    --env=<span class="string">"QT_X11_NO_MITSHM=1"</span> \</span><br><span class="line">    --volume=<span class="string">"/tmp/.X11-unix:/tmp/.X11-unix:rw"</span> \</span><br><span class="line">    osrf/ros:indigo-desktop-full \</span><br><span class="line">    rqt</span><br></pre></td></tr></table></figure>
+
+<h3 id="x11docker"><a href="#x11docker" class="headerlink" title="x11docker"></a>x11docker</h3><p>x11docker允许在Linux容器中运行图形化桌面应用程序。</p>
+<ul>
+<li><p>安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;mviereck&#x2F;x11docker&#x2F;master&#x2F;x11docker | sudo bash -s -- --update</span><br><span class="line">docker pull x11docker&#x2F;xserver</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x11docker IMAGENAME [COMMAND]</span><br></pre></td></tr></table></figure>
+
+<p>可选参数：</p>
+<ul>
+<li><code>--desktop</code>提供桌面环境。</li>
+<li><code>--gpu</code>用于硬件加速</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener">Install Docker Engine | Docker Documentation</a></p>
+<p><a href="https://yeasy.gitbook.io/docker_practice/" target="_blank" rel="noopener">前言 - Docker —— 从入门到实践 (gitbook.io)</a></p>
+<p><a href="https://segmentfault.com/a/1190000040335988" target="_blank" rel="noopener">docker四种网络模式 - SegmentFault 思否</a></p>
+<p><a href="https://github.com/NVIDIA/nvidia-docker" target="_blank" rel="noopener">NVIDIA/nvidia-docker: Build and run Docker containers leveraging NVIDIA GPUs (github.com)</a></p>
+<p><a href="http://wiki.ros.org/docker/Tutorials/GUI" target="_blank" rel="noopener">docker/Tutorials/GUI - ROS Wiki</a></p>
+<p><a href="https://github.com/mviereck/x11docker" target="_blank" rel="noopener">mviereck/x11docker: Run GUI applications and desktops in docker and podman containers. Focus on security. (github.com)</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+              <a href="/tags/gpu/" rel="tag"><i class="fa fa-tag"></i> gpu</a>
+              <a href="/tags/gui/" rel="tag"><i class="fa fa-tag"></i> gui</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/21/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/" rel="prev" title="多类型设备时间同步方案">
+      <i class="fa fa-chevron-left"></i> 多类型设备时间同步方案
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本"><span class="nav-number">1.</span> <span class="nav-text">基本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.2.</span> <span class="nav-text">概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#image"><span class="nav-number">1.2.1.</span> <span class="nav-text">image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#container"><span class="nav-number">1.2.2.</span> <span class="nav-text">container</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Repository"><span class="nav-number">1.2.3.</span> <span class="nav-text">Repository</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的使用"><span class="nav-number">1.3.</span> <span class="nav-text">基本的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#镜像"><span class="nav-number">1.3.1.</span> <span class="nav-text">镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器"><span class="nav-number">1.3.2.</span> <span class="nav-text">容器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高级用法"><span class="nav-number">2.</span> <span class="nav-text">高级用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定制镜像"><span class="nav-number">2.1.</span> <span class="nav-text">定制镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dockerfile"><span class="nav-number">2.1.1.</span> <span class="nav-text">Dockerfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建镜像"><span class="nav-number">2.1.2.</span> <span class="nav-text">构建镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dockerfile指令"><span class="nav-number">2.1.3.</span> <span class="nav-text">Dockerfile指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VSCode"><span class="nav-number">2.2.</span> <span class="nav-text">VSCode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#noroot运行"><span class="nav-number">2.2.1.</span> <span class="nav-text">noroot运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">2.2.2.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级配置"><span class="nav-number">2.3.</span> <span class="nav-text">高级配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络"><span class="nav-number">2.3.1.</span> <span class="nav-text">网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络模式"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">网络模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#端口转发"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">端口转发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件"><span class="nav-number">2.3.2.</span> <span class="nav-text">文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他配置"><span class="nav-number">2.3.3.</span> <span class="nav-text">其他配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Docker中使用GPU"><span class="nav-number">2.4.</span> <span class="nav-text">在Docker中使用GPU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nvidia-docker2"><span class="nav-number">2.4.1.</span> <span class="nav-text">安装nvidia-docker2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GUI程序的运行"><span class="nav-number">2.5.</span> <span class="nav-text">GUI程序的运行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#X11"><span class="nav-number">2.5.1.</span> <span class="nav-text">X11</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x11docker"><span class="nav-number">2.5.2.</span> <span class="nav-text">x11docker</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="冰冻橘子"
+      src="http://image.onebug.tech/avatar.png">
+  <p class="site-author-name" itemprop="name">冰冻橘子</p>
+  <div class="site-description" itemprop="description">渺沧海之一粟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lsqls" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lsqls" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:764666894@qq.com" title="邮箱 → mailto:764666894@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>邮箱</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备17073808-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冰冻橘子</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
