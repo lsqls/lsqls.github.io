@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0-rc1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -198,6 +198,318 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2021/03/17/java/%E5%85%AB%E8%82%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="name" content="冰冻橘子">
+      <meta itemprop="description" content="渺沧海之一粟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰冻橘子的自留地">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/17/java/%E5%85%AB%E8%82%A1/" class="post-title-link" itemprop="url">高频面试题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-17 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-17T00:00:00+08:00">2021-03-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-17 15:39:09" itemprop="dateModified" datetime="2022-03-17T15:39:09+08:00">2022-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h1><h2 id="hashmap底层原理（数据结构、为什么用红黑树等）、"><a href="#hashmap底层原理（数据结构、为什么用红黑树等）、" class="headerlink" title="hashmap底层原理（数据结构、为什么用红黑树等）、"></a>hashmap底层原理（数据结构、为什么用红黑树等）、</h2><ul>
+<li><p>JDK1.8之前：</p>
+</li>
+<li><p>链表数组、拉链法</p>
+</li>
+<li><p>扰动函数：增加低位的随机性（原哈希值右移16位然后与原哈希值异或得到新哈希值），解决取模后索引位置的碰撞问题</p>
+</li>
+<li><p>数组长度：<code>n=2^m</code>，取模操作<code>hash%n</code>等价于<code>(n-1)&amp;hash</code></p>
+</li>
+<li><p>JDK1.8之后：链表长度过长会自动转成红黑树，减少搜索时间</p>
+</li>
+</ul>
+<h2 id="ArrayList与LinkedList区别"><a href="#ArrayList与LinkedList区别" class="headerlink" title="ArrayList与LinkedList区别"></a>ArrayList与LinkedList区别</h2><p> <code>Arraylist</code> 底层使用的是 <code>Object</code> 数组；<code>LinkedList</code> 底层使用的是双向链表数据结构</p>
+<h2 id="Jvm内存模型"><a href="#Jvm内存模型" class="headerlink" title="Jvm内存模型"></a>Jvm内存模型</h2><p><img src="http://image.onebug.tech/202203151539359.png" alt="img"></p>
+<p><img src="http://image.onebug.tech/202203151536380.png" alt="img"></p>
+<p><strong>线程私有</strong></p>
+<ul>
+<li><p>程序计数器：指向下一条需要执行的字节码指令</p>
+</li>
+<li><p>虚拟机栈：Java 方法执行的内存模型，每次Java方法调用的数据都是通过虚拟机栈传递的。</p>
+</li>
+<li><p>本地方法栈：Native方法执行的内存模型，每次Native方法调用的数据都是通过本地方法机栈传递的。</p>
+</li>
+</ul>
+<p><strong>线程共享</strong></p>
+<ul>
+<li><p>堆：存放对象实例</p>
+</li>
+<li><p>元空间【方法区】：存放常量、类信息、静态变量、JIT编译后的代码</p>
+</li>
+<li><p>直接内存：NIO中的基础</p>
+</li>
+</ul>
+<h2 id="Jvm垃圾回收算法"><a href="#Jvm垃圾回收算法" class="headerlink" title="Jvm垃圾回收算法"></a>Jvm垃圾回收算法</h2><ul>
+<li><p>回收区域：堆是需要回收的核心区域</p>
+<p><img src="http://image.onebug.tech/202203161705214.png" alt="img"></p>
+<p>大部分情况，对象都会首先在 Eden 区域分配，在一次新生代垃圾回收后，如果对象还存活，则会进入 s0 或者 s1，并且对象的年龄还会加 1，当它的年龄增加到一定程度，就会被晋升到老年代中。</p>
+</li>
+<li><p>判断可回收：可达性分析，GCROOTS：类静态属性、常量、虚拟机栈中、本地方法栈中 引用的对象</p>
+</li>
+<li><p>垃圾收集算法：</p>
+<ul>
+<li>标记清除【内存碎片问题】、标记整理【效率低】：用于老年代</li>
+<li>标记复制：用于新生代，在回收时，将 Eden 和 Survivor 中还存活着的对象全部复制到另一块 Survivor 上，最后清理 Eden 和使用过的那一块 Survivor。</li>
+</ul>
+</li>
+</ul>
+<h2 id="volatile关键字的原理与作用"><a href="#volatile关键字的原理与作用" class="headerlink" title="volatile关键字的原理与作用"></a>volatile关键字的原理与作用</h2><ul>
+<li>作用：防止指令重排、保证内存可见性【不保证原子性：<code>i++</code>由多个原子操作组成】</li>
+<li>原理：禁止指令重排，在写操作后加入屏障指令，将本地内存中的共享变量值刷新到主内存，在读操作前加入屏障指令，从主内存中读取共享变量。</li>
+</ul>
+<h2 id="Java集合类（线程安全-x2F-不安全）"><a href="#Java集合类（线程安全-x2F-不安全）" class="headerlink" title="Java集合类（线程安全&#x2F;不安全）"></a>Java集合类（线程安全&#x2F;不安全）</h2><ul>
+<li>StringBuilder是线程不安全的，而StringBuffer是线程安全的。</li>
+<li>ArrayList线程不安全，CopyOnWriteArrayList线程安全</li>
+<li>HashMap线程不安全，ConcurrentHashMap线程安全</li>
+<li>并发队列：ConcurrentLinkedQueue、LinkedBlockingQueue、ArrayBlockingQueue、PriorityBlockingQueue、DelayQueue</li>
+</ul>
+<h2 id="【-】Synchronized和Lock的实现原理与区别"><a href="#【-】Synchronized和Lock的实现原理与区别" class="headerlink" title="【@】Synchronized和Lock的实现原理与区别"></a>【@】Synchronized和Lock的实现原理与区别</h2><ul>
+<li><p>Synchronized：基于对象监视器锁，<code>monitorenter</code> 指令指向同步代码块的开始位置，<code>monitorexit</code> 指令则指明同步代码块的结束位置。【JVM层面】</p>
+</li>
+<li><p>Lock：基于AQS队列【JDK层面】</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.onebug.tech/2021/10/27/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/AQS/">Java并发包的基石–抽象同步队列(AQS) | 冰冻橘子的自留地 (onebug.tech)</a></p>
+</blockquote>
+</li>
+<li><p>区别：Lock 的高级功能：等待可中断、公平锁、多条件绑定</p>
+</li>
+</ul>
+<h2 id="ConcurrentHashMap原理，如何保证线程安全"><a href="#ConcurrentHashMap原理，如何保证线程安全" class="headerlink" title="ConcurrentHashMap原理，如何保证线程安全"></a>ConcurrentHashMap原理，如何保证线程安全</h2><p><strong>1.7</strong></p>
+<p><img src="http://image.onebug.tech/202203171035371.png" alt="Java 7 ConcurrentHashMap 存储结构"></p>
+<p><strong>1.8</strong></p>
+<p>1.8抛弃了原有的 Segment 分段锁，而采用了 <code>CAS + synchronized</code> 来保证并发安全性。</p>
+<h2 id="Java线程池核心参数与工作流程，拒绝策略"><a href="#Java线程池核心参数与工作流程，拒绝策略" class="headerlink" title="Java线程池核心参数与工作流程，拒绝策略"></a>Java线程池核心参数与工作流程，拒绝策略</h2><p><img src="http://image.onebug.tech/202203151637996.jpeg" alt="这里写图片描述"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.onebug.tech/2021/04/20/java/java%E5%B9%B6%E5%8F%91/ch11%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池 | 冰冻橘子的自留地 (onebug.tech)</a></p>
+</blockquote>
+<ul>
+<li><p><code>corepool</code>、<code>queue</code>、<code>maximumpool</code>、<code>reject</code>四级处理</p>
+<blockquote>
+<p><code>keepAliveTime</code> 用于配置闲置线程最长存活时间，直到收缩到 <code>corePoolSize</code> 的大小</p>
+</blockquote>
+</li>
+<li><p><code>reject</code>有：抛出异常（<code>abort</code>）、由上层线程执行（<code>callruns</code>）、删除该任务(<code>discard</code>)、删除老任务(<code>discardoldest</code>)</p>
+</li>
+</ul>
+<h2 id="【-】类加载机制"><a href="#【-】类加载机制" class="headerlink" title="【@】类加载机制"></a>【@】类加载机制</h2><p><img src="http://image.onebug.tech/202203171109722.png" alt="img"></p>
+<p>加载：获取二进制字节流&#x3D;&gt;生成方法区运行时数据结构&#x3D;&gt;生成class对象作为方法区数据入口</p>
+<p>连接：验证、准备【初始化默认值】、解析【符号引用替换为直接引用，也就是得到类或者字段、方法在内存中的指针或者偏移量】</p>
+<p>初始化：初始化方法 <code>&lt;clinit&gt; ()</code></p>
+<h2 id="【-】SpringAOP的底层原理"><a href="#【-】SpringAOP的底层原理" class="headerlink" title="【@】SpringAOP的底层原理"></a>【@】SpringAOP的底层原理</h2><p>Spring AOP 就是基于动态代理的，如果要代理的对象，实现了某个接口，那么 Spring AOP 会使用 <strong>JDK Proxy</strong>，去创建代理对象，而对于没有实现接口的对象，就无法使用 JDK Proxy 去进行代理了，这时候 Spring AOP 会使用 <strong>Cglib</strong> 生成一个被代理对象的子类来作为代理，如下图所示：</p>
+<p>动态代理：设计模式是代理模式【使用代理对象来代替对真实对象的访问，这样就可以在不修改原目标对象的前提下，提供额外的功能操作，扩展目标对象的功能】。本质上是通过类加载，然后修改类字节码，重新加载到JVM中，具体是通过反射完成。</p>
+<p><img src="http://image.onebug.tech/202203171108344.png" alt="Understanding the Proxy Design Pattern | by Mithun Sasidharan | Medium"></p>
+<p><img src="http://image.onebug.tech/202203171049799.png" alt="SpringAOPProcess"></p>
+<h1 id="数据库Mysql"><a href="#数据库Mysql" class="headerlink" title="数据库Mysql"></a>数据库Mysql</h1><h2 id="Mysql的几种存储引擎"><a href="#Mysql的几种存储引擎" class="headerlink" title="Mysql的几种存储引擎"></a>Mysql的几种存储引擎</h2><ul>
+<li><p>MyISAM 只有表级锁(table-level locking)，而 InnoDB 支持行级锁(row-level locking)和表级锁,默认为行级锁。MyISAM 不提供事务支持。</p>
+</li>
+<li><p>InnoDB 提供事务支持，具有提交(commit)和回滚(rollback)事务的能力。</p>
+</li>
+<li><p>MyISAM 不支持，而 InnoDB 支持。</p>
+</li>
+</ul>
+<h2 id="Mysql的聚簇索引和非聚簇索引作用与区别"><a href="#Mysql的聚簇索引和非聚簇索引作用与区别" class="headerlink" title="Mysql的聚簇索引和非聚簇索引作用与区别"></a>Mysql的聚簇索引和非聚簇索引作用与区别</h2><p>聚簇索引就是按照每张表的主键构造一颗B+树，同时叶子节点中存放的就是整张表的行记录数据，也将聚集索引的叶子节点称为数据页。这个特性决定了索引组织表中数据也是索引的一部分，每张表只能拥有一个聚簇索引。</p>
+<p>在<strong>聚簇索引之上创建的索引称之为辅助索引</strong>，辅助索引访问数据总是需要二次查找。辅助索引叶子节点存储的不再是行的物理位置，而是主键值。通过辅助索引首先找到的是主键值，再通过主键值找到数据行的数据页，再通过数据页中的Page Directory找到数据行。</p>
+<h2 id="索引的数据结构对比（hash、B树与B-树），为什么不用红黑树"><a href="#索引的数据结构对比（hash、B树与B-树），为什么不用红黑树" class="headerlink" title="索引的数据结构对比（hash、B树与B+树），为什么不用红黑树"></a>索引的数据结构对比（hash、B树与B+树），为什么不用红黑树</h2><ul>
+<li><p>hash表：不支持范围查找，一般不使用</p>
+</li>
+<li><p>红黑树的弊端：<strong>红黑树是二叉树</strong>！红黑树一个节点只能存出一个值，在大规模数据存储的时候，红黑树往往出现由于<strong>树的深度过大</strong>而造成磁盘IO读写过于频繁，进而导致效率低下的情况。</p>
+</li>
+<li><p>B树（多路平衡查找树）：B树是一种<strong>自平衡的多叉搜索树，一个节点可以拥有两个以上的子节点，节点中的数据索引从左到右递增排列</strong>。这种数据结构能够让查找数据、顺序访问、插入数据及删除的动作，都在O(logn)时间内完成。</p>
+</li>
+<li><p>B+树：</p>
+<p><img src="http://image.onebug.tech/20210420165409106.png" alt="img"></p>
+</li>
+<li><p>B树和B+树的区别：B 树的叶子节点都是独立的，B+树的叶子节点有一条引用链指向与它相邻的叶子节点。B+树只在叶子节点存储数据，查找速度稳定。</p>
+</li>
+</ul>
+<h2 id="Mysql的默认隔离级别、不同等级隔离级别解决的问题与实现原理"><a href="#Mysql的默认隔离级别、不同等级隔离级别解决的问题与实现原理" class="headerlink" title="Mysql的默认隔离级别、不同等级隔离级别解决的问题与实现原理"></a>Mysql的默认隔离级别、不同等级隔离级别解决的问题与实现原理</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT @@transaction_isolation;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">隔离级别</th>
+<th align="center">脏读</th>
+<th align="center">不可重复读</th>
+<th align="center">幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">READ-UNCOMMITTED</td>
+<td align="center">√</td>
+<td align="center">√</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">READ-COMMITTED</td>
+<td align="center">×</td>
+<td align="center">√</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center"><strong>REPEATABLE-READ</strong>【默认隔离级别】</td>
+<td align="center">×</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">SERIALIZABLE</td>
+<td align="center">×</td>
+<td align="center">×</td>
+<td align="center">×</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>脏读：在一个事务内读取到另一个事务中修改但未提交的数据。</p>
+</li>
+<li><p>不可重复读：在一个事务内读取到另一个事务中修改后提交的数据。</p>
+</li>
+<li><p>幻读：在一个事务内插入时遇到到另一个事务中插入后提交的数据。</p>
+<blockquote>
+<p>不可重复读侧重表达 读-读，幻读则是说 读-写，用写来证实读的是鬼影。幻读，并不是说两次读取获取的结果集不同，幻读侧重的方面是某一次的 select 操作得到的结果所表征的数据状态无法支撑后续的业务操作。更为具体一些：select 某记录是否存在，不存在，准备插入此记录，但执行 insert 时发现此记录已存在，无法插入，此时就发生了幻读。</p>
+<p>解决方法：RR级别下只要对 SELECT 操作也手动加行（X）锁即可类似 SERIALIZABLE 级别。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#FOR UPDATE 也会对此 “记录” 加锁</span><br><span class="line">SELECT `id` FROM `users` WHERE `id` = 1 FOR UPDATE;</span><br></pre></td></tr></table></figure></blockquote>
+</li>
+</ul>
+<h2 id="【TODO】Mvcc实现机制-RC和RR隔离级别下的区别"><a href="#【TODO】Mvcc实现机制-RC和RR隔离级别下的区别" class="headerlink" title="【TODO】Mvcc实现机制(RC和RR隔离级别下的区别)"></a>【TODO】Mvcc实现机制(RC和RR隔离级别下的区别)</h2><p><a target="_blank" rel="noopener" href="https://javaguide.cn/database/mysql/innodb-implementation-of-mvcc.html#%E4%B8%80%E8%87%B4%E6%80%A7%E9%9D%9E%E9%94%81%E5%AE%9A%E8%AF%BB%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%BB">InnoDB存储引擎对MVCC的实现 | JavaGuide</a></p>
+<h2 id="Mysql事务及特性"><a href="#Mysql事务及特性" class="headerlink" title="Mysql事务及特性"></a>Mysql事务及特性</h2><p>事务是指逻辑上的一组操作，组成这组操作的各个单元，要不全成功要不全失败。</p>
+<h2 id="Mysql-sql优化，慢Sql如何排查"><a href="#Mysql-sql优化，慢Sql如何排查" class="headerlink" title="Mysql sql优化，慢Sql如何排查"></a>Mysql sql优化，慢Sql如何排查</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zjfjava/p/12257772.html">mysql优化之 — 慢SQL分析 - 雪山上的蒲公英 - 博客园 (cnblogs.com)</a></p>
+<h2 id="索引失效的几种场景"><a href="#索引失效的几种场景" class="headerlink" title="索引失效的几种场景"></a>索引失效的几种场景</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liehen2046/p/11052666.html">索引失效的7种情况 - liehen2046 - 博客园 (cnblogs.com)</a></p>
+<h1 id="【-】数据库Redis"><a href="#【-】数据库Redis" class="headerlink" title="【@】数据库Redis"></a>【@】数据库Redis</h1><h2 id="Redis基本数据类型"><a href="#Redis基本数据类型" class="headerlink" title="Redis基本数据类型"></a>Redis基本数据类型</h2><p>String、List、Set、Hash、SortedSet、BitMap</p>
+<h2 id="Redis底层数据结构"><a href="#Redis底层数据结构" class="headerlink" title="Redis底层数据结构"></a>Redis底层数据结构</h2><p>除了动态字符串、链表、字典【包含两个哈希表数，方便渐进式rehash】、还有维持有序性的跳表、维持不重复性的整数集合、节约内存的压缩列表</p>
+<p><img src="http://image.onebug.tech/202203171139206.png" alt="img"></p>
+<h2 id="Redis持久化方式，RDB和AOF的区别与优劣势"><a href="#Redis持久化方式，RDB和AOF的区别与优劣势" class="headerlink" title="Redis持久化方式，RDB和AOF的区别与优劣势"></a>Redis持久化方式，RDB和AOF的区别与优劣势</h2><p>RDB（Redis Database）：将某个时间点的所有数据都存放到硬盘上。如果数据量很大，保存快照的时间会很长，由于是隔一段时间触发一次，实时性不是很好，系统崩溃后丢失的数据可能会很多。</p>
+<p>AOF（Append  Only File）：每执行一条会更改 Redis 中的数据的命令，Redis 就会将该命令写入到内存缓存 中，然后再根据 <code>appendfsync</code> 配置来决定何时将其同步到硬盘中的 AOF 文件。缺点是随着服务器写请求的增多，AOF 文件会越来越大。对此，Redis 提供了一种将 AOF 重写的特性，能够去除 AOF 文件中的冗余写命令。</p>
+<h2 id="Redis如何实现分布式锁？"><a href="#Redis如何实现分布式锁？" class="headerlink" title="Redis如何实现分布式锁？"></a>Redis如何实现分布式锁？</h2><p>可以使用 Redis 自带的 <strong>SETNX</strong> 命令实现分布式锁：</p>
+<ul>
+<li><p>使用 SETNX（set if not exist）指令插入一个键值对，如果 Key 已经存在，那么会返回 False，否则插入成功并返回 True。【和CAS一样】</p>
+</li>
+<li><p>SETNX 指令和数据库的唯一索引类似，保证了只存在一个 Key 的键值对，那么可以用一个 Key 的键值对是否存在来判断是否存于锁定状态。</p>
+</li>
+<li><p>EXPIRE 指令可以为一个键值对设置一个过期时间，从而避免了数据库唯一索引实现方式中释放锁失败的问题。</p>
+</li>
+</ul>
+<p>除此之外，还可以使用官方提供的 <strong>RedLock</strong> 分布式锁实现：</p>
+<ul>
+<li><p>尝试从 N 个互相独立 Redis 实例获取锁；</p>
+<blockquote>
+<p>使用了多个 Redis 实例来实现分布式锁，这是为了保证在发生单点故障时仍然可用。</p>
+</blockquote>
+</li>
+<li><p>计算获取锁消耗的时间，只有时间小于锁的过期时间，并且从大多数（N &#x2F; 2 + 1）实例上获取了锁，才认为获取锁成功；</p>
+</li>
+<li><p>如果获取锁失败，就到每个实例上释放锁</p>
+</li>
+</ul>
+<h1 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h1><h2 id="Tcp与Udp区别"><a href="#Tcp与Udp区别" class="headerlink" title="Tcp与Udp区别"></a>Tcp与Udp区别</h2><p><img src="http://image.onebug.tech/202203161237066.jpeg" alt="TCP、UDP协议的区别"></p>
+<h2 id="Tcp如何保证可靠传输"><a href="#Tcp如何保证可靠传输" class="headerlink" title="Tcp如何保证可靠传输"></a>Tcp如何保证可靠传输</h2><p>TCP 使用超时重传来实现可靠传输：如果一个已经发送的报文段在超时时间内没有收到确认，那么就重传这个报文段。</p>
+<h2 id="浏览器上输入地址后的整个请求过程"><a href="#浏览器上输入地址后的整个请求过程" class="headerlink" title="浏览器上输入地址后的整个请求过程"></a>浏览器上输入地址后的整个请求过程</h2><ol>
+<li>浏览器缓存直接返回，否则</li>
+<li>DNS解析域名得到IP：浏览器缓存、hosts文件、本地域名服务器</li>
+<li>TCP连接：三次握手</li>
+<li>发送HTTP请求（请求方法 请求头 cookie user-agent 等等 请求内容 表单等 )，获取HTTP响应（js、css、html、媒体文件） 【<code>Keep-Alive</code> 复用、TCP四次挥手】，浏览器渲染显示</li>
+</ol>
+<h2 id="OSI七层、五层模型，每一层的作用"><a href="#OSI七层、五层模型，每一层的作用" class="headerlink" title="OSI七层、五层模型，每一层的作用"></a>OSI七层、五层模型，每一层的作用</h2><p><img src="http://image.onebug.tech/202203161530294.png" alt="osi七层模型"></p>
+<h2 id="【-】TCP握手挥手过程及【状态变化】"><a href="#【-】TCP握手挥手过程及【状态变化】" class="headerlink" title="【@】TCP握手挥手过程及【状态变化】"></a>【@】TCP握手挥手过程及【状态变化】</h2><p><img src="http://image.onebug.tech/202203161547968.png" alt="img"></p>
+<p><img src="http://image.onebug.tech/202203161546164.jpeg" alt="img"></p>
+<h2 id="Tcp流量控制与拥塞控制"><a href="#Tcp流量控制与拥塞控制" class="headerlink" title="Tcp流量控制与拥塞控制"></a>Tcp流量控制与拥塞控制</h2><ul>
+<li><p>流量控制是为了控制发送方发送速率，保证接收方来得及接收。拥塞控制是为了降低整个网络的拥塞程度。</p>
+</li>
+<li><p>接收方发送的确认报文中的窗口字段可以用来控制发送方窗口大小。TCP 主要通过四个算法来进行拥塞控制：慢开始、拥塞避免、快重传、快恢复。</p>
+<p><img src="http://image.onebug.tech/202203161642479.png" alt="img"></p>
+</li>
+</ul>
+<h2 id="Http、Https、两者区别"><a href="#Http、Https、两者区别" class="headerlink" title="Http、Https、两者区别"></a>Http、Https、两者区别</h2><p>HTTPS 是基于 HTTP 的，也是用 TCP 作为底层协议，并额外使用 SSL&#x2F;TLS 协议用作加密和安全认证。默认端口号是 443，HTTP默认端口号是80。HTTP 安全性没有 HTTPS 高，但是 HTTPS 比 HTTP 耗费更多服务器资源。</p>
+<h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><h2 id="进程与线程的区别"><a href="#进程与线程的区别" class="headerlink" title="进程与线程的区别"></a>进程与线程的区别</h2><p>线程是调度的基本单位，进程是资源管理的基本单位。一般来说，进程之间是独立的，一个进程下会有若干个线程，然后这些线程共享进程资源，并极有可能相互影响。</p>
+<p><strong>补充</strong>：<a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017968846697824">协程 - 廖雪峰的官方网站 (liaoxuefeng.com)</a></p>
+<h2 id="【-】进程之间通信方式"><a href="#【-】进程之间通信方式" class="headerlink" title="【@】进程之间通信方式"></a>【@】进程之间通信方式</h2><ol>
+<li><strong>管道&#x2F;匿名管道(Pipes)</strong> ：用于具有亲缘关系的父子进程间或者兄弟进程之间的通信。</li>
+<li><strong>有名管道(Names Pipes)</strong> : 匿名管道由于没有名字，只能用于亲缘关系的进程间通信。为了克服这个缺点，提出了有名管道。有名管道严格遵循**先进先出(first in first out)**。有名管道以磁盘文件的方式存在，可以实现本机任意两个进程通信。【<code>ls | grep xxx</code>】</li>
+<li><strong>信号(Signal)</strong> ：信号是一种比较复杂的通信方式，用于通知接收进程某个事件；【<code>kill -9 pid</code>】</li>
+<li><strong>消息队列(Message Queuing)</strong> ：消息队列是消息的链表，消息队列有以下优点：可以独立于读写进程存在，不需要进程自己提供同步方法，读进程可以根据消息类型有选择地接收消息，而不像 FIFO 那样只能默认地接收。</li>
+<li><strong>信号量(Semaphores)</strong> ：信号量是一个计数器。信号量的意图在于<strong>进程间同步</strong>。这种通信方式主要用于解决与同步相关的问题并避免竞争条件。</li>
+<li><strong>共享内存(Shared memory)</strong> ：多个进程可以访问和更新同一块内存空间。这种方式需要依靠某种同步操作，如互斥锁和信号量等。可以说这是最快的进程间通信方式。</li>
+<li><strong>套接字(Sockets)</strong> : 套接字是支持 TCP&#x2F;IP 的网络通信的基本操作单元，可以看做是不同主机之间的进程进行双向通信的端点。</li>
+</ol>
+<h2 id="CAS操作原理和实现"><a href="#CAS操作原理和实现" class="headerlink" title="CAS操作原理和实现"></a>CAS操作原理和实现</h2><p>CAS （compareAndSwap），中文叫比较交换，是一种无锁原子算法，映射到操作系统就是一条CPU的原子指令，其作用是让CPU先进行比较两个值是否相等，然后原子地更新某个位置的值，其实现方式是基于硬件平台的汇编指令。CAS 是实现自旋锁的基础，CAS 利用 CPU 指令保证了操作的原子性，以达到锁的效果，至于自旋呢，看字面意思也很明白，自己旋转，翻译成人话就是循环，一般是用一个无限循环实现。这样一来，一个无限循环中，执行一个 CAS 操作，当操作成功，返回 true 时，循环结束；当返回 false 时，接着执行循环，继续尝试 CAS 操作，直到返回 true。</p>
+<h2 id="死锁的产生条件与解决方案"><a href="#死锁的产生条件与解决方案" class="headerlink" title="死锁的产生条件与解决方案"></a>死锁的产生条件与解决方案</h2><p>产生条件：</p>
+<ul>
+<li>互斥</li>
+<li>不可抢占</li>
+<li>申请等待</li>
+<li>环</li>
+</ul>
+<p>解决：</p>
+<ul>
+<li>鸵鸟</li>
+<li>死锁检测【有向图环形检测、银行家算法】与死锁恢复【抢占、回滚、kill】</li>
+<li>死锁预防：破坏条件</li>
+<li>死锁避免：银行家算法</li>
+</ul>
+<h1 id="软件工程"><a href="#软件工程" class="headerlink" title="软件工程"></a>软件工程</h1><h2 id="常见的设计模式与优缺点"><a href="#常见的设计模式与优缺点" class="headerlink" title="常见的设计模式与优缺点"></a>常见的设计模式与优缺点</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -982,20 +1294,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1035,7 +1347,7 @@
 <div class="copyright">
   
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

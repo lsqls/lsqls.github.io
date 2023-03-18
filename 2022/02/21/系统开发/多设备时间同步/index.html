@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0-rc1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -387,7 +387,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PTP"><span class="nav-number">1.</span> <span class="nav-text">PTP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装linuxptp"><span class="nav-number">1.1.</span> <span class="nav-text">安装linuxptp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译安装"><span class="nav-number">1.1.1.</span> <span class="nav-text">编译安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deb-安装"><span class="nav-number">1.1.2.</span> <span class="nav-text">deb 安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查网卡状态"><span class="nav-number">1.2.</span> <span class="nav-text">检查网卡状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置PTP时钟"><span class="nav-number">1.3.</span> <span class="nav-text">配置PTP时钟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设备端"><span class="nav-number">1.3.1.</span> <span class="nav-text">设备端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#禾赛雷达"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">禾赛雷达</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Livox"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Livox</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务端"><span class="nav-number">1.3.2.</span> <span class="nav-text">服务端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">1.4.</span> <span class="nav-text">验证</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#接入NTP"><span class="nav-number">2.</span> <span class="nav-text">接入NTP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置PTP硬件时间"><span class="nav-number">2.1.</span> <span class="nav-text">配置PTP硬件时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建NTP服务"><span class="nav-number">2.2.</span> <span class="nav-text">搭建NTP服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">2.2.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动NTP服务"><span class="nav-number">2.2.3.</span> <span class="nav-text">启动NTP服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端配置"><span class="nav-number">2.3.</span> <span class="nav-text">客户端配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#海康威视"><span class="nav-number">2.3.1.</span> <span class="nav-text">海康威视</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证-1"><span class="nav-number">2.4.</span> <span class="nav-text">验证</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PTP"><span class="nav-number">1.</span> <span class="nav-text">PTP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85linuxptp"><span class="nav-number">1.1.</span> <span class="nav-text">安装linuxptp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.1.</span> <span class="nav-text">编译安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deb-%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.2.</span> <span class="nav-text">deb 安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%BD%91%E5%8D%A1%E7%8A%B6%E6%80%81"><span class="nav-number">1.2.</span> <span class="nav-text">检查网卡状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEPTP%E6%97%B6%E9%92%9F"><span class="nav-number">1.3.</span> <span class="nav-text">配置PTP时钟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E7%AB%AF"><span class="nav-number">1.3.1.</span> <span class="nav-text">设备端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A6%BE%E8%B5%9B%E9%9B%B7%E8%BE%BE"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">禾赛雷达</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Livox"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Livox</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">1.3.2.</span> <span class="nav-text">服务端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">1.4.</span> <span class="nav-text">验证</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5NTP"><span class="nav-number">2.</span> <span class="nav-text">接入NTP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEPTP%E7%A1%AC%E4%BB%B6%E6%97%B6%E9%97%B4"><span class="nav-number">2.1.</span> <span class="nav-text">配置PTP硬件时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BANTP%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.2.</span> <span class="nav-text">搭建NTP服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8NTP%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.2.3.</span> <span class="nav-text">启动NTP服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">客户端配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%B7%E5%BA%B7%E5%A8%81%E8%A7%86"><span class="nav-number">2.3.1.</span> <span class="nav-text">海康威视</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81-1"><span class="nav-number">2.4.</span> <span class="nav-text">验证</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -403,20 +403,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -456,7 +456,7 @@
 <div class="copyright">
   
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0-rc1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -478,8 +478,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/10/20/%E8%BD%AF%E4%BB%B6/vscode%E4%BD%BF%E7%94%A8wsl/" rel="prev" title="用 VSCode + Wsl 搭建 linux 开发环境">
-      <i class="fa fa-chevron-left"></i> 用 VSCode + Wsl 搭建 linux 开发环境
+    <a href="/2021/03/17/java/%E5%85%AB%E8%82%A1/" rel="prev" title="高频面试题">
+      <i class="fa fa-chevron-left"></i> 高频面试题
     </a></div>
       <div class="post-nav-item">
     <a href="/2021/04/11/java/java%E5%B9%B6%E5%8F%91/ch2%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E6%80%A7/" rel="next" title="线程安全性">
@@ -543,7 +543,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#高并发相关基础知识"><span class="nav-number">1.</span> <span class="nav-text">高并发相关基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多核CPU多级缓存一致性协议MESI"><span class="nav-number">1.2.</span> <span class="nav-text">多核CPU多级缓存一致性协议MESI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MESI协议缓存状态"><span class="nav-number">1.2.1.</span> <span class="nav-text">MESI协议缓存状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MESI状态转换"><span class="nav-number">1.2.2.</span> <span class="nav-text">MESI状态转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多核缓存协同操作"><span class="nav-number">1.2.3.</span> <span class="nav-text">多核缓存协同操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MESI与Java"><span class="nav-number">1.3.</span> <span class="nav-text">MESI与Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java内存模型"><span class="nav-number">1.4.</span> <span class="nav-text">Java内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM"><span class="nav-number">1.4.1.</span> <span class="nav-text">JMM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM主内存和本地内存交互操作"><span class="nav-number">1.4.2.</span> <span class="nav-text">JMM主内存和本地内存交互操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发环境下JMM存在的问题"><span class="nav-number">1.4.3.</span> <span class="nav-text">并发环境下JMM存在的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原子性"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可见性"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有序性"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">有序性</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E5%B9%B6%E5%8F%91%E7%9B%B8%E5%85%B3%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">高并发相关基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%A0%B8CPU%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AEMESI"><span class="nav-number">1.2.</span> <span class="nav-text">多核CPU多级缓存一致性协议MESI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MESI%E5%8D%8F%E8%AE%AE%E7%BC%93%E5%AD%98%E7%8A%B6%E6%80%81"><span class="nav-number">1.2.1.</span> <span class="nav-text">MESI协议缓存状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MESI%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.2.</span> <span class="nav-text">MESI状态转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%A0%B8%E7%BC%93%E5%AD%98%E5%8D%8F%E5%90%8C%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.3.</span> <span class="nav-text">多核缓存协同操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MESI%E4%B8%8EJava"><span class="nav-number">1.3.</span> <span class="nav-text">MESI与Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.4.</span> <span class="nav-text">Java内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM"><span class="nav-number">1.4.1.</span> <span class="nav-text">JMM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM%E4%B8%BB%E5%86%85%E5%AD%98%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E6%93%8D%E4%BD%9C"><span class="nav-number">1.4.2.</span> <span class="nav-text">JMM主内存和本地内存交互操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8BJMM%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.3.</span> <span class="nav-text">并发环境下JMM存在的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E6%80%A7"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">有序性</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -559,20 +559,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -612,7 +612,7 @@
 <div class="copyright">
   
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
