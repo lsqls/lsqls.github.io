@@ -4195,7 +4195,7 @@ public class DeadLock implements Runnable {
 <p><a href="https://support.huaweicloud.com/usermanual-codehub/devcloud_hlp_0960.html">Git LFS使用_代码托管 CodeHub_用户指南_更多Git知识_华为云 (huaweicloud.com)</a></p>
 <p><a href="https://www.cnblogs.com/cjsblog/p/12256843.html">GitLab CI&#x2F;CD - 废物大师兄 - 博客园 (cnblogs.com)</a></p>
 </blockquote>
-<h1 id="git初始化"><a href="#git初始化" class="headerlink" title="git初始化"></a>git初始化</h1><h2 id="设置用户名"><a href="#设置用户名" class="headerlink" title="设置用户名"></a>设置用户名</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;username&quot;</span></span><br><span class="line">git config --global user.email useremail@xxx.com </span><br></pre></td></tr></table></figure>
+<h1 id="Git初始化"><a href="#Git初始化" class="headerlink" title="Git初始化"></a>Git初始化</h1><h2 id="设置用户名"><a href="#设置用户名" class="headerlink" title="设置用户名"></a>设置用户名</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;username&quot;</span></span><br><span class="line">git config --global user.email useremail@xxx.com </span><br></pre></td></tr></table></figure>
 
 <h2 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global https.proxy http://127.0.0.1:1080</span><br><span class="line">git config --global https.proxy https://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
 
