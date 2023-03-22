@@ -1004,6 +1004,54 @@
       </tags>
   </entry>
   <entry>
+    <title>git备忘录</title>
+    <url>/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/</url>
+    <content><![CDATA[<h1 id="Git-LFS"><a href="#Git-LFS" class="headerlink" title="Git LFS"></a>Git LFS</h1><p>Git LFS（Large File Storage，大文件存储）协议，可以把音乐、图片、视频等指定的任意大文件资源存储在Git仓库之外，对于使用者而言，类似在操作一个完整的Git仓库，非常方便。通过将大文件存储在Git原有的数据结构之中，可以减小Git仓库本身的体积，使克隆Git仓库的速度加快，也使得Git不会因为仓库中充满大文件而损失性能。</p>
+<span id="more"></span>
+
+<p><img src="http://image.onebug.tech/202202241351274.gif" alt="a diagram showing how Git LFS works"></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash</span><br><span class="line">sudo apt-get install git-lfs</span><br><span class="line">git lfs install</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置追踪文件"><a href="#配置追踪文件" class="headerlink" title="配置追踪文件"></a>配置追踪文件</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#追踪所有后缀名为“.mp4”的文件：</span></span><br><span class="line">git lfs track <span class="string">&quot;*.MP4&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看已追踪的文件，已经追踪的文件保存在“.gitattributes”中</span></span><br><span class="line">git lfs track</span><br></pre></td></tr></table></figure>
+
+<h2 id="提交大文件"><a href="#提交大文件" class="headerlink" title="提交大文件"></a>提交大文件</h2><p>提交代码时需要将“.gitattributes”文件也提交到仓库，提交完成后，就可以和原有操作一样使用git的提交功能。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#提交</span></span><br><span class="line">git push origin master</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看 LFS 跟踪的文件列表</span></span><br><span class="line">git lfs ls-files</span><br></pre></td></tr></table></figure>
+
+<h1 id="Gitlab-CI-x2F-CD"><a href="#Gitlab-CI-x2F-CD" class="headerlink" title="Gitlab CI&#x2F;CD"></a>Gitlab CI&#x2F;CD</h1><p>GitLab CI&#x2F;CD 是一个内置在GitLab中的工具，用于通过持续方法进行软件开发：</p>
+<ul>
+<li>Continuous Integration (CI) 持续集成</li>
+<li>Continuous Delivery (CD)   持续交付</li>
+<li>Continuous Deployment (CD)  持续部署</li>
+</ul>
+<p>持续集成的工作原理是将小的代码块推送到Git仓库中托管的应用程序代码库中，并且每次推送时，都要运行一系列脚本来构建、测试和验证代码更改，然后再将其合并到主分支中。</p>
+<p>持续交付和部署相当于更进一步的CI，可以在每次推送到仓库默认分支的同时将应用程序部署到生产环境。</p>
+<p><img src="http://image.onebug.tech/202202241351844.png" alt="img"></p>
+<h2 id="gitlab-ci-yml"><a href="#gitlab-ci-yml" class="headerlink" title=".gitlab-ci.yml"></a>.gitlab-ci.yml</h2><p>了使用GitLab CI&#x2F;CD，你需要一个托管在GitLab上的应用程序代码库，并且在根目录中的.gitlab-ci.yml文件中指定构建、测试和部署的脚本。一旦你已经添加了.gitlab-ci.yml到仓库中，GitLab将检测到该文件，并使用名为GitLab Runner的工具运行你的脚本。该工具的操作与终端类似。这些脚本被分组到jobs，它们共同组成一个pipeline。一个最简单的.gitlab-ci.yml文件可能是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">before_script: </span><br><span class="line">  - apt-get install rubygems ruby-dev -y </span><br><span class="line"></span><br><span class="line">run-test: </span><br><span class="line">  script: </span><br><span class="line">    - ruby --version 6</span><br></pre></td></tr></table></figure>
+
+<p>before_script属性将在运行任何内容之前为你的应用安装依赖，一个名为run-test的job（作业）将打印当前系统的Ruby版本。二者共同构成了在每次推送到仓库的任何分支时都会被触发的Pipeline（管道）。</p>
+<h2 id="Runner"><a href="#Runner" class="headerlink" title="Runner"></a>Runner</h2><p>在GitLab中，Runner运行你定义在.gitlab-ci.yml中的作业（job）。一个Runner可以是一个虚拟机、物理机、docker容器，或者一个容器集群。GitLab与Runner之间通过API进行通信，因此只需要Runner所在的机器有网络并且可以访问GitLab服务器即可。在成功配置Runner以后，你应该可以看到你最近的提交的状态 。</p>
+<blockquote>
+<p><a href="https://support.huaweicloud.com/usermanual-codehub/devcloud_hlp_0960.html">Git LFS使用_代码托管 CodeHub_用户指南_更多Git知识_华为云 (huaweicloud.com)</a></p>
+<p><a href="https://www.cnblogs.com/cjsblog/p/12256843.html">GitLab CI&#x2F;CD - 废物大师兄 - 博客园 (cnblogs.com)</a></p>
+</blockquote>
+<h1 id="Git初始化"><a href="#Git初始化" class="headerlink" title="Git初始化"></a>Git初始化</h1><h2 id="设置用户名"><a href="#设置用户名" class="headerlink" title="设置用户名"></a>设置用户名</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;username&quot;</span></span><br><span class="line">git config --global user.email useremail@xxx.com </span><br></pre></td></tr></table></figure>
+
+<h2 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global https.proxy http://127.0.0.1:1080</span><br><span class="line">git config --global https.proxy https://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+
+<h2 id="记住github-x2F-gitlab账号密码"><a href="#记住github-x2F-gitlab账号密码" class="headerlink" title="记住github&#x2F;gitlab账号密码"></a>记住github&#x2F;gitlab账号密码</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global credential.helper store</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>git lfs</tag>
+        <tag>ci/cd</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker使用大全</title>
     <url>/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/</url>
     <content><![CDATA[<h1 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>以Ubuntu为例：</p>
@@ -1145,54 +1193,6 @@
         <tag>docker</tag>
         <tag>gpu</tag>
         <tag>gui</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git备忘录</title>
-    <url>/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/</url>
-    <content><![CDATA[<h1 id="Git-LFS"><a href="#Git-LFS" class="headerlink" title="Git LFS"></a>Git LFS</h1><p>Git LFS（Large File Storage，大文件存储）协议，可以把音乐、图片、视频等指定的任意大文件资源存储在Git仓库之外，对于使用者而言，类似在操作一个完整的Git仓库，非常方便。通过将大文件存储在Git原有的数据结构之中，可以减小Git仓库本身的体积，使克隆Git仓库的速度加快，也使得Git不会因为仓库中充满大文件而损失性能。</p>
-<span id="more"></span>
-
-<p><img src="http://image.onebug.tech/202202241351274.gif" alt="a diagram showing how Git LFS works"></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash</span><br><span class="line">sudo apt-get install git-lfs</span><br><span class="line">git lfs install</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置追踪文件"><a href="#配置追踪文件" class="headerlink" title="配置追踪文件"></a>配置追踪文件</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#追踪所有后缀名为“.mp4”的文件：</span></span><br><span class="line">git lfs track <span class="string">&quot;*.MP4&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看已追踪的文件，已经追踪的文件保存在“.gitattributes”中</span></span><br><span class="line">git lfs track</span><br></pre></td></tr></table></figure>
-
-<h2 id="提交大文件"><a href="#提交大文件" class="headerlink" title="提交大文件"></a>提交大文件</h2><p>提交代码时需要将“.gitattributes”文件也提交到仓库，提交完成后，就可以和原有操作一样使用git的提交功能。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#提交</span></span><br><span class="line">git push origin master</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看 LFS 跟踪的文件列表</span></span><br><span class="line">git lfs ls-files</span><br></pre></td></tr></table></figure>
-
-<h1 id="Gitlab-CI-x2F-CD"><a href="#Gitlab-CI-x2F-CD" class="headerlink" title="Gitlab CI&#x2F;CD"></a>Gitlab CI&#x2F;CD</h1><p>GitLab CI&#x2F;CD 是一个内置在GitLab中的工具，用于通过持续方法进行软件开发：</p>
-<ul>
-<li>Continuous Integration (CI) 持续集成</li>
-<li>Continuous Delivery (CD)   持续交付</li>
-<li>Continuous Deployment (CD)  持续部署</li>
-</ul>
-<p>持续集成的工作原理是将小的代码块推送到Git仓库中托管的应用程序代码库中，并且每次推送时，都要运行一系列脚本来构建、测试和验证代码更改，然后再将其合并到主分支中。</p>
-<p>持续交付和部署相当于更进一步的CI，可以在每次推送到仓库默认分支的同时将应用程序部署到生产环境。</p>
-<p><img src="http://image.onebug.tech/202202241351844.png" alt="img"></p>
-<h2 id="gitlab-ci-yml"><a href="#gitlab-ci-yml" class="headerlink" title=".gitlab-ci.yml"></a>.gitlab-ci.yml</h2><p>了使用GitLab CI&#x2F;CD，你需要一个托管在GitLab上的应用程序代码库，并且在根目录中的.gitlab-ci.yml文件中指定构建、测试和部署的脚本。一旦你已经添加了.gitlab-ci.yml到仓库中，GitLab将检测到该文件，并使用名为GitLab Runner的工具运行你的脚本。该工具的操作与终端类似。这些脚本被分组到jobs，它们共同组成一个pipeline。一个最简单的.gitlab-ci.yml文件可能是这样的：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">before_script: </span><br><span class="line">  - apt-get install rubygems ruby-dev -y </span><br><span class="line"></span><br><span class="line">run-test: </span><br><span class="line">  script: </span><br><span class="line">    - ruby --version 6</span><br></pre></td></tr></table></figure>
-
-<p>before_script属性将在运行任何内容之前为你的应用安装依赖，一个名为run-test的job（作业）将打印当前系统的Ruby版本。二者共同构成了在每次推送到仓库的任何分支时都会被触发的Pipeline（管道）。</p>
-<h2 id="Runner"><a href="#Runner" class="headerlink" title="Runner"></a>Runner</h2><p>在GitLab中，Runner运行你定义在.gitlab-ci.yml中的作业（job）。一个Runner可以是一个虚拟机、物理机、docker容器，或者一个容器集群。GitLab与Runner之间通过API进行通信，因此只需要Runner所在的机器有网络并且可以访问GitLab服务器即可。在成功配置Runner以后，你应该可以看到你最近的提交的状态 。</p>
-<blockquote>
-<p><a href="https://support.huaweicloud.com/usermanual-codehub/devcloud_hlp_0960.html">Git LFS使用_代码托管 CodeHub_用户指南_更多Git知识_华为云 (huaweicloud.com)</a></p>
-<p><a href="https://www.cnblogs.com/cjsblog/p/12256843.html">GitLab CI&#x2F;CD - 废物大师兄 - 博客园 (cnblogs.com)</a></p>
-</blockquote>
-<h1 id="Git初始化"><a href="#Git初始化" class="headerlink" title="Git初始化"></a>Git初始化</h1><h2 id="设置用户名"><a href="#设置用户名" class="headerlink" title="设置用户名"></a>设置用户名</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;username&quot;</span></span><br><span class="line">git config --global user.email useremail@xxx.com </span><br></pre></td></tr></table></figure>
-
-<h2 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global https.proxy http://127.0.0.1:1080</span><br><span class="line">git config --global https.proxy https://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
-
-<h2 id="记住github-x2F-gitlab账号密码"><a href="#记住github-x2F-gitlab账号密码" class="headerlink" title="记住github&#x2F;gitlab账号密码"></a>记住github&#x2F;gitlab账号密码</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global credential.helper store</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-        <tag>git lfs</tag>
-        <tag>ci/cd</tag>
       </tags>
   </entry>
   <entry>
@@ -1564,6 +1564,32 @@
       </tags>
   </entry>
   <entry>
+    <title>使用ventoy制作多系统启动盘</title>
+    <url>/2020/09/22/%E8%BD%AF%E4%BB%B6/ventoy/</url>
+    <content><![CDATA[<h2 id="ventoy介绍"><a href="#ventoy介绍" class="headerlink" title="ventoy介绍"></a>ventoy介绍</h2><p>Ventoy是一个制作可启动U盘的开源工具。有了Ventoy你就无需反复地格式化U盘，你<strong>只需要把ISO&#x2F;WIM&#x2F;IMG&#x2F;VHD(x)&#x2F;EFI文件拷贝到U盘</strong>里面就可以启动了，无需其他操作。 你可以一次性拷贝很<strong>多个</strong>不同类型的ISO文件，在启动时Ventoy会显示一个菜单来选择。</p>
+<span id="more"></span>
+
+<p><img src="http://image.onebug.tech/screen_uefi.png" alt="img"></p>
+<p>ventoy能够无差异支持Legacy BIOS和UEFI模式，并且支持大部分常见操作系统 （Windows&#x2F;WinPE&#x2F;Linux&#x2F;Unix&#x2F;VMware&#x2F;Xen 等等）</p>
+<h2 id="制作启动盘"><a href="#制作启动盘" class="headerlink" title="制作启动盘"></a>制作启动盘</h2><p>在<a href="https://www.lanzoux.com/b01bd54gb">这里</a>，下载安装包，例如 ventoy-1.0.15-windows.zip 然后解压开。直接执行 <code>Ventoy2Disk.exe</code> 如下图所示，选择U盘设备，然后点击 Install 按钮即可。</p>
+<p><img src="http://image.onebug.tech/ventoy2disk2_cn.png" alt="img"></p>
+<blockquote>
+<p><strong>选择安装的时候，U盘将会被格式化，里面所有的数据都会丢失！！！</strong></p>
+</blockquote>
+<h2 id="启动盘的使用"><a href="#启动盘的使用" class="headerlink" title="启动盘的使用"></a>启动盘的使用</h2><p>你只需要把ISO文件拷贝到这里面即可。你可以把ISO文件放在<strong>任意目录以及子目录</strong>下。 Ventoy默认会遍历所有的目录和子目录，找出所有的ISO文件，并按照字母排序之后显示在菜单中。需要注意的是，<strong>ISO文件的全路径中(包括目录、子目录和文件名)不能包含中文或者空格</strong>。</p>
+<p>至于如何从u盘启动系统，可以自行搜索关键词<strong>电脑型号+U盘启动</strong>，比如我用的是的华为matebook，就可以搜索<strong>华为matebook u盘启动</strong>。</p>
+<p><img src="http://image.onebug.tech/image-20200922141917108.png" alt="image-20200922141917108"></p>
+]]></content>
+      <categories>
+        <category>系统</category>
+      </categories>
+      <tags>
+        <tag>多系统</tag>
+        <tag>U盘</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>用 VSCode + Wsl 搭建 linux 开发环境</title>
     <url>/2020/10/20/%E8%BD%AF%E4%BB%B6/vscode%E4%BD%BF%E7%94%A8wsl/</url>
     <content><![CDATA[<p>使用vscode + Wsl 可以改善C++&#x2F;C的开发体验</p>
@@ -1612,32 +1638,6 @@
         <tag>vscode</tag>
         <tag>wsl</tag>
         <tag>windows</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用ventoy制作多系统启动盘</title>
-    <url>/2020/09/22/%E8%BD%AF%E4%BB%B6/ventoy/</url>
-    <content><![CDATA[<h2 id="ventoy介绍"><a href="#ventoy介绍" class="headerlink" title="ventoy介绍"></a>ventoy介绍</h2><p>Ventoy是一个制作可启动U盘的开源工具。有了Ventoy你就无需反复地格式化U盘，你<strong>只需要把ISO&#x2F;WIM&#x2F;IMG&#x2F;VHD(x)&#x2F;EFI文件拷贝到U盘</strong>里面就可以启动了，无需其他操作。 你可以一次性拷贝很<strong>多个</strong>不同类型的ISO文件，在启动时Ventoy会显示一个菜单来选择。</p>
-<span id="more"></span>
-
-<p><img src="http://image.onebug.tech/screen_uefi.png" alt="img"></p>
-<p>ventoy能够无差异支持Legacy BIOS和UEFI模式，并且支持大部分常见操作系统 （Windows&#x2F;WinPE&#x2F;Linux&#x2F;Unix&#x2F;VMware&#x2F;Xen 等等）</p>
-<h2 id="制作启动盘"><a href="#制作启动盘" class="headerlink" title="制作启动盘"></a>制作启动盘</h2><p>在<a href="https://www.lanzoux.com/b01bd54gb">这里</a>，下载安装包，例如 ventoy-1.0.15-windows.zip 然后解压开。直接执行 <code>Ventoy2Disk.exe</code> 如下图所示，选择U盘设备，然后点击 Install 按钮即可。</p>
-<p><img src="http://image.onebug.tech/ventoy2disk2_cn.png" alt="img"></p>
-<blockquote>
-<p><strong>选择安装的时候，U盘将会被格式化，里面所有的数据都会丢失！！！</strong></p>
-</blockquote>
-<h2 id="启动盘的使用"><a href="#启动盘的使用" class="headerlink" title="启动盘的使用"></a>启动盘的使用</h2><p>你只需要把ISO文件拷贝到这里面即可。你可以把ISO文件放在<strong>任意目录以及子目录</strong>下。 Ventoy默认会遍历所有的目录和子目录，找出所有的ISO文件，并按照字母排序之后显示在菜单中。需要注意的是，<strong>ISO文件的全路径中(包括目录、子目录和文件名)不能包含中文或者空格</strong>。</p>
-<p>至于如何从u盘启动系统，可以自行搜索关键词<strong>电脑型号+U盘启动</strong>，比如我用的是的华为matebook，就可以搜索<strong>华为matebook u盘启动</strong>。</p>
-<p><img src="http://image.onebug.tech/image-20200922141917108.png" alt="image-20200922141917108"></p>
-]]></content>
-      <categories>
-        <category>系统</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>多系统</tag>
-        <tag>U盘</tag>
       </tags>
   </entry>
   <entry>
@@ -3557,6 +3557,34 @@ public class DeadLock implements Runnable &#123;
       </tags>
   </entry>
   <entry>
+    <title>线程封闭</title>
+    <url>/2021/04/15/java/java%E5%B9%B6%E5%8F%91/ch5%E7%BA%BF%E7%A8%8B%E5%B0%81%E9%97%AD/</url>
+    <content><![CDATA[<h1 id="线程封闭"><a href="#线程封闭" class="headerlink" title="线程封闭"></a>线程封闭</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>当访问共享变量时，往往需要加锁来保证数据同步。<strong>一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了，这种技术称为线程封闭。</strong></p>
+<p>线程封闭技术有一个常见的应用，JDBC的Connection对象。Connection对象在实现的时候并没有对线程安全做太多的处理，JDBC的规范里也没有要求Connection对象必须是线程安全的。实际在服务器应用程序中，线程从连接池获取了一个Connection对象，使用完再把Connection对象返回给连接池，由于大多数请求都是由单线程采用同步的方式来处理的，并且在Connection对象返回之前，连接池不会将它分配给其他线程。因此这种连接管理模式处理请求时隐含的将Connection对象封闭在线程里面，这样我们使用的<strong>Connection对象虽然本身不是线程安全的，但是它通过线程封闭也做到了线程安全。</strong></p>
+<span id="more"></span>
+
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="Ad-hoc-线程封闭"><a href="#Ad-hoc-线程封闭" class="headerlink" title="Ad-hoc 线程封闭"></a>Ad-hoc 线程封闭</h3><p><code>Ad-hoc</code>线程封闭是指，维护线程封闭性的职责完全由程序实现来承担。Ad-hoc线程封闭是非常脆弱的，因为没有任何一种语言特性，例如可见性修饰符或局部变量，能将对象封闭到目标线程上。事实上，对线程封闭对象（例如，GUI应用程序中的可视化组件或数据模型等）的引用通常保存在公有变量中。</p>
+<h3 id="堆栈封闭"><a href="#堆栈封闭" class="headerlink" title="堆栈封闭"></a>堆栈封闭</h3><p>堆栈封闭其实就是方法中定义局部变量。不存在并发问题。多个线程访问一个方法的时候，<strong>方法中的局部变量都会被拷贝一份到线程的栈中</strong>（Java内存模型），所以局部变量是不会被多个线程所共享的。</p>
+<h3 id="ThreadLocal线程封闭"><a href="#ThreadLocal线程封闭" class="headerlink" title="ThreadLocal线程封闭"></a>ThreadLocal线程封闭</h3><p>它是一个特别好的封闭方法，其实<code>ThreadLocal</code>内部维护了一个<code>map</code>，<strong>map的key是每个线程的名称，而map的value就是我们要封闭的对象</strong>。<code>ThreadLocal</code>提供了<code>get</code>、<code>set</code>、<code>remove</code>方法，每个操作都是基于当前线程的，所以它是线程安全的。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//ThreadLocal的get方法源码</span></span><br><span class="line"><span class="keyword">public</span> T <span class="title function_">get</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread();<span class="comment">//当前线程对象</span></span><br><span class="line">    <span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t);<span class="comment">//get操作基于当前线程</span></span><br><span class="line">    <span class="keyword">if</span> (map != <span class="literal">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.<span class="type">Entry</span> <span class="variable">e</span> <span class="operator">=</span> map.getEntry(<span class="built_in">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">            <span class="type">T</span> <span class="variable">result</span> <span class="operator">=</span> (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ThreadLocal</code>的使用场景：</p>
+<ul>
+<li>实现单个线程单例以及单个线程上下文信息存储，比如交易id等</li>
+<li>实现线程安全，非线程安全的对象使用<code>ThreadLocal</code>之后就会变得线程安全，因为每个线程都会有一个对应的实例</li>
+<li>承载一些线程相关的数据，避免在方法中来回传递参数</li>
+</ul>
+]]></content>
+      <categories>
+        <category>java高并发</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>笔记</tag>
+        <tag>并发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>线程不安全类与同步容器</title>
     <url>/2021/04/16/java/java%E5%B9%B6%E5%8F%91/ch6%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8%E7%B1%BB%E4%B8%8E%E5%90%8C%E6%AD%A5%E5%AE%B9%E5%99%A8/</url>
     <content><![CDATA[<h1 id="线程不安全类"><a href="#线程不安全类" class="headerlink" title="线程不安全类"></a>线程不安全类</h1><p>如果一个类的对象同时可以被多个线程访问，并且你不做特殊的同步或并发处理，那么它就很容易表现出线程不安全的现象。比如抛出异常、逻辑处理错误等。下面列举一下常见的线程不安全的类及对应的线程安全类：</p>
@@ -3637,34 +3665,6 @@ public class DeadLock implements Runnable &#123;
       </tags>
   </entry>
   <entry>
-    <title>线程封闭</title>
-    <url>/2021/04/15/java/java%E5%B9%B6%E5%8F%91/ch5%E7%BA%BF%E7%A8%8B%E5%B0%81%E9%97%AD/</url>
-    <content><![CDATA[<h1 id="线程封闭"><a href="#线程封闭" class="headerlink" title="线程封闭"></a>线程封闭</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>当访问共享变量时，往往需要加锁来保证数据同步。<strong>一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了，这种技术称为线程封闭。</strong></p>
-<p>线程封闭技术有一个常见的应用，JDBC的Connection对象。Connection对象在实现的时候并没有对线程安全做太多的处理，JDBC的规范里也没有要求Connection对象必须是线程安全的。实际在服务器应用程序中，线程从连接池获取了一个Connection对象，使用完再把Connection对象返回给连接池，由于大多数请求都是由单线程采用同步的方式来处理的，并且在Connection对象返回之前，连接池不会将它分配给其他线程。因此这种连接管理模式处理请求时隐含的将Connection对象封闭在线程里面，这样我们使用的<strong>Connection对象虽然本身不是线程安全的，但是它通过线程封闭也做到了线程安全。</strong></p>
-<span id="more"></span>
-
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="Ad-hoc-线程封闭"><a href="#Ad-hoc-线程封闭" class="headerlink" title="Ad-hoc 线程封闭"></a>Ad-hoc 线程封闭</h3><p><code>Ad-hoc</code>线程封闭是指，维护线程封闭性的职责完全由程序实现来承担。Ad-hoc线程封闭是非常脆弱的，因为没有任何一种语言特性，例如可见性修饰符或局部变量，能将对象封闭到目标线程上。事实上，对线程封闭对象（例如，GUI应用程序中的可视化组件或数据模型等）的引用通常保存在公有变量中。</p>
-<h3 id="堆栈封闭"><a href="#堆栈封闭" class="headerlink" title="堆栈封闭"></a>堆栈封闭</h3><p>堆栈封闭其实就是方法中定义局部变量。不存在并发问题。多个线程访问一个方法的时候，<strong>方法中的局部变量都会被拷贝一份到线程的栈中</strong>（Java内存模型），所以局部变量是不会被多个线程所共享的。</p>
-<h3 id="ThreadLocal线程封闭"><a href="#ThreadLocal线程封闭" class="headerlink" title="ThreadLocal线程封闭"></a>ThreadLocal线程封闭</h3><p>它是一个特别好的封闭方法，其实<code>ThreadLocal</code>内部维护了一个<code>map</code>，<strong>map的key是每个线程的名称，而map的value就是我们要封闭的对象</strong>。<code>ThreadLocal</code>提供了<code>get</code>、<code>set</code>、<code>remove</code>方法，每个操作都是基于当前线程的，所以它是线程安全的。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//ThreadLocal的get方法源码</span></span><br><span class="line"><span class="keyword">public</span> T <span class="title function_">get</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread();<span class="comment">//当前线程对象</span></span><br><span class="line">    <span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t);<span class="comment">//get操作基于当前线程</span></span><br><span class="line">    <span class="keyword">if</span> (map != <span class="literal">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.<span class="type">Entry</span> <span class="variable">e</span> <span class="operator">=</span> map.getEntry(<span class="built_in">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">            <span class="type">T</span> <span class="variable">result</span> <span class="operator">=</span> (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>ThreadLocal</code>的使用场景：</p>
-<ul>
-<li>实现单个线程单例以及单个线程上下文信息存储，比如交易id等</li>
-<li>实现线程安全，非线程安全的对象使用<code>ThreadLocal</code>之后就会变得线程安全，因为每个线程都会有一个对应的实例</li>
-<li>承载一些线程相关的数据，避免在方法中来回传递参数</li>
-</ul>
-]]></content>
-      <categories>
-        <category>java高并发</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>笔记</tag>
-        <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>并发容器</title>
     <url>/2021/04/17/java/java%E5%B9%B6%E5%8F%91/ch7%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8/</url>
     <content><![CDATA[<h1 id="并发容器"><a href="#并发容器" class="headerlink" title="并发容器"></a>并发容器</h1><p>Java并发容器JUC是三个单词的缩写。是JDK下面的一个包名。即<code>Java.util.concurrency</code>。</p>
@@ -3734,79 +3734,6 @@ public class DeadLock implements Runnable &#123;
 <li>线程安全对象：一个线程安全的对象或者容器，在内部通过同步机制来保障线程安全，多以其他线程无需额外的同步就可以通过公共接口随意访问他</li>
 <li>被守护对象：被守护对象只能通过获取特定的锁来访问。</li>
 </ul>
-</blockquote>
-]]></content>
-      <categories>
-        <category>java高并发</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>笔记</tag>
-        <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>AQS-锁</title>
-    <url>/2021/04/19/java/java%E5%B9%B6%E5%8F%91/ch9AQS%E9%94%81/</url>
-    <content><![CDATA[<h1 id="AQS锁"><a href="#AQS锁" class="headerlink" title="AQS锁"></a>AQS锁</h1><h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><p><strong>ReentrantLock的使用</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建锁：使用Lock对象声明，使用ReentrantLock接口创建</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">Lock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"><span class="comment">//使用锁：在需要被加锁的方法中使用</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">()</span> &#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        count++;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<p>源码分析：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//初始化方面：</span></span><br><span class="line"><span class="comment">//在new ReentrantLock的时候默认给了一个不公平锁</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">ReentrantLock</span><span class="params">()</span> &#123;</span><br><span class="line">    sync = <span class="keyword">new</span> <span class="title class_">NonfairSync</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//也可以加参数来初始化指定使用公平锁还是不公平锁</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">ReentrantLock</span><span class="params">(<span class="type">boolean</span> fair)</span> &#123;</span><br><span class="line">    sync = fair ? <span class="keyword">new</span> <span class="title class_">FairSync</span>() : <span class="keyword">new</span> <span class="title class_">NonfairSync</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>功能：</p>
-<ul>
-<li>tryLock()：仅在调用时锁定未被另一个线程保持的情况下才获取锁定。</li>
-<li>tryLock(long timeout, TimeUnit unit)：如果锁定在给定的时间内没有被另一个线程保持且当前线程没有被中断，则获取这个锁定。</li>
-<li>lockInterruptbily：如果当前线程没有被中断的话，那么就获取锁定。如果中断了就抛出异常。</li>
-<li>isLocked：查询此锁定是否由任意线程保持</li>
-<li>isHeldByCurrentThread：查询当前线程是否保持锁定状态。</li>
-<li>isFair：判断是不是公平锁</li>
-<li>……</li>
-</ul>
-<p><strong>与synchronized的区别</strong></p>
-<ul>
-<li>可重入性：两者的锁都是可重入的，差别不大，有线程进入锁，计数器自增1，等下降为0时才可以释放锁</li>
-<li>锁的实现：synchronized是基于JVM实现，ReentrantLock是JDK实现的。</li>
-<li>性能区别：在最初的时候，二者的性能差别差很多，当synchronized引入了偏向锁、轻量级锁（自旋锁）后，二者的性能差别不大，官方推荐synchronized（优化时其实是借用了ReentrantLock的CAS技术，试图在用户态就把问题解决，避免进入内核态造成线程阻塞）</li>
-<li>功能区别：<ul>
-<li>便利性：synchronized更便利，它是由编译器保证加锁与释放。ReentrantLock是需要手动释放锁，所以为了避免忘记手工释放锁造成死锁，所以最好在finally中声明释放锁。</li>
-<li>锁的细粒度和灵活度，ReentrantLock优于synchronized</li>
-</ul>
-</li>
-</ul>
-<p><strong>ReentrantLock独有的功能</strong></p>
-<ul>
-<li><p>可以指定是公平锁还是<strong>非公平锁</strong>，sync只能是非公平锁。</p>
-<blockquote>
-<p>公平锁就是先等待的线程先获得锁</p>
-</blockquote>
-</li>
-<li><p>提供了一个Condition类，可以<strong>分组唤醒</strong>需要唤醒的线程，而synchronized要么随机唤醒一个线程，要么全部唤醒。</p>
-</li>
-<li><p>通过<code>lock.lockInterruptibly()</code>提供能够中断等待锁的线程的功能</p>
-</li>
-<li><p>ReentrantLock是一种自旋锁，通过循环调用CAS操作来实现加锁。由于避免了进入内核态的阻塞状态，性能比较好。</p>
-</li>
-</ul>
-<p><strong>是否弃用synchronized？</strong></p>
-<p>从上边的介绍，看上去ReentrantLock不仅拥有synchronized的所有功能，而且有一些功能synchronized无法实现的特性。性能方面，ReentrantLock也不比synchronized差，那么到底我们要不要放弃使用synchronized呢？<strong>答案是不要这样做</strong>。</p>
-<p>J.U.C包中的锁类是高级用户的工具，除非说你对Lock的高级特性有特别清楚的了解以及有明确的需求，或有明确的证据表明同步已经成为可伸缩性的瓶颈的时候，否则我们还是继续使用synchronized。相比较这些高级的锁定类，synchronized还是有一些优势的，比如synchronized不需要手动释放锁。还有当JVM使用synchronized管理锁定请求和释放时，JVM在生成线程转储时能够包括锁定信息，这些信息对调试非常有价值，它们可以标识死锁以及其他异常行为的来源。</p>
-<p><strong>如何选择锁？</strong></p>
-<ul>
-<li>当只有少量竞争者，使用synchronized</li>
-<li>竞争者不少但是线程增长的趋势是能预估的，使用ReetrantLock</li>
-</ul>
-<h2 id="ReentrantReadWriteLock"><a href="#ReentrantReadWriteLock" class="headerlink" title="ReentrantReadWriteLock"></a>ReentrantReadWriteLock</h2><p>ReentrantReadWriteLock（读写锁）允许多个线程在没有写入时同时读取，只允许一个线程写入。如果一直存在读操作，那么写锁一直在等待没有读的情况出现，这样我的写锁就永远也获取不到，就会<strong>造成等待获取写锁的线程饥饿</strong>。平时使用的场景并不多，平时使用的场景并不多。</p>
-<h2 id="StempedLock"><a href="#StempedLock" class="headerlink" title="StempedLock"></a>StempedLock</h2><p>要进一步提升并发执行效率，Java 8引入了新的读写锁：StampedLock。改进之处在于：读的过程中也允许获取写锁后写入，这样一来，我们读的数据就可能不一致，所以，需要一点额外的代码来判断读的过程中是否有写入。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">StampedLock</span> <span class="variable">stampedLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StampedLock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> x;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> y;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">move</span><span class="params">(<span class="type">double</span> deltaX, <span class="type">double</span> deltaY)</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">stamp</span> <span class="operator">=</span> stampedLock.writeLock(); <span class="comment">// 获取写锁</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            x += deltaX;</span><br><span class="line">            y += deltaY;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            stampedLock.unlockWrite(stamp); <span class="comment">// 释放写锁</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">distanceFromOrigin</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">stamp</span> <span class="operator">=</span> stampedLock.tryOptimisticRead(); <span class="comment">// 获得一个乐观读锁</span></span><br><span class="line">        <span class="comment">// 注意下面两行代码不是原子操作</span></span><br><span class="line">        <span class="comment">// 假设x,y = (100,200)</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">currentX</span> <span class="operator">=</span> x;</span><br><span class="line">        <span class="comment">// 此处已读取到x=100，但x,y可能被写线程修改为(300,400)</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">currentY</span> <span class="operator">=</span> y;</span><br><span class="line">        <span class="comment">// 此处已读取到y，如果没有写入，读取是正确的(100,200)</span></span><br><span class="line">        <span class="comment">// 如果有写入，读取是错误的(100,400)</span></span><br><span class="line">        <span class="keyword">if</span> (!stampedLock.validate(stamp)) &#123; <span class="comment">// 检查乐观读锁后是否有其他写锁发生</span></span><br><span class="line">            stamp = stampedLock.readLock(); <span class="comment">// 获取一个悲观读锁</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                currentX = x;</span><br><span class="line">                currentY = y;</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                stampedLock.unlockRead(stamp); <span class="comment">// 释放悲观读锁</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Math.sqrt(currentX * currentX + currentY * currentY);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>和ReadWriteLock相比，写入的加锁是完全一样的，不同的是读取。注意到首先我们通过<code>tryOptimisticRead()</code>获取一个乐观读锁，并返回版本号。接着进行读取，读取完成后，我们通过<code>validate()</code>去验证版本号，如果在读取过程中没有写入，版本号不变，验证成功，我们就可以放心地继续后续操作。如果在读取过程中有写入，版本号会发生变化，验证将失败。在失败的时候，我们再通过获取悲观读锁再次读取。由于写入的概率不高，程序在绝大部分情况下可以通过乐观读锁获取数据，极少数情况下使用悲观读锁获取数据。</p>
-<p>可见，StampedLock把读锁细分为乐观读和悲观读，能进一步提升并发效率。但这也是有代价的：一是代码更加复杂，二是StampedLock是不可重入锁，不能在一个线程中反复获取同一个锁。</p>
-<blockquote>
-<p>乐观锁的意思就是乐观地估计读的过程中大概率不会有写入，因此被称为乐观锁。反过来，悲观锁则是读的过程中拒绝有写入，也就是写入必须等待。显然乐观锁的并发效率更高，但一旦有小概率的写入导致读取的数据不一致，需要能检测出来，再读一遍就行</p>
 </blockquote>
 ]]></content>
       <categories>
@@ -3922,6 +3849,79 @@ public class DeadLock implements Runnable &#123;
 <li>每个（基于synchronized的）内置锁都只能有一个相关联的条件队列，会存在多个线程可能在同一个条件队列上等待不同的条件谓词；而（基于AQS实现的）显式锁支持多个条件队列</li>
 <li>与wait，notify，notifyAll 对应的方法时Conditoin接口中的await，signal，signalAll，他们具有相同的语义</li>
 </ol>
+]]></content>
+      <categories>
+        <category>java高并发</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>笔记</tag>
+        <tag>并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AQS-锁</title>
+    <url>/2021/04/19/java/java%E5%B9%B6%E5%8F%91/ch9AQS%E9%94%81/</url>
+    <content><![CDATA[<h1 id="AQS锁"><a href="#AQS锁" class="headerlink" title="AQS锁"></a>AQS锁</h1><h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><p><strong>ReentrantLock的使用</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建锁：使用Lock对象声明，使用ReentrantLock接口创建</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">Lock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"><span class="comment">//使用锁：在需要被加锁的方法中使用</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">()</span> &#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        count++;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>源码分析：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//初始化方面：</span></span><br><span class="line"><span class="comment">//在new ReentrantLock的时候默认给了一个不公平锁</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">ReentrantLock</span><span class="params">()</span> &#123;</span><br><span class="line">    sync = <span class="keyword">new</span> <span class="title class_">NonfairSync</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//也可以加参数来初始化指定使用公平锁还是不公平锁</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">ReentrantLock</span><span class="params">(<span class="type">boolean</span> fair)</span> &#123;</span><br><span class="line">    sync = fair ? <span class="keyword">new</span> <span class="title class_">FairSync</span>() : <span class="keyword">new</span> <span class="title class_">NonfairSync</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>功能：</p>
+<ul>
+<li>tryLock()：仅在调用时锁定未被另一个线程保持的情况下才获取锁定。</li>
+<li>tryLock(long timeout, TimeUnit unit)：如果锁定在给定的时间内没有被另一个线程保持且当前线程没有被中断，则获取这个锁定。</li>
+<li>lockInterruptbily：如果当前线程没有被中断的话，那么就获取锁定。如果中断了就抛出异常。</li>
+<li>isLocked：查询此锁定是否由任意线程保持</li>
+<li>isHeldByCurrentThread：查询当前线程是否保持锁定状态。</li>
+<li>isFair：判断是不是公平锁</li>
+<li>……</li>
+</ul>
+<p><strong>与synchronized的区别</strong></p>
+<ul>
+<li>可重入性：两者的锁都是可重入的，差别不大，有线程进入锁，计数器自增1，等下降为0时才可以释放锁</li>
+<li>锁的实现：synchronized是基于JVM实现，ReentrantLock是JDK实现的。</li>
+<li>性能区别：在最初的时候，二者的性能差别差很多，当synchronized引入了偏向锁、轻量级锁（自旋锁）后，二者的性能差别不大，官方推荐synchronized（优化时其实是借用了ReentrantLock的CAS技术，试图在用户态就把问题解决，避免进入内核态造成线程阻塞）</li>
+<li>功能区别：<ul>
+<li>便利性：synchronized更便利，它是由编译器保证加锁与释放。ReentrantLock是需要手动释放锁，所以为了避免忘记手工释放锁造成死锁，所以最好在finally中声明释放锁。</li>
+<li>锁的细粒度和灵活度，ReentrantLock优于synchronized</li>
+</ul>
+</li>
+</ul>
+<p><strong>ReentrantLock独有的功能</strong></p>
+<ul>
+<li><p>可以指定是公平锁还是<strong>非公平锁</strong>，sync只能是非公平锁。</p>
+<blockquote>
+<p>公平锁就是先等待的线程先获得锁</p>
+</blockquote>
+</li>
+<li><p>提供了一个Condition类，可以<strong>分组唤醒</strong>需要唤醒的线程，而synchronized要么随机唤醒一个线程，要么全部唤醒。</p>
+</li>
+<li><p>通过<code>lock.lockInterruptibly()</code>提供能够中断等待锁的线程的功能</p>
+</li>
+<li><p>ReentrantLock是一种自旋锁，通过循环调用CAS操作来实现加锁。由于避免了进入内核态的阻塞状态，性能比较好。</p>
+</li>
+</ul>
+<p><strong>是否弃用synchronized？</strong></p>
+<p>从上边的介绍，看上去ReentrantLock不仅拥有synchronized的所有功能，而且有一些功能synchronized无法实现的特性。性能方面，ReentrantLock也不比synchronized差，那么到底我们要不要放弃使用synchronized呢？<strong>答案是不要这样做</strong>。</p>
+<p>J.U.C包中的锁类是高级用户的工具，除非说你对Lock的高级特性有特别清楚的了解以及有明确的需求，或有明确的证据表明同步已经成为可伸缩性的瓶颈的时候，否则我们还是继续使用synchronized。相比较这些高级的锁定类，synchronized还是有一些优势的，比如synchronized不需要手动释放锁。还有当JVM使用synchronized管理锁定请求和释放时，JVM在生成线程转储时能够包括锁定信息，这些信息对调试非常有价值，它们可以标识死锁以及其他异常行为的来源。</p>
+<p><strong>如何选择锁？</strong></p>
+<ul>
+<li>当只有少量竞争者，使用synchronized</li>
+<li>竞争者不少但是线程增长的趋势是能预估的，使用ReetrantLock</li>
+</ul>
+<h2 id="ReentrantReadWriteLock"><a href="#ReentrantReadWriteLock" class="headerlink" title="ReentrantReadWriteLock"></a>ReentrantReadWriteLock</h2><p>ReentrantReadWriteLock（读写锁）允许多个线程在没有写入时同时读取，只允许一个线程写入。如果一直存在读操作，那么写锁一直在等待没有读的情况出现，这样我的写锁就永远也获取不到，就会<strong>造成等待获取写锁的线程饥饿</strong>。平时使用的场景并不多，平时使用的场景并不多。</p>
+<h2 id="StempedLock"><a href="#StempedLock" class="headerlink" title="StempedLock"></a>StempedLock</h2><p>要进一步提升并发执行效率，Java 8引入了新的读写锁：StampedLock。改进之处在于：读的过程中也允许获取写锁后写入，这样一来，我们读的数据就可能不一致，所以，需要一点额外的代码来判断读的过程中是否有写入。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">StampedLock</span> <span class="variable">stampedLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StampedLock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> x;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> y;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">move</span><span class="params">(<span class="type">double</span> deltaX, <span class="type">double</span> deltaY)</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">stamp</span> <span class="operator">=</span> stampedLock.writeLock(); <span class="comment">// 获取写锁</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            x += deltaX;</span><br><span class="line">            y += deltaY;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            stampedLock.unlockWrite(stamp); <span class="comment">// 释放写锁</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">distanceFromOrigin</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">stamp</span> <span class="operator">=</span> stampedLock.tryOptimisticRead(); <span class="comment">// 获得一个乐观读锁</span></span><br><span class="line">        <span class="comment">// 注意下面两行代码不是原子操作</span></span><br><span class="line">        <span class="comment">// 假设x,y = (100,200)</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">currentX</span> <span class="operator">=</span> x;</span><br><span class="line">        <span class="comment">// 此处已读取到x=100，但x,y可能被写线程修改为(300,400)</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">currentY</span> <span class="operator">=</span> y;</span><br><span class="line">        <span class="comment">// 此处已读取到y，如果没有写入，读取是正确的(100,200)</span></span><br><span class="line">        <span class="comment">// 如果有写入，读取是错误的(100,400)</span></span><br><span class="line">        <span class="keyword">if</span> (!stampedLock.validate(stamp)) &#123; <span class="comment">// 检查乐观读锁后是否有其他写锁发生</span></span><br><span class="line">            stamp = stampedLock.readLock(); <span class="comment">// 获取一个悲观读锁</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                currentX = x;</span><br><span class="line">                currentY = y;</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                stampedLock.unlockRead(stamp); <span class="comment">// 释放悲观读锁</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Math.sqrt(currentX * currentX + currentY * currentY);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>和ReadWriteLock相比，写入的加锁是完全一样的，不同的是读取。注意到首先我们通过<code>tryOptimisticRead()</code>获取一个乐观读锁，并返回版本号。接着进行读取，读取完成后，我们通过<code>validate()</code>去验证版本号，如果在读取过程中没有写入，版本号不变，验证成功，我们就可以放心地继续后续操作。如果在读取过程中有写入，版本号会发生变化，验证将失败。在失败的时候，我们再通过获取悲观读锁再次读取。由于写入的概率不高，程序在绝大部分情况下可以通过乐观读锁获取数据，极少数情况下使用悲观读锁获取数据。</p>
+<p>可见，StampedLock把读锁细分为乐观读和悲观读，能进一步提升并发效率。但这也是有代价的：一是代码更加复杂，二是StampedLock是不可重入锁，不能在一个线程中反复获取同一个锁。</p>
+<blockquote>
+<p>乐观锁的意思就是乐观地估计读的过程中大概率不会有写入，因此被称为乐观锁。反过来，悲观锁则是读的过程中拒绝有写入，也就是写入必须等待。显然乐观锁的并发效率更高，但一旦有小概率的写入导致读取的数据不一致，需要能检测出来，再读一遍就行</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>java高并发</category>
@@ -4078,32 +4078,6 @@ public class DeadLock implements Runnable &#123;
       </tags>
   </entry>
   <entry>
-    <title>高并发下随机数的获取--ThreadlocalRandom</title>
-    <url>/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/</url>
-    <content><![CDATA[<h1 id="Random类的局限性"><a href="#Random类的局限性" class="headerlink" title="Random类的局限性"></a>Random类的局限性</h1><p>每个Random 实例里面都有一个原子性的种子变量用来记录当前的种子值，当要生成新的随机数时需要根据当前种子计算新的种子并更新回原子变量。在多线程下使用单个Random 实例生成随机数时，当多个线程同时计算随机数来计算新的种子时，多个线程会竞争同一个原子变量的更新操作，由于原子变量的更新是CAS 操作，同时只有一个线程会成功，所以会造成大量线程进行自旋重试， 这会降低并发性能，所以<code>ThreadLocalRandom</code> 应运而生。</p>
-<span id="more"></span>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Random类的核心方法，CAS操作会导致高竞用情况下的性能下降</span></span><br><span class="line"><span class="keyword">protected</span> <span class="type">int</span> <span class="title function_">next</span><span class="params">(<span class="type">int</span> bits)</span> &#123;</span><br><span class="line">       <span class="type">long</span> oldseed, nextseed;</span><br><span class="line">       <span class="type">AtomicLong</span> <span class="variable">seed</span> <span class="operator">=</span> <span class="built_in">this</span>.seed;</span><br><span class="line">       <span class="keyword">do</span> &#123;</span><br><span class="line">           oldseed = seed.get();</span><br><span class="line">           nextseed = (oldseed * multiplier + addend) &amp; mask;</span><br><span class="line">       &#125; <span class="keyword">while</span> (!seed.compareAndSet(oldseed, nextseed));</span><br><span class="line">       <span class="keyword">return</span> (<span class="type">int</span>)(nextseed &gt;&gt;&gt; (<span class="number">48</span> - bits));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="ThreadlocalRandom"><a href="#ThreadlocalRandom" class="headerlink" title="ThreadlocalRandom"></a>ThreadlocalRandom</h1><p>为了弥补多线程高并发情况下Random 的缺陷， <code>ThreadLocalRandom</code>类应运而生。<code>ThreadLocalRandom</code> 使用<code>ThreadLocal</code>的原理，让每个线程都持有一个本地的种子变量，该种子变量只有在使用随机数时才会被初始化。在多线程下计算新种子时是根据自己线程内维护的种子变量进行更新，从而避免了竞争。<br><code>ThreadLocalRandom</code> 类似于<code>ThreadLocal</code> 类，就是个工具类。当线程调用<code>ThreadLocalRandom</code> 的<code>current</code>方法时， <code>ThreadLocalRandom</code> 负责初始化调用线程的<code>threadLocalRandomSeed</code> 变量， 也就是初始化种子。<br>当调用<code>ThreadLocalRandom</code> 的<code>nextlnt</code> 方法时，实际上是获取当前线程的<code>threadLocalRandomSeed</code> 变量作为当前种子来计算新的种子，然后更新新的种子到当前线程的<code>threadLocalRandomSeed</code> 变量，而后再根据新种子并使用具体算法计算随机数。</p>
-<blockquote>
-<p><code>threadLocalRandomSeed</code> 变量是Thread 类里面的一个普通long 变量</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">   <span class="comment">//ThreadLocalRandom类的核心代码</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">long</span> <span class="title function_">nextSeed</span><span class="params">()</span> &#123;</span><br><span class="line">       Thread t; <span class="type">long</span> r; <span class="comment">// read and update per-thread seed</span></span><br><span class="line">       UNSAFE.putLong(t = Thread.currentThread(), SEED,</span><br><span class="line">                      r = UNSAFE.getLong(t, SEED) + GAMMA);</span><br><span class="line">       <span class="keyword">return</span> r;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://image.onebug.tech/image-20211016224505557.png" alt="image-20211016224505557"></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>笔记</tag>
-        <tag>并发</tag>
-        <tag>java并发编程之美</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>写时复制与弱一致性--CopyOnWriteArrayList源码剖析</title>
     <url>/2021/10/21/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/CopyOnWriteList/</url>
     <content><![CDATA[<p><code>CopyOnWriteArrayList</code> 是一个线程安全的<code>ArrayList</code> ，对其进行的修改操作都是在底层的一个复制的数组（快照）上进行的，也就是使用了<strong>写时复制</strong>策略。</p>
@@ -4133,6 +4107,32 @@ public class DeadLock implements Runnable &#123;
 <p>由于执行步骤A 和步骤B 没有加锁，这就可能导致在线程x执行完步骤A 后执行步骤B前， 另外一个线程y进行了<code>remove</code> 操作，假设要线程y要删除元素1， <code>remove</code> 操作首先会获取独占锁， 然后进行写时复制操作，也就是复制一份当前<code>array</code> 数组， 然后在复制的数组里面删除元素1 ，之后让<code>array</code>指向复制的新数组。而这时候<code>array</code>之前指向的数组的引用计数为1而不是0， 因为线程x 还在使用它，这时线程x 开始执行步骤B ，步骤B 操作的数组是线程y 删除元素之前的数组。</p>
 <p><img src="http://image.onebug.tech/image-20211021201430872.png" alt="image-20211021201430872"></p>
 <p>所以，虽然线程y己经删除了<code>index</code>处的元素，但是线程x 的步骤B 还是<strong>有可能</strong>会返回<code>index</code> 处的元素，这其实就是写时复制策略产生的<strong>弱一致性问题</strong>。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>笔记</tag>
+        <tag>并发</tag>
+        <tag>java并发编程之美</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>高并发下随机数的获取--ThreadlocalRandom</title>
+    <url>/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/</url>
+    <content><![CDATA[<h1 id="Random类的局限性"><a href="#Random类的局限性" class="headerlink" title="Random类的局限性"></a>Random类的局限性</h1><p>每个Random 实例里面都有一个原子性的种子变量用来记录当前的种子值，当要生成新的随机数时需要根据当前种子计算新的种子并更新回原子变量。在多线程下使用单个Random 实例生成随机数时，当多个线程同时计算随机数来计算新的种子时，多个线程会竞争同一个原子变量的更新操作，由于原子变量的更新是CAS 操作，同时只有一个线程会成功，所以会造成大量线程进行自旋重试， 这会降低并发性能，所以<code>ThreadLocalRandom</code> 应运而生。</p>
+<span id="more"></span>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Random类的核心方法，CAS操作会导致高竞用情况下的性能下降</span></span><br><span class="line"><span class="keyword">protected</span> <span class="type">int</span> <span class="title function_">next</span><span class="params">(<span class="type">int</span> bits)</span> &#123;</span><br><span class="line">       <span class="type">long</span> oldseed, nextseed;</span><br><span class="line">       <span class="type">AtomicLong</span> <span class="variable">seed</span> <span class="operator">=</span> <span class="built_in">this</span>.seed;</span><br><span class="line">       <span class="keyword">do</span> &#123;</span><br><span class="line">           oldseed = seed.get();</span><br><span class="line">           nextseed = (oldseed * multiplier + addend) &amp; mask;</span><br><span class="line">       &#125; <span class="keyword">while</span> (!seed.compareAndSet(oldseed, nextseed));</span><br><span class="line">       <span class="keyword">return</span> (<span class="type">int</span>)(nextseed &gt;&gt;&gt; (<span class="number">48</span> - bits));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="ThreadlocalRandom"><a href="#ThreadlocalRandom" class="headerlink" title="ThreadlocalRandom"></a>ThreadlocalRandom</h1><p>为了弥补多线程高并发情况下Random 的缺陷， <code>ThreadLocalRandom</code>类应运而生。<code>ThreadLocalRandom</code> 使用<code>ThreadLocal</code>的原理，让每个线程都持有一个本地的种子变量，该种子变量只有在使用随机数时才会被初始化。在多线程下计算新种子时是根据自己线程内维护的种子变量进行更新，从而避免了竞争。<br><code>ThreadLocalRandom</code> 类似于<code>ThreadLocal</code> 类，就是个工具类。当线程调用<code>ThreadLocalRandom</code> 的<code>current</code>方法时， <code>ThreadLocalRandom</code> 负责初始化调用线程的<code>threadLocalRandomSeed</code> 变量， 也就是初始化种子。<br>当调用<code>ThreadLocalRandom</code> 的<code>nextlnt</code> 方法时，实际上是获取当前线程的<code>threadLocalRandomSeed</code> 变量作为当前种子来计算新的种子，然后更新新的种子到当前线程的<code>threadLocalRandomSeed</code> 变量，而后再根据新种子并使用具体算法计算随机数。</p>
+<blockquote>
+<p><code>threadLocalRandomSeed</code> 变量是Thread 类里面的一个普通long 变量</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">   <span class="comment">//ThreadLocalRandom类的核心代码</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">long</span> <span class="title function_">nextSeed</span><span class="params">()</span> &#123;</span><br><span class="line">       Thread t; <span class="type">long</span> r; <span class="comment">// read and update per-thread seed</span></span><br><span class="line">       UNSAFE.putLong(t = Thread.currentThread(), SEED,</span><br><span class="line">                      r = UNSAFE.getLong(t, SEED) + GAMMA);</span><br><span class="line">       <span class="keyword">return</span> r;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://image.onebug.tech/image-20211016224505557.png" alt="image-20211016224505557"></p>
 ]]></content>
       <categories>
         <category>读书笔记</category>
