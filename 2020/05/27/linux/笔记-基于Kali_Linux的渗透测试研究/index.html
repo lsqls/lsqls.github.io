@@ -255,6 +255,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/05/27/linux/%E7%AC%94%E8%AE%B0-%E5%9F%BA%E4%BA%8EKali_Linux%E7%9A%84%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%A0%94%E7%A9%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/05/27/linux/%E7%AC%94%E8%AE%B0-%E5%9F%BA%E4%BA%8EKali_Linux%E7%9A%84%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%A0%94%E7%A9%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -266,7 +287,7 @@
 
       
         <p>本文是阅读《基于Kali_Linux的渗透研究》之后写下的笔记。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="渗透信息收集"><a href="#渗透信息收集" class="headerlink" title="渗透信息收集"></a>渗透信息收集</h2><h3 id="主机探测与端口扫描"><a href="#主机探测与端口扫描" class="headerlink" title="主机探测与端口扫描"></a>主机探测与端口扫描</h3><h4 id="活跃主机扫描"><a href="#活跃主机扫描" class="headerlink" title="活跃主机扫描"></a>活跃主机扫描</h4><ul>
 <li><p>ICMP Ping</p>
@@ -290,7 +311,7 @@
 <p>常见的扫描选项有：</p>
 <ul>
 <li><code>-Pn</code>  在扫描之前，不发生ICMP  echo  测试目标是否活跃</li>
-<li><code>-O</code>  启用TCP/IP协议栈的指纹特征来获取主机操作系统类型信息</li>
+<li><code>-O</code>  启用TCP&#x2F;IP协议栈的指纹特征来获取主机操作系统类型信息</li>
 <li><code>-F</code> 快速扫描模式，只扫描默认端口</li>
 </ul>
 <h5 id="Python编程实现端口扫描"><a href="#Python编程实现端口扫描" class="headerlink" title="Python编程实现端口扫描"></a>Python编程实现端口扫描</h5><p>使用BSD套接字的接口进行编程</p>
@@ -300,7 +321,7 @@
 <h3 id="网络服务扫描与查点"><a href="#网络服务扫描与查点" class="headerlink" title="网络服务扫描与查点"></a>网络服务扫描与查点</h3><p>对网络上特定服务进行扫描，可以增加渗透成功的概率。在确定开放端口后，通常会对相应端口上运行服务的信息进行更加升入的挖掘，这被称为服务查点。</p>
 <h4 id="Telnet-服务扫描"><a href="#Telnet-服务扫描" class="headerlink" title="Telnet 服务扫描"></a>Telnet 服务扫描</h4><p>Telnet是一个历史悠久但缺乏安全性的网络服务，由于Telnet没有对传输过程中的数据进行加密，这使得使用Telnet的网络设备存在安全风险。可以使用Metasploit<code>中的辅助模块telnet_version</code>进行Telnet服务查点。</p>
 <h4 id="SSH服务扫描"><a href="#SSH服务扫描" class="headerlink" title="SSH服务扫描"></a>SSH服务扫描</h4><p>与Telnet服务相比，SSH采用的是安全的加密信息传输方式。可以使用Metasploit中的<code>ssh_version</code>进行SSH服务查点。</p>
-<h4 id="FPT服务查点"><a href="#FPT服务查点" class="headerlink" title="FPT服务查点"></a>FPT服务查点</h4><p>FPT（File Transfer Protocol）是用于在网络上进行文件传输的一套协议标准，使用的是客户/服务模式，属于网络传输协议的应用层。可以使用Metasploit中的<code>fpt_version</code>进行FPT服务查点。</p>
+<h4 id="FPT服务查点"><a href="#FPT服务查点" class="headerlink" title="FPT服务查点"></a>FPT服务查点</h4><p>FPT（File Transfer Protocol）是用于在网络上进行文件传输的一套协议标准，使用的是客户&#x2F;服务模式，属于网络传输协议的应用层。可以使用Metasploit中的<code>fpt_version</code>进行FPT服务查点。</p>
 <h4 id="数据库服务查点"><a href="#数据库服务查点" class="headerlink" title="数据库服务查点"></a>数据库服务查点</h4><p>这是漏洞频发的“重灾区”，常见的有：SQL Server 的1433端口、Oracle SQL的1521端口、MySQL的3306端口、Postgre SQL的5453。可以使用Metasploit中不同的数据库查询模块进行服务查点：<code>msssql_ping</code>、<code>tnssnr_version</code>、<code>mysql_version</code>、<code>postgres_version</code>。</p>
 <h3 id="网络漏洞扫描"><a href="#网络漏洞扫描" class="headerlink" title="网络漏洞扫描"></a>网络漏洞扫描</h3><p>常见的获取漏洞的方法是使用漏洞扫描工具，主要有<strong>Nessus</strong>和OpenVas，还可以直接到官方网站获取一些设备或系统的漏洞信息。</p>
 <h2 id="Web渗透测试"><a href="#Web渗透测试" class="headerlink" title="Web渗透测试"></a>Web渗透测试</h2><h3 id="常见的Web攻击类型"><a href="#常见的Web攻击类型" class="headerlink" title="常见的Web攻击类型"></a>常见的Web攻击类型</h3><p><img src="http://image.onebug.tech/image-20200514175813811.png" alt="2017年Web应用的各类攻击次数占比"></p>
@@ -317,7 +338,7 @@
 <p>首先使用<code>order by  num</code>判断数据库查询字段数，然后通过<code>union select 1,2,3...</code>联合查询语句判断出具体显示字段的显示位，确定显示位后，可以使用SQL注入常用的内置函数获取数据库的信息，最后获取数据库中表名和列名并导出数据库中的数据，验证数据的有效性可以到<a href="www.cmd5.com">www.cmd5.com</a>。</p>
 </li>
 </ul>
-<h3 id="XSS跨站脚本攻击"><a href="#XSS跨站脚本攻击" class="headerlink" title="XSS跨站脚本攻击"></a>XSS跨站脚本攻击</h3><p>跨站脚本攻击允许用户将恶意代码注入到网页中，其他使用者在浏览网页时会受到影响/根据XSS脚本注入方式的不同，XSS攻击一般可以分为三种：反射型XSS、存储型XSS、DOM型XSS。</p>
+<h3 id="XSS跨站脚本攻击"><a href="#XSS跨站脚本攻击" class="headerlink" title="XSS跨站脚本攻击"></a>XSS跨站脚本攻击</h3><p>跨站脚本攻击允许用户将恶意代码注入到网页中，其他使用者在浏览网页时会受到影响&#x2F;根据XSS脚本注入方式的不同，XSS攻击一般可以分为三种：反射型XSS、存储型XSS、DOM型XSS。</p>
 <ul>
 <li>反射性XSS又称非持久性XSS，此攻击类型具有一次性，其攻击方式为：攻击者通过电子邮件等方式将包含XSS代码的恶意链接发送给目标用户。</li>
 <li>存储型XSS又称为持久型XSS，攻击脚本将被永久放在服务器的数据库或文件中。这种攻击多见于论坛、博客和留言板。</li>
@@ -381,6 +402,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -450,13 +472,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -504,6 +526,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -582,6 +624,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

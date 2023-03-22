@@ -34,8 +34,8 @@
 <meta property="article:modified_time" content="2021-10-21T12:59:48.497Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
-<meta property="article:tag" content="并发">
 <meta property="article:tag" content="笔记">
+<meta property="article:tag" content="并发">
 <meta property="article:tag" content="java并发编程之美">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://image.onebug.tech/image-20211016224505557.png">
@@ -254,6 +254,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -265,15 +286,15 @@
 
       
         <h1 id="Random类的局限性"><a href="#Random类的局限性" class="headerlink" title="Random类的局限性"></a>Random类的局限性</h1><p>每个Random 实例里面都有一个原子性的种子变量用来记录当前的种子值，当要生成新的随机数时需要根据当前种子计算新的种子并更新回原子变量。在多线程下使用单个Random 实例生成随机数时，当多个线程同时计算随机数来计算新的种子时，多个线程会竞争同一个原子变量的更新操作，由于原子变量的更新是CAS 操作，同时只有一个线程会成功，所以会造成大量线程进行自旋重试， 这会降低并发性能，所以<code>ThreadLocalRandom</code> 应运而生。</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Random类的核心方法，CAS操作会导致高竞用情况下的性能下降</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">next</span><span class="params">(<span class="keyword">int</span> bits)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">long</span> oldseed, nextseed;</span><br><span class="line">       AtomicLong seed = <span class="keyword">this</span>.seed;</span><br><span class="line">       <span class="keyword">do</span> &#123;</span><br><span class="line">           oldseed = seed.get();</span><br><span class="line">           nextseed = (oldseed * multiplier + addend) &amp; mask;</span><br><span class="line">       &#125; <span class="keyword">while</span> (!seed.compareAndSet(oldseed, nextseed));</span><br><span class="line">       <span class="keyword">return</span> (<span class="keyword">int</span>)(nextseed &gt;&gt;&gt; (<span class="number">48</span> - bits));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Random类的核心方法，CAS操作会导致高竞用情况下的性能下降</span></span><br><span class="line"><span class="keyword">protected</span> <span class="type">int</span> <span class="title function_">next</span><span class="params">(<span class="type">int</span> bits)</span> &#123;</span><br><span class="line">       <span class="type">long</span> oldseed, nextseed;</span><br><span class="line">       <span class="type">AtomicLong</span> <span class="variable">seed</span> <span class="operator">=</span> <span class="built_in">this</span>.seed;</span><br><span class="line">       <span class="keyword">do</span> &#123;</span><br><span class="line">           oldseed = seed.get();</span><br><span class="line">           nextseed = (oldseed * multiplier + addend) &amp; mask;</span><br><span class="line">       &#125; <span class="keyword">while</span> (!seed.compareAndSet(oldseed, nextseed));</span><br><span class="line">       <span class="keyword">return</span> (<span class="type">int</span>)(nextseed &gt;&gt;&gt; (<span class="number">48</span> - bits));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
 <h1 id="ThreadlocalRandom"><a href="#ThreadlocalRandom" class="headerlink" title="ThreadlocalRandom"></a>ThreadlocalRandom</h1><p>为了弥补多线程高并发情况下Random 的缺陷， <code>ThreadLocalRandom</code>类应运而生。<code>ThreadLocalRandom</code> 使用<code>ThreadLocal</code>的原理，让每个线程都持有一个本地的种子变量，该种子变量只有在使用随机数时才会被初始化。在多线程下计算新种子时是根据自己线程内维护的种子变量进行更新，从而避免了竞争。<br><code>ThreadLocalRandom</code> 类似于<code>ThreadLocal</code> 类，就是个工具类。当线程调用<code>ThreadLocalRandom</code> 的<code>current</code>方法时， <code>ThreadLocalRandom</code> 负责初始化调用线程的<code>threadLocalRandomSeed</code> 变量， 也就是初始化种子。<br>当调用<code>ThreadLocalRandom</code> 的<code>nextlnt</code> 方法时，实际上是获取当前线程的<code>threadLocalRandomSeed</code> 变量作为当前种子来计算新的种子，然后更新新的种子到当前线程的<code>threadLocalRandomSeed</code> 变量，而后再根据新种子并使用具体算法计算随机数。</p>
 <blockquote>
 <p><code>threadLocalRandomSeed</code> 变量是Thread 类里面的一个普通long 变量</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">//ThreadLocalRandom类的核心代码</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">long</span> <span class="title">nextSeed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       Thread t; <span class="keyword">long</span> r; <span class="comment">// read and update per-thread seed</span></span><br><span class="line">       UNSAFE.putLong(t = Thread.currentThread(), SEED,</span><br><span class="line">                      r = UNSAFE.getLong(t, SEED) + GAMMA);</span><br><span class="line">       <span class="keyword">return</span> r;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">//ThreadLocalRandom类的核心代码</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">long</span> <span class="title function_">nextSeed</span><span class="params">()</span> &#123;</span><br><span class="line">       Thread t; <span class="type">long</span> r; <span class="comment">// read and update per-thread seed</span></span><br><span class="line">       UNSAFE.putLong(t = Thread.currentThread(), SEED,</span><br><span class="line">                      r = UNSAFE.getLong(t, SEED) + GAMMA);</span><br><span class="line">       <span class="keyword">return</span> r;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
 <p><img src="http://image.onebug.tech/image-20211016224505557.png" alt="image-20211016224505557"></p>
 
@@ -287,8 +308,8 @@
           
           <div class="post-tags">
               <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
-              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
               <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
               <a href="/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/" rel="tag"><i class="fa fa-tag"></i> java并发编程之美</a>
           </div>
 
@@ -317,6 +338,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -386,13 +408,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -440,6 +462,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -518,6 +560,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

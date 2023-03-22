@@ -257,6 +257,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/21/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/21/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -269,7 +290,7 @@
       
         <h1 id="PTP"><a href="#PTP" class="headerlink" title="PTP"></a>PTP</h1><h2 id="安装linuxptp"><a href="#安装linuxptp" class="headerlink" title="安装linuxptp"></a>安装linuxptp</h2><h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> http://git.code.sf.net/p/linuxptp/code linuxptp</span><br><span class="line"><span class="built_in">cd</span> linuxptp</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="deb-安装"><a href="#deb-安装" class="headerlink" title="deb 安装"></a>deb 安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install linuxptp</span><br></pre></td></tr></table></figure>
 
@@ -283,11 +304,11 @@
 <h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>如果网络中出现 <code>Sync Message</code> 数据，说明服务端ptp4l程序的master时钟功能正常运行，如果网络中出现 <code>Delay_Req Message</code> 数据，说明设备端slave时钟功能正常运行。</p>
 <p><img src="http://image.onebug.tech/image-20220216103826706.png" alt="image-20220216103826706"></p>
 <h1 id="接入NTP"><a href="#接入NTP" class="headerlink" title="接入NTP"></a>接入NTP</h1><h2 id="配置PTP硬件时间"><a href="#配置PTP硬件时间" class="headerlink" title="配置PTP硬件时间"></a>配置PTP硬件时间</h2><p>让PTP硬件时钟和系统时间同步</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo phc2sys -c enp0s31f6 -s CLOCK_REALTIME -O 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo phc2sys -c enp0s31f6 -s CLOCK_REALTIME -O 0 </span><br></pre></td></tr></table></figure>
 
 <h2 id="搭建NTP服务"><a href="#搭建NTP服务" class="headerlink" title="搭建NTP服务"></a>搭建NTP服务</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ntp</span><br></pre></td></tr></table></figure>
 
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi &#x2F;etc&#x2F;ntp.conf</span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/ntp.conf</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># For more information about this file, see the man pages</span></span><br><span class="line"><span class="comment"># ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).</span></span><br><span class="line"> </span><br><span class="line"><span class="attribute">driftfile</span> /var/lib/ntp/drift  <span class="comment">#默认即可。driftfile用来指定记录本机与上层NTP server之间的频率误差。单位是百万分之一秒。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Permit time synchronization with our time source, but do not</span></span><br><span class="line"><span class="comment"># permit the source to query or modify the service on this system.</span></span><br><span class="line">restrict default nomodify notrap nopeer noquery 　　　　</span><br><span class="line"><span class="comment">#restrict用来管理权限控制。</span></span><br><span class="line"><span class="comment">#格式为 restrict [单个ip|网络|default] parameter　　　　　　</span></span><br><span class="line"><span class="comment">#parameter：　　　　　　　　</span></span><br><span class="line"><span class="comment">#	ignore：拒绝所有的ntp连接　　　　　　　　</span></span><br><span class="line"><span class="comment">#	nomodify：客户端不能使用ntpc和ntpq这两个程序来更改服务器的时间参数，但客户端可以通过此主机来进行网络校时。　　　　　　　　</span></span><br><span class="line"><span class="comment">#	noquery：客户端不能使用ntpc和ntpq等命令来查询时间服务器，等于不提供网络校时服务。　　　　　　　　</span></span><br><span class="line"><span class="comment">#	notrap：不提供trap这个网络时间登陆的功能　　　　　　　　</span></span><br><span class="line"><span class="comment">#	notrust：拒绝没有认证的客户端　　</span></span><br><span class="line"><span class="comment">#	示例：restrict 156.0.26.7  nomodify 9 </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Permit all access over the loopback interface.  This could</span></span><br><span class="line"><span class="comment"># be tightened as well, but to do so would effect some of</span></span><br><span class="line"><span class="comment"># the administrative functions.</span></span><br><span class="line">restrict <span class="number">127.0.0.1</span>  <span class="comment">#以下两条默认，放行本机来源</span></span><br><span class="line">restrict ::<span class="number">1</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Hosts on local network are less restricted.</span></span><br><span class="line">restrict <span class="number">10.0.0.0</span> mask <span class="number">255.0.0.0</span> nomodify notrap</span><br><span class="line">restrict <span class="number">192.168.1.0</span> mask <span class="number">255.255.255.0</span> nomodify notrap</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use public servers from the pool.ntp.org project.</span></span><br><span class="line"><span class="comment"># Please consider joining the pool (http://www.pool.ntp.org/join.html).</span></span><br><span class="line"><span class="comment">#server 0.centos.pool.ntp.org iburst #以下四条为默认，注释掉即可</span></span><br><span class="line"><span class="comment">#server 1.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="comment">#server 2.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="comment">#server 3.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="comment">#server：用来设置上层NTP服务器，说白了就是client向谁请求NTP时间同步。　　　　</span></span><br><span class="line"><span class="comment">#特别注意，在内网环境中由于无法连接到内网，所以没有办法向例如国家授时服务中心210.72.145.44同步时间　　　　</span></span><br><span class="line"><span class="comment">#只能将内网中的某台主机设置为server,用以向其他内网服务器提供NTP服务。</span></span><br><span class="line"></span><br><span class="line">server <span class="number">127.127.1.0</span> prefer </span><br><span class="line"><span class="comment">#以本机时间作为时间服务。内网中这个配置一定要加上，否则会导致NTP服务不可用　#prefer代表这台主机优先级最高。</span></span><br><span class="line"><span class="comment">#broadcast 192.168.1.255 autokey    # broadcast server</span></span><br><span class="line"><span class="comment">#broadcastclient            # broadcast client</span></span><br><span class="line"><span class="comment">#broadcast 224.0.1.1 autokey        # multicast server</span></span><br><span class="line"><span class="comment">#multicastclient 224.0.1.1        # multicast client</span></span><br><span class="line"><span class="comment">#manycastserver 239.255.254.254        # manycast server</span></span><br><span class="line"><span class="comment">#manycastclient 239.255.254.254 autokey # manycast client</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Enable public key cryptography.</span></span><br><span class="line"><span class="comment">#crypto</span></span><br><span class="line"></span><br><span class="line">includefile /etc/ntp/crypto/pw</span><br><span class="line"></span><br><span class="line"><span class="comment"># Key file containing the keys and key identifiers used when operating</span></span><br><span class="line"><span class="comment"># with symmetric key cryptography. </span></span><br><span class="line">keys /etc/ntp/keys <span class="comment">##除了restrict来限制客户端连接外，还可以通过秘钥方式来给客户端认证。</span></span><br><span class="line"><span class="comment"># Specify the key identifiers which are trusted.</span></span><br><span class="line"><span class="comment">#trustedkey 4 8 42</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Specify the key identifier to use with the ntpdc utility.</span></span><br><span class="line"><span class="comment">#requestkey 8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Specify the key identifier to use with the ntpq utility.</span></span><br><span class="line"><span class="comment">#controlkey 8</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Enable writing of statistics records.</span></span><br><span class="line"><span class="comment">#statistics clockstats cryptostats loopstats peerstats</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Disable the monitoring facility to prevent amplification attacks using ntpdc</span></span><br><span class="line"><span class="comment"># monlist command when default restrict does not include the noquery flag. See</span></span><br><span class="line"><span class="comment"># CVE-2013-5211 for more details.</span></span><br><span class="line"><span class="comment"># Note: Monitoring will not be disabled with the limited restriction flag.</span></span><br><span class="line">disable monitor</span><br></pre></td></tr></table></figure>
 
@@ -296,10 +317,10 @@
 <h2 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h2><h3 id="海康威视"><a href="#海康威视" class="headerlink" title="海康威视"></a>海康威视</h3><p><img src="http://image.onebug.tech/image-20220216114540564.png" alt="image-20220216114540564"></p>
 <h2 id="验证-1"><a href="#验证-1" class="headerlink" title="验证"></a>验证</h2><p><img src="http://image.onebug.tech/image-20220216120052949.png" alt="image-20220216120052949"></p>
 <blockquote>
-<p><a href="http://yang.observer/2020/07/11/time-ntp/" target="_blank" rel="noopener">计算机的时钟（一）：NTP协议 - Yang Blog</a></p>
-<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-configuring_ptp_using_ptp4l" target="_blank" rel="noopener">Chapter 23. Configuring PTP Using ptp4l Red Hat Enterprise Linux 6 | Red Hat Customer Portal</a></p>
-<p><a href="https://livox-wiki-cn.readthedocs.io/zh_CN/latest/tutorials/timestamp_sychronization.html#id14" target="_blank" rel="noopener">5. Livox设备时间同步 — Livox wiki 0.1 文档 (livox-wiki-cn.readthedocs.io)</a></p>
-<p><a href="https://www.cnblogs.com/wxxjianchi/p/10531582.html" target="_blank" rel="noopener">内网环境搭建NTP服务器 - HowOldAreYou - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="http://yang.observer/2020/07/11/time-ntp/">计算机的时钟（一）：NTP协议 - Yang Blog</a></p>
+<p><a target="_blank" rel="noopener" href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-configuring_ptp_using_ptp4l">Chapter 23. Configuring PTP Using ptp4l Red Hat Enterprise Linux 6 | Red Hat Customer Portal</a></p>
+<p><a target="_blank" rel="noopener" href="https://livox-wiki-cn.readthedocs.io/zh_CN/latest/tutorials/timestamp_sychronization.html#id14">5. Livox设备时间同步 — Livox wiki 0.1 文档 (livox-wiki-cn.readthedocs.io)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wxxjianchi/p/10531582.html">内网环境搭建NTP服务器 - HowOldAreYou - 博客园 (cnblogs.com)</a></p>
 </blockquote>
 
     </div>
@@ -341,6 +362,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -410,13 +432,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -464,6 +486,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -542,6 +584,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

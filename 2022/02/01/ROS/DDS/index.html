@@ -37,8 +37,8 @@
 <meta property="article:published_time" content="2022-01-31T16:00:00.000Z">
 <meta property="article:modified_time" content="2022-03-07T01:55:50.726Z">
 <meta property="article:author" content="冰冻橘子">
-<meta property="article:tag" content="ros">
 <meta property="article:tag" content="dds">
+<meta property="article:tag" content="ros">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://image.onebug.tech/202202241359562.svg+xml">
 
@@ -256,6 +256,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/01/ROS/DDS/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/01/ROS/DDS/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -267,7 +288,7 @@
 
       
         <p>DDS（数据分发服务）是一套通信协议和API标准，以数据为中心是他的特点，它基于发布-订阅模型进行设计。而FastRTPS是<em>eProsima</em>公司对DDS的一个开源实现。DDS是一套中间件，提供介于操作系统和应用程序之间的功能，提供了低延迟、高可靠的通信以及可扩展的架构。DDS其实分为两部分，一部分是DDS规范，一部份则是DDSI-RTPS协议，是一个互操作性协议，也就是真正实现通讯机制的部分，在ROS2中，也正是这部分，取代了ROS1的TCPROS和UDPROS。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <blockquote>
 <p>所谓互操作性协议，就是为了满足互操作性而产生的一个协议，互操作性就是指两个实体的通信能力，如果两个实体之间能够在任何情况下都无误解的进行通信，那么我们就说这两个实体可以正确的互操作。</p>
@@ -305,10 +326,10 @@
 <li>RELIABILITY（”可靠传输”）</li>
 </ul>
 <p><img src="http://image.onebug.tech/202203062318832.jpeg" alt="img"></p>
-<h1 id="RTSP协议"><a href="#RTSP协议" class="headerlink" title="RTSP协议"></a>RTSP协议</h1><p>DDS的标准中并不包含传输层协议，RTPS（Real-Time Publish Subscribe）能够很好的契合DDS协议特点。<strong>RTPS基于多播、无连接的传输模型，这个模型可以映射到不同的传输协议上，如UDP/IP（这也是目前RTPS标准中唯一被标准化的传输协议）。</strong></p>
+<h1 id="RTSP协议"><a href="#RTSP协议" class="headerlink" title="RTSP协议"></a>RTSP协议</h1><p>DDS的标准中并不包含传输层协议，RTPS（Real-Time Publish Subscribe）能够很好的契合DDS协议特点。<strong>RTPS基于多播、无连接的传输模型，这个模型可以映射到不同的传输协议上，如UDP&#x2F;IP（这也是目前RTPS标准中唯一被标准化的传输协议）。</strong></p>
 <p><img src="http://image.onebug.tech/202203062318265.svg+xml" alt="../../_images/transport_comparison.svg"></p>
 <blockquote>
-<p>组播的原理：组播IP地址到底是谁的IP？？ - 车小胖的回答 - 知乎 <a href="https://www.zhihu.com/question/27233903/answer/108374395" target="_blank" rel="noopener">https://www.zhihu.com/question/27233903/answer/108374395</a></p>
+<p>组播的原理：组播IP地址到底是谁的IP？？ - 车小胖的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27233903/answer/108374395">https://www.zhihu.com/question/27233903/answer/108374395</a></p>
 </blockquote>
 <p><img src="http://image.onebug.tech/202203062318554.svg+xml" alt="../_images/DDS_concept.svg"></p>
 
@@ -321,8 +342,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/ros/" rel="tag"><i class="fa fa-tag"></i> ros</a>
               <a href="/tags/dds/" rel="tag"><i class="fa fa-tag"></i> dds</a>
+              <a href="/tags/ros/" rel="tag"><i class="fa fa-tag"></i> ros</a>
           </div>
 
         
@@ -350,6 +371,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -419,13 +441,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -473,6 +495,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -551,6 +593,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

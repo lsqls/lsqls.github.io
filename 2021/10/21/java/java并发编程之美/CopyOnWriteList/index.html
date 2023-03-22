@@ -37,8 +37,8 @@
 <meta property="article:modified_time" content="2021-10-21T13:03:21.676Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
-<meta property="article:tag" content="并发">
 <meta property="article:tag" content="笔记">
+<meta property="article:tag" content="并发">
 <meta property="article:tag" content="java并发编程之美">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://image.onebug.tech/image-20211021195250084.png">
@@ -251,6 +251,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/21/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/CopyOnWriteList/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/21/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/CopyOnWriteList/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -264,25 +285,25 @@
         <p><code>CopyOnWriteArrayList</code> 是一个线程安全的<code>ArrayList</code> ，对其进行的修改操作都是在底层的一个复制的数组（快照）上进行的，也就是使用了<strong>写时复制</strong>策略。</p>
 <p><img src="http://image.onebug.tech/image-20211021195250084.png" alt="image-20211021195250084"></p>
 <p>在<code>CopyOnWriteArrayList</code> 的类图中，每个<code>CopyOnWriteArrayList</code> 对象里面有一个使用<code>volatile</code>修饰的<code>array</code> 数组对象用来存放具体元素，独占锁<code>lock</code>用来保证同时只有1个线程对<code>array</code>进行修改。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h2><p><code>CopyOnWriteArrayList</code> 的写操作需要上锁，下面是<code>add(E e)</code>添加元素的源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//获取独占锁</span></span><br><span class="line">    <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//获取array</span></span><br><span class="line">        Object[] elements = getArray();</span><br><span class="line">        <span class="keyword">int</span> len = elements.length;</span><br><span class="line">       	<span class="comment">//复制array到新数组，添加元素到新数组</span></span><br><span class="line">        Object[] newElements = Arrays.copyOf(elements, len + <span class="number">1</span>);</span><br><span class="line">        newElements[len] = e;</span><br><span class="line">        <span class="comment">//使用新数组替换原数组</span></span><br><span class="line">        setArray(newElements);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">//释放独占锁</span></span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">final</span> Object[] getArray() &#123;</span><br><span class="line">    <span class="keyword">return</span> array;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setArray</span><span class="params">(Object[] a)</span> </span>&#123;</span><br><span class="line">    array = a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E e)</span> &#123;</span><br><span class="line">    <span class="comment">//获取独占锁</span></span><br><span class="line">    <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//获取array</span></span><br><span class="line">        Object[] elements = getArray();</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> elements.length;</span><br><span class="line">       	<span class="comment">//复制array到新数组，添加元素到新数组</span></span><br><span class="line">        Object[] newElements = Arrays.copyOf(elements, len + <span class="number">1</span>);</span><br><span class="line">        newElements[len] = e;</span><br><span class="line">        <span class="comment">//使用新数组替换原数组</span></span><br><span class="line">        setArray(newElements);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">//释放独占锁</span></span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">final</span> Object[] getArray() &#123;</span><br><span class="line">    <span class="keyword">return</span> array;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">setArray</span><span class="params">(Object[] a)</span> &#123;</span><br><span class="line">    array = a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>add(E e)</code>操作是通过<code>加锁-复制-添加-覆盖-解锁</code>实现的，保证了线程安全。从代码可以知道，新数组的大小是原来数组大小加一，<code>CopyOnWriteArrayList</code> 是无界数组。</p>
 <p>修改、删除、添加元素的这些写操作的思路都差不多，这里不进行赘述。</p>
 <h2 id="弱一致性的迭代器"><a href="#弱一致性的迭代器" class="headerlink" title="弱一致性的迭代器"></a>弱一致性的迭代器</h2><p>在讨论读操作前，我们先讨论<code>CopyOnWriteArrayList</code> 中的迭代器的弱一致性。弱一致性是指返回迭代器后，其他线程对list 的增删改对迭代器是不可见的。例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">CopyOnWriteArrayList&lt;Integer&gt; copyOnWriteArrayList=</span><br><span class="line">    <span class="keyword">new</span> CopyOnWriteArrayList&lt;&gt;(Arrays.asList(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>));</span><br><span class="line"></span><br><span class="line">Thread thread=<span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">    <span class="comment">//写操作</span></span><br><span class="line">    copyOnWriteArrayList.remove(<span class="number">1</span>);</span><br><span class="line">    copyOnWriteArrayList.set(<span class="number">0</span>,<span class="number">100</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//在写操作前获取迭代器</span></span><br><span class="line">Iterator&lt;Integer&gt; iterator=copyOnWriteArrayList.iterator();</span><br><span class="line"><span class="comment">//启动线程</span></span><br><span class="line">thread.start();</span><br><span class="line"><span class="comment">//等待线程执行完毕</span></span><br><span class="line">thread.join();</span><br><span class="line"><span class="comment">//迭代元素</span></span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">    System.out.println(iterator.next());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">CopyOnWriteArrayList&lt;Integer&gt; copyOnWriteArrayList=</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">CopyOnWriteArrayList</span>&lt;&gt;(Arrays.asList(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>));</span><br><span class="line"></span><br><span class="line">Thread thread=<span class="keyword">new</span> <span class="title class_">Thread</span>(()-&gt;&#123;</span><br><span class="line">    <span class="comment">//写操作</span></span><br><span class="line">    copyOnWriteArrayList.remove(<span class="number">1</span>);</span><br><span class="line">    copyOnWriteArrayList.set(<span class="number">0</span>,<span class="number">100</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//在写操作前获取迭代器</span></span><br><span class="line">Iterator&lt;Integer&gt; iterator=copyOnWriteArrayList.iterator();</span><br><span class="line"><span class="comment">//启动线程</span></span><br><span class="line">thread.start();</span><br><span class="line"><span class="comment">//等待线程执行完毕</span></span><br><span class="line">thread.join();</span><br><span class="line"><span class="comment">//迭代元素</span></span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">    System.out.println(iterator.next());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><img src="http://image.onebug.tech/image-20211021205356619.png" alt="image-20211021205356619"></p>
 <p>源码剖析：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> COWIterator&lt;E&gt;(getArray(), <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title function_">iterator</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">COWIterator</span>&lt;E&gt;(getArray(), <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">COWIterator</span><span class="params">(Object[] elements, <span class="keyword">int</span> initialCursor)</span> </span>&#123;</span><br><span class="line">    cursor = initialCursor;</span><br><span class="line">    snapshot = elements;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (! hasNext())</span><br><span class="line">    	<span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">    <span class="keyword">return</span> (E) snapshot[cursor++];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> cursor &lt; snapshot.length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="title function_">COWIterator</span><span class="params">(Object[] elements, <span class="type">int</span> initialCursor)</span> &#123;</span><br><span class="line">    cursor = initialCursor;</span><br><span class="line">    snapshot = elements;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> E <span class="title function_">next</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (! hasNext())</span><br><span class="line">    	<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">    <span class="keyword">return</span> (E) snapshot[cursor++];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> cursor &lt; snapshot.length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>当调用<code>iterator()</code>方法获取迭代器时实际上会返回一个<code>COWiterator</code> 对象， <code>COWiterator</code> 对象的<code>snapshot</code> 变量保存了当前list 的内容， <code>cursor</code> 是遍历list 时数据的下标。</p>
 <p>为什么说snapshot 是list 的快照呢？明明是指针传递的引用啊，而不是副本。如果在该线程使用返回的迭代器代器遍历元素的过程中， 其他线程没有对list 进行增删改，那么snapshot 本身就是list 的array ， 因为它们是引用关系。但是如果在遍历期间其他线程对该list 进行了增删改，那么snapshot 就是快照了，因为增删改后list 里面的数组被新数组替换了，这时候老数组被snapshot引用。这也说明获取迭代器后， 使用该法代器元素时， 其他线程对该list 进行的增删改不可见，<strong>因为它们操作的是两个不同的数组</strong>， 这就是弱一致性。</p>
 <h2 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h2><p><code>CopyOnWriteArrayList</code> 的读操作不会上锁，也就是说，<strong>读操作是允许多个线程进入的</strong>。下面是<code>get(int index)</code>获取元素操作的源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> get(getArray(), index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> E <span class="title">get</span><span class="params">(Object[] a, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (E) a[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E <span class="title function_">get</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> get(getArray(), index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> E <span class="title function_">get</span><span class="params">(Object[] a, <span class="type">int</span> index)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (E) a[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在如上代码中， 当线程x 调用<code>get</code> 方法获取指定位置的元素时，分两步走， 首先获取<code>array</code> 数组（这里命名为步骤A ），然后通过下标访问指定位置的元素（这里命名为步骤B ) ，这是两步操作， 但是在整个过程中并没有进行加锁同步。也就是说，假设这时候List 内容如图所示，里面有1、2 、3 三个元素。</p>
 <p><img src="http://image.onebug.tech/image-20211021201352808.png" alt="image-20211021201352808"></p>
 <p>由于执行步骤A 和步骤B 没有加锁，这就可能导致在线程x执行完步骤A 后执行步骤B前， 另外一个线程y进行了<code>remove</code> 操作，假设要线程y要删除元素1， <code>remove</code> 操作首先会获取独占锁， 然后进行写时复制操作，也就是复制一份当前<code>array</code> 数组， 然后在复制的数组里面删除元素1 ，之后让<code>array</code>指向复制的新数组。而这时候<code>array</code>之前指向的数组的引用计数为1而不是0， 因为线程x 还在使用它，这时线程x 开始执行步骤B ，步骤B 操作的数组是线程y 删除元素之前的数组。</p>
@@ -299,8 +320,8 @@
           
           <div class="post-tags">
               <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
-              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
               <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
               <a href="/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/" rel="tag"><i class="fa fa-tag"></i> java并发编程之美</a>
           </div>
 
@@ -329,6 +350,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -398,13 +420,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -452,6 +474,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -530,6 +572,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

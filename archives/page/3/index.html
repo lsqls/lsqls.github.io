@@ -326,8 +326,8 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2021/05/07/java/javaIO/zeroCopy/" itemprop="url">
-            <span itemprop="name">【转】零拷贝技术</span>
+          <a class="post-title-link" href="/2021/05/07/java/javaIO/socket%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" itemprop="url">
+            <span itemprop="name">Java Socket 编程</span>
           </a>
       </div>
 
@@ -346,8 +346,8 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2021/05/07/java/javaIO/socket%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" itemprop="url">
-            <span itemprop="name">Java Socket 编程</span>
+          <a class="post-title-link" href="/2021/05/07/java/javaIO/zeroCopy/" itemprop="url">
+            <span itemprop="name">【转】零拷贝技术</span>
           </a>
       </div>
 
@@ -498,13 +498,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -552,6 +552,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -630,6 +650,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

@@ -253,6 +253,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/09/04/java/netty/ByteBuf/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/04/java/netty/ByteBuf/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -264,7 +285,7 @@
 
       
         <p>网络数据的基本单位总是字节。Java NIO 提供了<code>ByteBuffer</code> 作为它的字节容器，但是这个类使用起来过于复杂，而且也有些繁琐。Netty 的<code>ByteBuffer</code> 替代品是<code>ByteBuf</code>，一个强大的实现，既解决了JDK API 的局限性，又为网络应用程序的开发者提供了更好的API。<code>ByteBuf</code>本质的原理就是引用了一段内存，这段内存可以是堆内也可以是堆外的，然后用引用计数来控制这段内存是否需要被释放，使用读写指针来控制对 <code>ByteBuf</code> 的读写，可以理解为是外观模式的一种使用。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h1><p><img src="http://image.onebug.tech/image-20210903174536572.png" alt="image-20210903174536572"></p>
 <ul>
@@ -328,7 +349,7 @@
 <td>把当前的读指针恢复到之前保存的值</td>
 </tr>
 </tbody></table>
-<h2 id="读写操作"><a href="#读写操作" class="headerlink" title="读写操作"></a>读写操作</h2><p>有两种类别的读/写操作：</p>
+<h2 id="读写操作"><a href="#读写操作" class="headerlink" title="读写操作"></a>读写操作</h2><p>有两种类别的读&#x2F;写操作：</p>
 <ul>
 <li><code>get()</code>和<code>set()</code>操作，从给定的索引开始，并且保持索引不变；</li>
 <li><code>read()</code>和<code>write()</code>操作，从给定的索引开始，并且会根据已经访问过的字节数对索引进行调整。</li>
@@ -351,7 +372,7 @@
 </tr>
 <tr>
 <td>readBytes(destination byte[])</td>
-<td>把 <code>ByteBuf</code> 里面的数据全部读取到 <code>destination</code>（<code>ByteBuf</code>-&gt;<code>destination</code>）</td>
+<td>把 <code>ByteBuf</code> 里面的数据全部读取到 <code>destination </code>（<code>ByteBuf</code>-&gt;<code>destination</code>）</td>
 </tr>
 <tr>
 <td>writeBytes(source byte[])</td>
@@ -361,7 +382,7 @@
 <p>类似的 API 还有 <code>writeBoolean()</code>、<code>writeChar()</code>、<code>writeShort()</code>、<code>writeInt()</code>、<code>writeLong()</code>、<code>writeFloat()</code>、<code>writeDouble()</code> 与 <code>readBoolean()</code>、<code>readChar()</code>、<code>readShort()</code>、<code>readInt()</code>、<code>readLong()</code>、<code>readFloat()</code>、<code>readDouble()</code> ，这里就不一一赘述了。</p>
 <h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><p>由于 Netty 可以使用堆外内存，而堆外内存是不被 <code>jvm</code> 直接管理的，也就是说申请到的内存无法被垃圾回收器直接回收，所以需要我们手动回收，否则会造成内存泄漏。Netty 的 <code>ByteBuf</code> 是通过<strong>引用计数</strong>的方式管理的，如果一个 <code>ByteBuf</code> 没有地方被引用到，需要回收底层内存。默认情况下，当创建完一个 <code>ByteBuf</code>，它的引用为1，然后每次调用 <code>retain()</code> 方法， 它的引用就<code>+1</code>， release() 方法原理是将引用计数<code>-1</code>，减完之后如果发现引用计数为0，则直接回收 <code>ByteBuf</code> 底层的内存。</p>
 <h2 id="池化"><a href="#池化" class="headerlink" title="池化"></a>池化</h2><p>为了降低分配和释放内存的开销，Netty 通过 <code>ByteBufAllocator</code> 实现了<code>ByteBuf</code> 的池化，它可以用来分配我们所描述过的任意类型的<code>ByteBuf</code> 实例（直接内存、堆内存）。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//从Channel 获取一个到 ByteBufAllocator 的引用</span></span><br><span class="line">ByteBufAllocator allocator = channel.alloc();</span><br><span class="line"></span><br><span class="line"><span class="comment">//从ChannelHandlerContext 获取一个到ByteBufAllocator 的引用</span></span><br><span class="line">ByteBufAllocator allocator2 = ctx.alloc();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//从Channel 获取一个到 ByteBufAllocator 的引用</span></span><br><span class="line"><span class="type">ByteBufAllocator</span> <span class="variable">allocator</span> <span class="operator">=</span> channel.alloc();</span><br><span class="line"></span><br><span class="line"><span class="comment">//从ChannelHandlerContext 获取一个到ByteBufAllocator 的引用</span></span><br><span class="line"><span class="type">ByteBufAllocator</span> <span class="variable">allocator2</span> <span class="operator">=</span> ctx.alloc();</span><br></pre></td></tr></table></figure>
 
 
 <p>一般使用<code>buffer(int initialCapacity, int maxCapacity);</code>返回一个基于堆或者直接内存存储的<code>ByteBuf</code>。</p>
@@ -420,6 +441,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -489,13 +511,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -543,6 +565,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -621,6 +663,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

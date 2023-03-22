@@ -32,8 +32,8 @@
 <meta property="article:published_time" content="2022-02-17T16:00:00.000Z">
 <meta property="article:modified_time" content="2022-03-07T01:55:27.503Z">
 <meta property="article:author" content="冰冻橘子">
-<meta property="article:tag" content="测试">
 <meta property="article:tag" content="gtest">
+<meta property="article:tag" content="测试">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://blog.onebug.tech/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/">
@@ -250,6 +250,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -261,7 +282,7 @@
 
       
         <h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p><strong>TODO</strong></p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h1><p>gtest中，断言的宏根据作用效果可以理解为分为两类：</p>
 <ul>
@@ -270,7 +291,7 @@
 </ul>
 <p>根据作用区分，可以分为几大类</p>
 <ul>
-<li><p>数值类型数据检查：<code>ASSERT_EQ(expected, actual)</code></p>
+<li><p>数值类型数据检查：<code>ASSERT_EQ(expected, actual)	</code></p>
 </li>
 <li><p>布尔值检查：<code>ASSERT_TRUE(condition)</code></p>
 </li>
@@ -285,7 +306,7 @@
 <li><p>…….</p>
 </li>
 </ul>
-<p>GTEST中包含非常丰富的断言，这里不赘述，详细内容请参考<a href="https://google.github.io/googletest/reference/assertions.html" target="_blank" rel="noopener">Assertions Reference | GoogleTest</a>。</p>
+<p>GTEST中包含非常丰富的断言，这里不赘述，详细内容请参考<a target="_blank" rel="noopener" href="https://google.github.io/googletest/reference/assertions.html">Assertions Reference | GoogleTest</a>。</p>
 <blockquote>
 <p>如果你对自动输出的出错信息不满意的话，你还可以通过操作符<code>&lt;&lt;</code>将一些自定义的信息输出，通常，这对于调试或是对一些检查点的补充说明来说，非常有用！</p>
 <p>EXPECT_EQ(x[i], y[i]) &lt;&lt; “Vectors x and y differ at index “ &lt;&lt; i;</p>
@@ -299,10 +320,10 @@
 </li>
 </ol>
 <p>我们还需要告诉gtest添加这个全局事件，我们需要在main函数中通过<code>testing::AddGlobalTestEnvironment</code>方法将事件挂进来，也就是说，我们可以写很多个这样的类，然后将他们的事件都挂上去。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooEnvironment</span> :</span> <span class="keyword">public</span> testing::Environment</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">SetUp</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Foo FooEnvironment SetUP"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">TearDown</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Foo FooEnvironment TearDown"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, _TCHAR* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    testing::AddGlobalTestEnvironment(<span class="keyword">new</span> FooEnvironment);</span><br><span class="line">    testing::InitGoogleTest(&amp;argc, argv);</span><br><span class="line">    <span class="keyword">return</span> RUN_ALL_TESTS();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FooEnvironment</span> : <span class="keyword">public</span> testing::Environment</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">SetUp</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Foo FooEnvironment SetUP&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">TearDown</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Foo FooEnvironment TearDown&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, _TCHAR* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    testing::<span class="built_in">AddGlobalTestEnvironment</span>(<span class="keyword">new</span> FooEnvironment);</span><br><span class="line">    testing::<span class="built_in">InitGoogleTest</span>(&amp;argc, argv);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">RUN_ALL_TESTS</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="TestSuite事件"><a href="#TestSuite事件" class="headerlink" title="TestSuite事件"></a>TestSuite事件</h2><p>我们需要写一个类，继承<code>testing::Test</code>，然后实现<code>SetUpTestCase()</code>和<code>TearDownTestCase()</code>两个静态方法。在编写测试案例时，我们需要使用<code>TEST_F</code>这个宏，第一个参数必须是我们上面<strong>类的名字</strong>，代表一个TestSuite。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooTest</span> :</span> <span class="keyword">public</span> testing::Test &#123;</span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetUpTestCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    shared_resource_ = <span class="keyword">new</span> ;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TearDownTestCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">delete</span> shared_resource_;</span><br><span class="line">    shared_resource_ = <span class="literal">NULL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Some expensive resource shared by all tests.</span></span><br><span class="line">  <span class="keyword">static</span> T* shared_resource_;</span><br><span class="line">&#125;;</span><br><span class="line">TEST_F(FooTest, Test1)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="comment">// you can refer to shared_resource here </span></span><br><span class="line">&#125;</span><br><span class="line">TEST_F(FooTest, Test2)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="comment">// you can refer to shared_resource here </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FooTest</span> : <span class="keyword">public</span> testing::Test &#123;</span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">SetUpTestCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    shared_resource_ = <span class="keyword">new</span> ;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">TearDownTestCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">delete</span> shared_resource_;</span><br><span class="line">    shared_resource_ = <span class="literal">NULL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Some expensive resource shared by all tests.</span></span><br><span class="line">  <span class="type">static</span> T* shared_resource_;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">TEST_F</span>(FooTest, Test1)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="comment">// you can refer to shared_resource here </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">TEST_F</span>(FooTest, Test2)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="comment">// you can refer to shared_resource here </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="TestCase事件"><a href="#TestCase事件" class="headerlink" title="TestCase事件"></a>TestCase事件</h2><p>TestCase事件是挂在每个案例执行前后的，实现方式和上面的几乎一样，不过需要实现的是<code>SetUp</code>方法和<code>TearDown</code>方法。</p>
 <h1 id="参数化"><a href="#参数化" class="headerlink" title="参数化"></a>参数化</h1><p>在设计测试案例时，经常需要考虑给被测函数传入不同的值的情况，GTEST提供了一个灵活的参数化测试的方案。如果我们测试一个素数检查函数<code>bool isPrime(int )</code>，我们需要进行以下的步骤：</p>
@@ -311,7 +332,7 @@
 <li>告诉gtest拿到参数的值后，具体做些什么样的测试。我们需要引入一个新的宏<code>TEST_P</code>，关于这个”P”的含义，可以理解为”parameterized” 或者 “pattern”。</li>
 <li>告诉gtest你想要测试的参数范围是什么，然后使用<code>INSTANTIATE_TEST_CASE_P</code>宏来告诉gtest你要测试的参数范围。</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSTANTIATE_TEST_CASE_P(TrueReturn, IsPrimeParamTest, testing::Values(3, 5, 11, 23, 17));</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSTANTIATE_TEST_CASE_P(TrueReturn, IsPrimeParamTest, testing::Values(3, 5, 11, 23, 17));</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>第一个参数是测试案例的前缀，可以任意取。</p>
@@ -347,10 +368,10 @@
 <td>它将g1,g2,…gN进行排列组合，g1,g2,…gN本身是一个参数生成器，每次分别从g1,g2,..gN中各取出一个值，组合成一个元组(Tuple)作为一个参数</td>
 </tr>
 </tbody></table>
-<p>综上所述，我们可以完成对素数检查函数的测试：</p>
 </li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IsPrimeParamTest</span> :</span> <span class="keyword">public</span>::testing::TestWithParam&lt;<span class="keyword">int</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">TEST_P(IsPrimeParamTest, HandleTrueReturn)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> n =  GetParam();</span><br><span class="line">    EXPECT_TRUE(IsPrime(n));</span><br><span class="line">&#125;</span><br><span class="line">INSTANTIATE_TEST_CASE_P(TrueReturn, IsPrimeParamTest, testing::Values(<span class="number">3</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">23</span>, <span class="number">17</span>));</span><br></pre></td></tr></table></figure>
+<p> 综上所述，我们可以完成对素数检查函数的测试：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">IsPrimeParamTest</span> : <span class="keyword">public</span>::testing::TestWithParam&lt;<span class="type">int</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">TEST_P</span>(IsPrimeParamTest, HandleTrueReturn)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> n =  <span class="built_in">GetParam</span>();</span><br><span class="line">    <span class="built_in">EXPECT_TRUE</span>(<span class="built_in">IsPrime</span>(n));</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">INSTANTIATE_TEST_CASE_P</span>(TrueReturn, IsPrimeParamTest, testing::<span class="built_in">Values</span>(<span class="number">3</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">23</span>, <span class="number">17</span>));</span><br></pre></td></tr></table></figure>
 
 <p>gtest还提供了应付各种不同类型的数据时的方案，以及参数化类型的方案。这里不详细展开。</p>
 <h1 id="参数列表"><a href="#参数列表" class="headerlink" title="参数列表"></a>参数列表</h1><table>
@@ -373,17 +394,17 @@
 <td>执行案例时，同时也执行被置为无效的测试案例。</td>
 </tr>
 <tr>
-<td>–gtest_repeat=[COUNT]</td>
+<td>–gtest_repeat&#x3D;[COUNT]</td>
 <td>设置案例重复运行次数</td>
 </tr>
 </tbody></table>
 <blockquote>
 <p>执行案例时，同时也执行被置为无效的测试案例。关于设置测试案例无效的方法为：</p>
 <p>在测试案例名称或测试名称中添加DISABLED前缀，比如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;TEST(FooTest, DISABLED_DoesAbc) &#123;  &#125;</span><br><span class="line">  </span><br><span class="line">&gt;<span class="class"><span class="keyword">class</span> <span class="title">DISABLED_BarTest</span> :</span> <span class="keyword">public</span> testing::Test &#123;  &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;TEST_F(DISABLED_BarTest, DoesXyz) &#123;  &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="built_in">TEST</span>(FooTest, DISABLED_DoesAbc) &#123;  &#125;</span><br><span class="line">  </span><br><span class="line">&gt;<span class="keyword">class</span> <span class="title class_">DISABLED_BarTest</span> : <span class="keyword">public</span> testing::Test &#123;  &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;<span class="built_in">TEST_F</span>(DISABLED_BarTest, DoesXyz) &#123;  &#125;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <blockquote>
-<p>[玩转Google开源C++单元测试框架Google Test系列(gtest)之一 - 初识gtest - CoderZh - 博客园 (cnblogs.com)](<a href="https://www.cnblogs.com/coderzh/archive/2009/04/06/1426758.html" target="_blank" rel="noopener">https://www.cnblogs.com/coderzh/archive/2009/04/06/1426758.html</a></p>
+<p>[玩转Google开源C++单元测试框架Google Test系列(gtest)之一 - 初识gtest - CoderZh - 博客园 (cnblogs.com)](<a target="_blank" rel="noopener" href="https://www.cnblogs.com/coderzh/archive/2009/04/06/1426758.html">https://www.cnblogs.com/coderzh/archive/2009/04/06/1426758.html</a></p>
 </blockquote>
 
     </div>
@@ -395,8 +416,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 测试</a>
               <a href="/tags/gtest/" rel="tag"><i class="fa fa-tag"></i> gtest</a>
+              <a href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 测试</a>
           </div>
 
         
@@ -424,6 +445,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -493,13 +515,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -547,6 +569,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -625,6 +667,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

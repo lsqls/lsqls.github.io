@@ -247,6 +247,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -257,26 +278,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="共享Handler"><a href="#共享Handler" class="headerlink" title="共享Handler"></a>共享Handler</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">serverBootstrap</span><br><span class="line">                .childHandler(<span class="keyword">new</span> ChannelInitializer&lt;NioSocketChannel&gt;() &#123;</span><br><span class="line">                    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(NioSocketChannel ch)</span> </span>&#123;</span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> Spliter());<span class="comment">//帧解码器</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> PacketDecoder());<span class="comment">//数据包解码器</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> HandlerA());<span class="comment">//业务Handler</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> HandlerB());<span class="comment">//业务Handler</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> HandlerC());<span class="comment">//业务Handler</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> PacketEncoder());<span class="comment">//数据包编码器</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
+        <h1 id="共享Handler"><a href="#共享Handler" class="headerlink" title="共享Handler"></a>共享Handler</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">serverBootstrap</span><br><span class="line">                .childHandler(<span class="keyword">new</span> <span class="title class_">ChannelInitializer</span>&lt;NioSocketChannel&gt;() &#123;</span><br><span class="line">                    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">initChannel</span><span class="params">(NioSocketChannel ch)</span> &#123;</span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">Spliter</span>());<span class="comment">//帧解码器</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">PacketDecoder</span>());<span class="comment">//数据包解码器</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">HandlerA</span>());<span class="comment">//业务Handler</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">HandlerB</span>());<span class="comment">//业务Handler</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">HandlerC</span>());<span class="comment">//业务Handler</span></span><br><span class="line">                        ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">PacketEncoder</span>());<span class="comment">//数据包编码器</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
 
 <p>每次有新连接到来的时候，都会调用 <code>ChannelInitializer</code> 的 <code>initChannel()</code> 方法，然后这里相关的 <code>handler</code> 都会被 <code>new</code> 一次。许多 <code>handler</code>，他们内部都是没有成员变量的，也就是说是无状态的，我们完全可以使用单例模式，即调用 <code>pipeline().addLast()</code> 方法的时候，都直接使用单例，不需要每次都 <code>new</code>，提高效率，也避免了创建很多小的对象。</p>
 <p>单例改造：对于无状态<code>Handler</code>，使用单例模式，多个channel共享一个实例</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 1. 加上注解标识，表明该 handler 是可以多个 channel 共享的</span></span><br><span class="line"><span class="meta">@ChannelHandler</span>.Sharable</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HandlerA</span> <span class="keyword">extends</span> <span class="title">SimpleChannelInboundHandler</span>&lt;<span class="title">APacket</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 构造单例</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> HandlerA INSTANCE = <span class="keyword">new</span> HandlerA();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">HandlerA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 1. 加上注解标识，表明该 handler 是可以多个 channel 共享的</span></span><br><span class="line"><span class="meta">@ChannelHandler</span>.Sharable</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HandlerA</span> <span class="keyword">extends</span> <span class="title class_">SimpleChannelInboundHandler</span>&lt;APacket&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 构造单例</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">HandlerA</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HandlerA</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="title function_">HandlerA</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p><code>@ChannelHandler.Sharable</code> 显示地告诉 Netty，这个 handler 是支持多个 channel 共享的，否则会报错。</p>
 </blockquote>
 <h1 id="合并编解码器"><a href="#合并编解码器" class="headerlink" title="合并编解码器"></a>合并编解码器</h1><p>Netty 内部提供了一个类，叫做 <code>MessageToMessageCodec</code>，使用它可以让我们的编解码操作放到一个类里面去实现。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ChannelHandler</span>.Sharable</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PacketCodecHandler</span> <span class="keyword">extends</span> <span class="title">MessageToMessageCodec</span>&lt;<span class="title">ByteBuf</span>,<span class="title">Packet</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">static</span> PacketCodecHandler INSTANCE=<span class="keyword">new</span> PacketCodecHandler();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">encode</span><span class="params">(ChannelHandlerContext ctx, Packet msg, List&lt;Object&gt; out)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        out.add(PacketCodeC.DEFAULT.encode(ctx.alloc(),msg));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">decode</span><span class="params">(ChannelHandlerContext ctx, ByteBuf msg, List&lt;Object&gt; out)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        out.add(PacketCodeC.DEFAULT.decode(msg));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ChannelHandler</span>.Sharable</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PacketCodecHandler</span> <span class="keyword">extends</span> <span class="title class_">MessageToMessageCodec</span>&lt;ByteBuf,Packet&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">static</span> PacketCodecHandler INSTANCE=<span class="keyword">new</span> <span class="title class_">PacketCodecHandler</span>();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">encode</span><span class="params">(ChannelHandlerContext ctx, Packet msg, List&lt;Object&gt; out)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        out.add(PacketCodeC.DEFAULT.encode(ctx.alloc(),msg));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">decode</span><span class="params">(ChannelHandlerContext ctx, ByteBuf msg, List&lt;Object&gt; out)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        out.add(PacketCodeC.DEFAULT.decode(msg));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p> <code>PacketCodecHandler</code>一般是一个无状态的 <code>handler</code>，因此，同样可以使用单例模式来实现。我们需要实现 <code>MessageToMessageCodec</code>的<code>decode()</code> 和 <code>encode()</code> 方法，<code>decode</code> 是将二进制数据 <code>ByteBuf</code> 转换为 java 对象 <code>Packet</code>，而 <code>encode</code> 操作是一个相反的过程，在 <code>encode()</code> 方法里面，我们需要传入了 <code>channel</code> 的 内存分配器，手工分配了 <code>ByteBuf</code>。</p>
 <h1 id="缩短事件传播路径"><a href="#缩短事件传播路径" class="headerlink" title="缩短事件传播路径"></a>缩短事件传播路径</h1><h2 id="合并平行-handler"><a href="#合并平行-handler" class="headerlink" title="合并平行 handler"></a>合并平行 handler</h2><p>在很多情况下，每次 decode 出来一个指令对象之后，其实只会在一个指令 <code>handler</code> 上进行处理，因此，我们其实可以把这么多的指令 <code>handler</code> 压缩为一个 <code>handler</code>实现路由功能</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@ChannelHandler.Sharable</span><br><span class="line">public class RouteHandler extends SimpleChannelInboundHandler&lt;Packet&gt; &#123;</span><br><span class="line">    public static final RouteHandler INSTANCE &#x3D; new RouteHandler();</span><br><span class="line"></span><br><span class="line">    private Map&lt;Byte, SimpleChannelInboundHandler&lt;? extends Packet&gt;&gt; routeMap;</span><br><span class="line"></span><br><span class="line">    private IMHandler() &#123;</span><br><span class="line">        routeMap &#x3D; new HashMap&lt;Byte, SimpleChannelInboundHandler&lt;? extends Packet&gt;&gt;()&#123;&#123;</span><br><span class="line">            put(CommandA, HandlerA.INSTANCE);</span><br><span class="line">           	put(CommandB, HandlerB.INSTANCE);</span><br><span class="line">           	put(CommandC, HandlerC.INSTANCE);</span><br><span class="line"></span><br><span class="line">        &#125;&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void channelRead0(ChannelHandlerContext ctx, Packet packet) throws Exception &#123;</span><br><span class="line">        routeMap.get(packet.getCommand()).channelRead(ctx, packet);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@ChannelHandler.Sharable</span><br><span class="line">public class RouteHandler extends SimpleChannelInboundHandler&lt;Packet&gt; &#123;</span><br><span class="line">    public static final RouteHandler INSTANCE = new RouteHandler();</span><br><span class="line"></span><br><span class="line">    private Map&lt;Byte, SimpleChannelInboundHandler&lt;? extends Packet&gt;&gt; routeMap;</span><br><span class="line"></span><br><span class="line">    private IMHandler() &#123;</span><br><span class="line">        routeMap = new HashMap&lt;Byte, SimpleChannelInboundHandler&lt;? extends Packet&gt;&gt;()&#123;&#123;</span><br><span class="line">            put(CommandA, HandlerA.INSTANCE);</span><br><span class="line">           	put(CommandB, HandlerB.INSTANCE);</span><br><span class="line">           	put(CommandC, HandlerC.INSTANCE);</span><br><span class="line"></span><br><span class="line">        &#125;&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void channelRead0(ChannelHandlerContext ctx, Packet packet) throws Exception &#123;</span><br><span class="line">        routeMap.get(packet.getCommand()).channelRead(ctx, packet);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>经过上述优化方法后，我们的<code>pipeline</code>最终变成这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">serverBootstrap</span><br><span class="line">                .childHandler(new ChannelInitializer&lt;NioSocketChannel&gt;() &#123;</span><br><span class="line">                    protected void initChannel(NioSocketChannel ch) &#123;</span><br><span class="line">                        ch.pipeline().addLast(new Spliter());&#x2F;&#x2F;帧解码器</span><br><span class="line">                        ch.pipeline().addLast(new PacketCodecHandler.INSTANCE());&#x2F;&#x2F;数据包编解码器</span><br><span class="line">                        ch.pipeline().addLast(RouteHandler.INSTANCE);&#x2F;&#x2F;路由</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">serverBootstrap</span><br><span class="line">                .childHandler(new ChannelInitializer&lt;NioSocketChannel&gt;() &#123;</span><br><span class="line">                    protected void initChannel(NioSocketChannel ch) &#123;</span><br><span class="line">                        ch.pipeline().addLast(new Spliter());//帧解码器</span><br><span class="line">                        ch.pipeline().addLast(new PacketCodecHandler.INSTANCE());//数据包编解码器</span><br><span class="line">                        ch.pipeline().addLast(RouteHandler.INSTANCE);//路由</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>第一个<code>Handler</code>是帧解码器 <code>Spliter</code>，我们是无法使用单例模式进行改造的，因为他内部实现是与每个 <code>channel</code> 有关，每个 <code>Spliter</code> 需要维持每个 channel 当前读到的数据，也就是说他是有状态的。</p>
@@ -287,7 +308,7 @@
 <p><code>ctx.channel().writeAndFlush()</code> 是从 <code>pipeline</code> 链中的最后一个 <code>outBound</code> 类型的 <code>handler</code> 开始，把对象往前进行传播，如果你确认当前创建的对象需要经过后面的 <code>outBound</code> 类型的 handler，那么就调用此方法。</p>
 <p><img src="http://image.onebug.tech/1664b767de0cf5ea~tplv-t2oaga2asx-watermark.awebp" alt="image.png"></p>
 <h1 id="减少阻塞主线程的操作"><a href="#减少阻塞主线程的操作" class="headerlink" title="减少阻塞主线程的操作"></a>减少阻塞主线程的操作</h1><p>通常我们的应用程序会涉及到数据库或者网络，比如以下这个例子</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">channelRead0</span><span class="params">(ChannelHandlerContext ctx, T packet)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 1. balabala 一些逻辑</span></span><br><span class="line">    <span class="comment">// 2. 数据库或者网络等一些耗时的操作</span></span><br><span class="line">    <span class="comment">// 3. writeAndFlush()</span></span><br><span class="line">    <span class="comment">// 4. balabala 其他的逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">channelRead0</span><span class="params">(ChannelHandlerContext ctx, T packet)</span> &#123;</span><br><span class="line">    <span class="comment">// 1. balabala 一些逻辑</span></span><br><span class="line">    <span class="comment">// 2. 数据库或者网络等一些耗时的操作</span></span><br><span class="line">    <span class="comment">// 3. writeAndFlush()</span></span><br><span class="line">    <span class="comment">// 4. balabala 其他的逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>由于Netty是基于事件驱动的异步网络框架，一个 <code>handler</code> 中的 <code>channelRead0()</code> 方法阻塞了 NIO 线程，最终都会拖慢绑定在该 NIO 线程上的其他所有的 <code>channel</code>。对于耗时的操作，我们需要把这些耗时的操作丢到我们的业务线程池或利用消息队列中去处理，这样，就可以避免一些耗时的操作影响 Netty 的 NIO 线程，从而影响其他的 <code>channel</code>。</p>
 
@@ -329,6 +350,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -398,13 +420,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -452,6 +474,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -530,6 +572,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

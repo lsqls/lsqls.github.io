@@ -253,6 +253,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/24/%E7%BD%91%E7%AB%99/freenom/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/24/%E7%BD%91%E7%AB%99/freenom/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -263,22 +284,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>众所周知，<a href="https://freenom.com/" target="_blank" rel="noopener">Freenom</a>是地球上唯一一个提供免费顶级域名的商家，不过需要每年续期，每次续期最多一年，而管理界面并不是很人性化。下面介绍如何注册一个免费的顶级域名，使用github action 自动续费，以及托管于cloudflare。</p>
-<a id="more"></a>
+        <p>众所周知，<a target="_blank" rel="noopener" href="https://freenom.com/">Freenom</a>是地球上唯一一个提供免费顶级域名的商家，不过需要每年续期，每次续期最多一年，而管理界面并不是很人性化。下面介绍如何注册一个免费的顶级域名，使用github action 自动续费，以及托管于cloudflare。</p>
+<span id="more"></span>
 
-<h3 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h3><p>注册教程参见<a href="https://zhuanlan.zhihu.com/p/109553641" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/109553641</a>，需要注意的是：</p>
+<h3 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h3><p>注册教程参见<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/109553641">https://zhuanlan.zhihu.com/p/109553641</a>，需要注意的是：</p>
 <ul>
 <li>注册过程中你的ip地址要全程保持不变</li>
 <li>个人信息可以瞎填，但是<strong>国家</strong>信息尽量与你的ip地址相对应</li>
 <li>账号注册成功后，如果在申请顶级域名的过程中出现问题的话，多刷新几次，或者等一天再回来申请，还不成功可以尝试给freenom发封邮件，附上自己的<strong>customer id</strong>（我几乎没遇到问题就是了）</li>
 </ul>
-<h3 id="使用cloudflare管理域名"><a href="#使用cloudflare管理域名" class="headerlink" title="使用cloudflare管理域名"></a>使用<a href="https://www.cloudflare.com/" target="_blank" rel="noopener">cloudflare</a>管理域名</h3><p>直接按照cloudflare的提示进行操作，非常简单，无非就是修改DNS服务器地址。添加域名的时候，如果出现<code>XXX is not a registered domain</code>的错误，要先在freenom管理页面随便添加一条解析记录，然后才能在cloudflare处继续操作。freenom更改DNS服务器一般需要一天时间，这段时间cloudflare上的域名状态会一直显示<code>Pending Nameserver Update</code>，你只需要等待就行。</p>
+<h3 id="使用cloudflare管理域名"><a href="#使用cloudflare管理域名" class="headerlink" title="使用cloudflare管理域名"></a>使用<a target="_blank" rel="noopener" href="https://www.cloudflare.com/">cloudflare</a>管理域名</h3><p>直接按照cloudflare的提示进行操作，非常简单，无非就是修改DNS服务器地址。添加域名的时候，如果出现<code>XXX is not a registered domain</code>的错误，要先在freenom管理页面随便添加一条解析记录，然后才能在cloudflare处继续操作。freenom更改DNS服务器一般需要一天时间，这段时间cloudflare上的域名状态会一直显示<code>Pending Nameserver Update</code>，你只需要等待就行。</p>
 <p>如果你只需要域名解析服务，注意添加域名解析时不要点亮小云朵，使用<strong>dns only</strong>就可以了。</p>
 <p><img src="http://image.onebug.tech/image-20200624103558605.png-d" alt="image-20200624103558605"></p>
-<h3 id="使用github-action自动续期"><a href="#使用github-action自动续期" class="headerlink" title="使用github action自动续期"></a>使用<a href="http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html" target="_blank" rel="noopener">github action</a>自动续期</h3><ul>
-<li><p>fork项目<a href="https://github.com/luolongfei/freenom" target="_blank" rel="noopener">https://github.com/luolongfei/freenom</a> </p>
+<h3 id="使用github-action自动续期"><a href="#使用github-action自动续期" class="headerlink" title="使用github action自动续期"></a>使用<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html">github action</a>自动续期</h3><ul>
+<li><p>fork项目<a target="_blank" rel="noopener" href="https://github.com/luolongfei/freenom">https://github.com/luolongfei/freenom</a> </p>
 </li>
-<li><p>查看<a href="https://github.com/lsqls/freenom#--%E6%9C%AC%E9%A1%B9%E7%9B%AE%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95" target="_blank" rel="noopener">项目使用方法</a></p>
+<li><p>查看<a target="_blank" rel="noopener" href="https://github.com/lsqls/freenom#--%E6%9C%AC%E9%A1%B9%E7%9B%AE%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">项目使用方法</a></p>
 </li>
 <li><p>设置<strong>Secrets</strong></p>
 </li>
@@ -287,7 +308,7 @@
 </ul>
 <p>附上一张我的<strong>Secrets</strong>截图 ，我是直接把邮件通知关了<code>MAIL_EBABLE=false</code>（如果你需要这个功能，请自行设置）</p>
 <p><img src="http://image.onebug.tech/image-20200624104312825.png-d" alt="image-20200624104312825"></p>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>免费的就是最贵的，而且还不能保证稳定。我就遇到域名被污染的情况，最后通过重新注册才解决该问题。域名这玩意并不贵，我的建议是嫌麻烦直接去<a href="https://sg.godaddy.com/zh" target="_blank" rel="noopener">godday</a>购买一个首年域名，价格不会超过10RMB。</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>免费的就是最贵的，而且还不能保证稳定。我就遇到域名被污染的情况，最后通过重新注册才解决该问题。域名这玩意并不贵，我的建议是嫌麻烦直接去<a target="_blank" rel="noopener" href="https://sg.godaddy.com/zh">godday</a>购买一个首年域名，价格不会超过10RMB。</p>
 
     </div>
 
@@ -327,6 +348,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -396,13 +418,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -450,6 +472,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -528,6 +570,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

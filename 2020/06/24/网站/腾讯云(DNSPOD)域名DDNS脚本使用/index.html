@@ -256,6 +256,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/24/%E7%BD%91%E7%AB%99/%E8%85%BE%E8%AE%AF%E4%BA%91(DNSPOD)%E5%9F%9F%E5%90%8DDDNS%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/24/%E7%BD%91%E7%AB%99/%E8%85%BE%E8%AE%AF%E4%BA%91(DNSPOD)%E5%9F%9F%E5%90%8DDDNS%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -267,16 +288,16 @@
 
       
         <p>DDNS（Dynamic Domain Name Server，动态域名服务）是将用户的动态IP地址映射到一个固定的域名解析服务上，用户每次连接网络的时候客户端程序就会通过信息传递把该主机的动态IP地址传送给位于服务商主机上的服务器程序，服务器程序负责提供DNS服务并实现动态域名解析。下面是介绍如何使用脚本实现腾讯云购买域名的DDNS。</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<h2 id="登录DNSPod获取密钥"><a href="#登录DNSPod获取密钥" class="headerlink" title="登录DNSPod获取密钥"></a>登录DNSPod获取密钥</h2><p>访问DNSPod控制台<a href="https://console.dnspod.cn/" target="_blank" rel="noopener">https://console.dnspod.cn/</a>，使用你的腾讯云账号登录，如果腾讯云账号绑定微信，直接扫码登录就行。在域名管理添加一条A记录。域名前缀需要设定好，IP可以随意填写。我将域名前缀设置为<code>test</code>，ip设置为<code>1.1.1.1</code>。</p>
+<h2 id="登录DNSPod获取密钥"><a href="#登录DNSPod获取密钥" class="headerlink" title="登录DNSPod获取密钥"></a>登录DNSPod获取密钥</h2><p>访问DNSPod控制台<a target="_blank" rel="noopener" href="https://console.dnspod.cn/">https://console.dnspod.cn/</a>，使用你的腾讯云账号登录，如果腾讯云账号绑定微信，直接扫码登录就行。在域名管理添加一条A记录。域名前缀需要设定好，IP可以随意填写。我将域名前缀设置为<code>test</code>，ip设置为<code>1.1.1.1</code>。</p>
 <p><img src="http://image.onebug.tech/image-20200624223938388.png-d" alt="image-20200624223938388"></p>
 <p>点击个人头像下的密钥管理，创建一个密钥，将<code>ID</code>和<code>token</code>记下。</p>
 <p><img src="http://image.onebug.tech/image-20200624224951160.png-d" alt="image-20200624224951160"></p>
 <h2 id="设置DDNS脚本"><a href="#设置DDNS脚本" class="headerlink" title="设置DDNS脚本"></a>设置DDNS脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/imki911/ArDNSPod</span><br><span class="line"><span class="built_in">cd</span> ArDNSPod</span><br><span class="line">vi dns.conf</span><br></pre></td></tr></table></figure>
 
 <p><code>dns.conf</code>设置</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. Combine your token ID and token together as follows</span></span><br><span class="line"><span class="comment"># 第一个参数是上图的ID，第二个参数是上图的Token</span></span><br><span class="line">arToken=<span class="string">"123425,b28c3344eaeaea9074c123451234512d"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. Place each domain you want to check as follows</span></span><br><span class="line"><span class="comment"># you can have multiple arDdnsCheck blocks</span></span><br><span class="line"><span class="comment"># 第一个参数是你的域名，第二个参数是前面设定的域名前缀</span></span><br><span class="line">arDdnsCheck <span class="string">"yourdomain.com"</span> <span class="string">"test"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. Combine your token ID and token together as follows</span></span><br><span class="line"><span class="comment"># 第一个参数是上图的ID，第二个参数是上图的Token</span></span><br><span class="line">arToken=<span class="string">&quot;123425,b28c3344eaeaea9074c123451234512d&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. Place each domain you want to check as follows</span></span><br><span class="line"><span class="comment"># you can have multiple arDdnsCheck blocks</span></span><br><span class="line"><span class="comment"># 第一个参数是你的域名，第二个参数是前面设定的域名前缀</span></span><br><span class="line">arDdnsCheck <span class="string">&quot;yourdomain.com&quot;</span> <span class="string">&quot;test&quot;</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="定时运行DDNS脚本"><a href="#定时运行DDNS脚本" class="headerlink" title="定时运行DDNS脚本"></a>定时运行DDNS脚本</h2><p>测试脚本是否能正常运行，<code>./ddnspod.sh</code>，显示以下信息说明脚本正常运行，到DNSPod控制台可以看到前面设置的A记录的IP已经被修改为外网IP。</p>
 <p><img src="http://image.onebug.tech/image-20200624225712024.png-d" alt="image-20200624225712024"></p>
@@ -325,6 +346,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -394,13 +416,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -448,6 +470,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -526,6 +568,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

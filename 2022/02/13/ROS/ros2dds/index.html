@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"blog.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。 使用端到端中间件（如DDS）的好处是，需要维护">
+  <meta name="description" content="在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。 使用端到端中间件（如DDS）的好处是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ros2与dds">
 <meta property="og:url" content="http://blog.onebug.tech/2022/02/13/ROS/ros2dds/index.html">
 <meta property="og:site_name" content="冰冻橘子的自留地">
-<meta property="og:description" content="在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。 使用端到端中间件（如DDS）的好处是，需要维护">
+<meta property="og:description" content="在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。 使用端到端中间件（如DDS）的好处是">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://image.onebug.tech/202203062322524.png">
 <meta property="og:image" content="http://image.onebug.tech/202202241356558.svg+xml">
@@ -253,6 +253,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/13/ROS/ros2dds/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/13/ROS/ros2dds/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -263,9 +284,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour/Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。</p>
+        <p>在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。</p>
 <p>使用端到端中间件（如DDS）的好处是，需要维护的代码要少得多，而且中间件的行为和确切规格已经被提炼成文档。有了这种具体的规范，第三方可以审查、审计和实施具有不同程度的互操作性的中间件。此外，如果要从现有的库中构建一个新的中间件，无论如何都需要创建这种类型的规范。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="什么是DDS"><a href="#什么是DDS" class="headerlink" title="什么是DDS"></a>什么是DDS</h1><p><strong>DDS提供了一个发布-订阅的传输（publish-subscribe transport ）</strong>，这与ROS1的发布-订阅的传输非常相似。<strong>DDS使用OMG定义的接口描述语言进行消息定义和序列化。</strong></p>
 <p>类似于ROS的服务系统，DDS有一个请求-响应式的传输（request-response style transport）。</p>
@@ -275,12 +296,12 @@
 <p>尽管DDS的默认实现是通过UDP，并且只要求传输的功能水平，但有供应商支持通过TCP实现的DDS。</p>
 </blockquote>
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><strong>eProsima的FastRTPS实现可在GitHub上获得</strong>，并获得LGPL许可。</p>
-<p><a href="https://github.com/eProsima/Fast-RTPS" target="_blank" rel="noopener">https://github.com/eProsima/Fast-RTPS</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/eProsima/Fast-RTPS">https://github.com/eProsima/Fast-RTPS</a></p>
 <h1 id="构建在DDS上的ROS"><a href="#构建在DDS上的ROS" class="headerlink" title="构建在DDS上的ROS"></a>构建在DDS上的ROS</h1><p>ROS 2将在DDS之上提供一个类似于ROS 1的接口，为大多数ROS用户隐藏了DDS的复杂性，但又为那些有极端用例或需要与其他现有DDS系统集成的用户单独提供对底层DDS实现的访问。</p>
 <p><img src="http://image.onebug.tech/202203062322524.png" alt="DDS and ROS API Layout"></p>
 <h2 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h2><p>DDS将完全取代ROS1基于主控的发现系统。ROS需要利用DDS的API来获取信息，如所有节点的列表，所有主题的列表，以及它们是如何连接的。对这些信息的访问将被隐藏在ROS定义的API后面，防止用户直接调用DDS。</p>
 <p><strong>DDS发现系统的优点是，在默认情况下，它是完全分布式的，不会出现中央故障点</strong>。DDS还允许用户在其发现系统中定义元数据，这将使ROS能够在发布-订阅上附加更高级别的概念。</p>
-<h2 id="发布-订阅传输"><a href="#发布-订阅传输" class="headerlink" title="发布-订阅传输"></a>发布-订阅传输</h2><p>DDSI-RTPS协议取代ROS的TCPROS和UDPROS线协议，用于发布/订阅。DDS API为ROS的典型发布/订阅模式提供了更多的参与者。 </p>
+<h2 id="发布-订阅传输"><a href="#发布-订阅传输" class="headerlink" title="发布-订阅传输"></a>发布-订阅传输</h2><p>DDSI-RTPS协议取代ROS的TCPROS和UDPROS线协议，用于发布&#x2F;订阅。DDS API为ROS的典型发布&#x2F;订阅模式提供了更多的参与者。 </p>
 <p>DDS的主题（Topic）与ROS中的主题概念相似。</p>
 <p><strong>DDS中的参与者（Participant）ROS的节点（Node）概念相似</strong>。但在DDS中，节点会被表示为独立的代码对象，既不是订阅者也不是发布者。</p>
 <p><img src="http://image.onebug.tech/202202241356558.svg+xml" alt="../../_images/dds_domain.svg"></p>
@@ -333,6 +354,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -402,13 +424,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -456,6 +478,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -534,6 +576,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

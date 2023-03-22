@@ -33,8 +33,8 @@
 <meta property="article:modified_time" content="2021-05-08T10:01:11.213Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
-<meta property="article:tag" content="并发">
 <meta property="article:tag" content="笔记">
+<meta property="article:tag" content="并发">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://blog.onebug.tech/2021/04/21/java/java%E5%B9%B6%E5%8F%91/ch12%E6%AD%BB%E9%94%81/">
@@ -251,6 +251,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/21/java/java%E5%B9%B6%E5%8F%91/ch12%E6%AD%BB%E9%94%81/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/21/java/java%E5%B9%B6%E5%8F%91/ch12%E6%AD%BB%E9%94%81/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -262,7 +283,7 @@
 
       
         <h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><p>通俗的说，死锁就是两个或者多个线程，相互占用对方需要的资源，而都不进行释放，导致彼此之间都相互等待对方释放资源，产生了无限制等待的现象。死锁一旦发生，如果没有外力介入，这种等待将永远存在，从而对程序产生严重影响。用来描述死锁的问题最有名的场景就是“哲学家就餐问题”。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="死锁产生的必要条件"><a href="#死锁产生的必要条件" class="headerlink" title="死锁产生的必要条件"></a>死锁产生的必要条件</h3><ul>
 <li>互斥条件：进程对锁分配的资源进行排他性使用</li>
@@ -271,41 +292,41 @@
 <li>环路等待条件：资源调用是一个环形的链</li>
 </ul>
 <h2 id="死锁示例"><a href="#死锁示例" class="headerlink" title="死锁示例"></a>死锁示例</h2><pre><code>@Slf4j
-public class DeadLock implements Runnable {
+public class DeadLock implements Runnable &#123;
     public int flag = 1;
     //静态对象是类的所有对象共享的
     private static Object o1 = new Object(), o2 = new Object();
 
     @Override
-    public void run() {
-        log.info(&quot;flag:{}&quot;, flag);
-        if (flag == 1) {
-            synchronized (o1) {
-                try {
+    public void run() &#123;
+        log.info(&quot;flag:&#123;&#125;&quot;, flag);
+        if (flag == 1) &#123;
+            synchronized (o1) &#123;
+                try &#123;
                     Thread.sleep(500);
-                } catch (Exception e) {
+                &#125; catch (Exception e) &#123;
                     e.printStackTrace();
-                }
-                synchronized (o2) {
+                &#125;
+                synchronized (o2) &#123;
                     log.info(&quot;1&quot;);
-                }
-            }
-        }
-        if (flag == 0) {
-            synchronized (o2) {
-                try {
+                &#125;
+            &#125;
+        &#125;
+        if (flag == 0) &#123;
+            synchronized (o2) &#123;
+                try &#123;
                     Thread.sleep(500);
-                } catch (Exception e) {
+                &#125; catch (Exception e) &#123;
                     e.printStackTrace();
-                }
-                synchronized (o1) {
+                &#125;
+                synchronized (o1) &#123;
                     log.info(&quot;0&quot;);
-                }
-            }
-        }
-    }
+                &#125;
+            &#125;
+        &#125;
+    &#125;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) &#123;
         DeadLock td1 = new DeadLock();
         DeadLock td2 = new DeadLock();
         td1.flag = 1;
@@ -314,9 +335,11 @@ public class DeadLock implements Runnable {
         //td2的run()可能在td1的run()之前运行
         new Thread(td1).start();
         new Thread(td2).start();
-    }
-}</code></pre><p><strong>jps jstack 定位死锁</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;jps</span><br><span class="line">&gt;jstack pid</span><br></pre></td></tr></table></figure>
+    &#125;
+&#125;
+</code></pre>
+<p><strong>jps jstack 定位死锁</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;jps</span><br><span class="line">&gt;jstack pid </span><br></pre></td></tr></table></figure>
 
 <h2 id="避免死锁"><a href="#避免死锁" class="headerlink" title="避免死锁"></a>避免死锁</h2><ul>
 <li>注意加锁顺序</li>
@@ -334,8 +357,8 @@ public class DeadLock implements Runnable {
           
           <div class="post-tags">
               <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
-              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
               <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
           </div>
 
         
@@ -363,6 +386,7 @@ public class DeadLock implements Runnable {
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -432,13 +456,13 @@ public class DeadLock implements Runnable {
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -486,6 +510,26 @@ public class DeadLock implements Runnable {
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -564,6 +608,35 @@ public class DeadLock implements Runnable {
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

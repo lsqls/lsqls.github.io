@@ -255,6 +255,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -266,15 +287,15 @@
 
       
         <h1 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>以Ubuntu为例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg \</span><br><span class="line">    lsb-release</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</span><br><span class="line"><span class="built_in">echo</span> \</span><br><span class="line">  <span class="string">"deb [arch=<span class="variable">$(dpkg --print-architecture)</span> signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \</span></span><br><span class="line"><span class="string">  <span class="variable">$(lsb_release -cs)</span> stable"</span> | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg \</span><br><span class="line">    lsb-release</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</span><br><span class="line"><span class="built_in">echo</span> \</span><br><span class="line">  <span class="string">&quot;deb [arch=<span class="subst">$(dpkg --print-architecture)</span> signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \</span></span><br><span class="line"><span class="string">  <span class="subst">$(lsb_release -cs)</span> stable&quot;</span> | sudo <span class="built_in">tee</span> /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="image"><a href="#image" class="headerlink" title="image"></a>image</h3><p>Docker的镜像可以理解是一个只读的静态模板，类似于我们在装系统的时候用到的.iso文件。</p>
 <p>列出所有的镜像：<code>docker images</code>。</p>
 <h3 id="container"><a href="#container" class="headerlink" title="container"></a>container</h3><p><strong>container</strong>则相对而言是一个动态的instance，可以理解为我们装好了系统之后的某一台计算机，<strong>可以开机，关机，重启等等，也可以被格式化（删除）</strong>。</p>
 <p>列出所有的容器：<code>docker ps -a</code>。</p>
-<h3 id="Repository"><a href="#Repository" class="headerlink" title="Repository"></a>Repository</h3><p>我们可以把构建后的镜像上传到服务器，从而可以在任何地方使用到这个镜像。一个Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。我们可以通过<code>&lt;仓库名&gt;:&lt;标签&gt;</code>的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以<code>latest</code>作为默认标签。<br>最常使用的Registry公开服务是官方的<a href="http://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a> ，这也是默认的Registry，并拥有大量的高质量的官方镜像。</p>
+<h3 id="Repository"><a href="#Repository" class="headerlink" title="Repository"></a>Repository</h3><p>我们可以把构建后的镜像上传到服务器，从而可以在任何地方使用到这个镜像。一个Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。我们可以通过<code>&lt;仓库名&gt;:&lt;标签&gt;</code>的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以<code>latest</code>作为默认标签。<br>最常使用的Registry公开服务是官方的<a target="_blank" rel="noopener" href="http://hub.docker.com/">Docker Hub</a> ，这也是默认的Registry，并拥有大量的高质量的官方镜像。</p>
 <p>登录Registry：<code>docker login xxx</code></p>
 <h2 id="基本的使用"><a href="#基本的使用" class="headerlink" title="基本的使用"></a>基本的使用</h2><h3 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h3><ul>
 <li>拉取镜像：<code>docker pull ubuntu</code></li>
@@ -282,24 +303,22 @@
 </ul>
 <h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><ul>
 <li><p>运行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run  -d --name <span class="string">"test"</span> -it ubuntu bash</span><br><span class="line"><span class="comment">#-d 后台运行</span></span><br><span class="line">docker <span class="built_in">exec</span> -it <span class="built_in">test</span> bash</span><br><span class="line"><span class="comment">#-i 以交互模式运行容器</span></span><br><span class="line"><span class="comment">#-t 为容器重新分配一个伪输入终端</span></span><br><span class="line"><span class="comment">#在容器内执行/bin/bash命令</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run  -d --name <span class="string">&quot;test&quot;</span> -it ubuntu bash</span><br><span class="line"><span class="comment">#-d 后台运行</span></span><br><span class="line">docker <span class="built_in">exec</span> -it <span class="built_in">test</span> bash</span><br><span class="line"><span class="comment">#-i 以交互模式运行容器</span></span><br><span class="line"><span class="comment">#-t 为容器重新分配一个伪输入终端</span></span><br><span class="line"><span class="comment">#在容器内执行/bin/bash命令</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>停止：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker stop <span class="built_in">test</span></span><br><span class="line"><span class="comment">#删除</span></span><br><span class="line"><span class="comment">#docker rm test</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>恢复（物理机关机重启）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start <span class="built_in">test</span>  </span><br></pre></td></tr></table></figure>
 </li>
 <li><p>提交当前container为新镜像：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit <span class="built_in">test</span>  dev:cpp</span><br></pre></td></tr></table></figure>
-
-</li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit <span class="built_in">test</span>  dev:cpp </span><br></pre></td></tr></table></figure></li>
 </ul>
 <h1 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h1><h2 id="定制镜像"><a href="#定制镜像" class="headerlink" title="定制镜像"></a>定制镜像</h2><h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><p>镜像的定制实际上就是定制每一层所添加的配置、文件。如果我们可以把每一层修改、安装、构建、操作的命令都写入一个脚本，用这个脚本来构建、定制镜像，这个脚本就是 Dockerfile。Dockerfile 是一个文本文件，其内包含了一条条的指令(Instruction)，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> debian:stretch</span><br><span class="line"><span class="comment">#FROM 就是指定 基础镜像，因此一个 Dockerfile 中 FROM 是必备的指令，并且必须是第一条指令。</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">set</span> -x; buildDeps=<span class="string">'gcc libc6-dev make wget'</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y <span class="variable">$buildDeps</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; wget -O redis.tar.gz <span class="string">"http://download.redis.io/releases/redis-5.0.3.tar.gz"</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; mkdir -p /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis install \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/* \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm redis.tar.gz \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -r /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get purge -y --auto-remove <span class="variable">$buildDeps</span></span></span><br><span class="line"><span class="comment">#同一目的的所有命令应该归到同一层</span></span><br><span class="line"><span class="comment">#镜像构建时，一定要确保每一层只添加真正需要添加的东西，任何无关的东西都应该清理掉。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> debian:stretch</span><br><span class="line"><span class="comment">#FROM 就是指定 基础镜像，因此一个 Dockerfile 中 FROM 是必备的指令，并且必须是第一条指令。</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">set</span> -x; buildDeps=<span class="string">&#x27;gcc libc6-dev make wget&#x27;</span> \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt-get update \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt-get install -y <span class="variable">$buildDeps</span> \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; wget -O redis.tar.gz <span class="string">&quot;http://download.redis.io/releases/redis-5.0.3.tar.gz&quot;</span> \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; <span class="built_in">mkdir</span> -p /usr/src/redis \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; make -C /usr/src/redis \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; make -C /usr/src/redis install \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; <span class="built_in">rm</span> -rf /var/lib/apt/lists/* \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; <span class="built_in">rm</span> redis.tar.gz \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; <span class="built_in">rm</span> -r /usr/src/redis \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt-get purge -y --auto-remove <span class="variable">$buildDeps</span></span></span><br><span class="line"><span class="comment">#同一目的的所有命令应该归到同一层</span></span><br><span class="line"><span class="comment">#镜像构建时，一定要确保每一层只添加真正需要添加的东西，任何无关的东西都应该清理掉。</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><p>在 <code>Dockerfile</code> 文件所在目录执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t redes:v3 . </span><br><span class="line"># . 是在指定上下文的目录，COPY需要用到该设置</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t redes:v3 . </span><br><span class="line"># . 是在指定上下文的目录，COPY需要用到该设置</span><br></pre></td></tr></table></figure>
 
 <h3 id="Dockerfile指令"><a href="#Dockerfile指令" class="headerlink" title="Dockerfile指令"></a>Dockerfile指令</h3><p><code>Dockerfile</code> 功能很强大，它提供了十多个指令：</p>
 <ul>
@@ -307,7 +326,7 @@
 <li><code>ENV &lt;key1&gt;=&lt;value1&gt; &lt;key2&gt;=&lt;value2&gt;...</code>：设置环境变量</li>
 <li><code>CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]</code>：<code>CMD</code> 指令就是用于指定默认的容器主进程的启动命令的。容器内没有后台服务的概念，我们应该直接执行可执行文件，并且要求以前台形式运行。</li>
 </ul>
-<p>其他命令详见<a href="https://yeasy.gitbook.io/docker_practice/image/dockerfile" target="_blank" rel="noopener">Dockerfile 指令详解 - Docker —— 从入门到实践 (gitbook.io)</a></p>
+<p>其他命令详见<a target="_blank" rel="noopener" href="https://yeasy.gitbook.io/docker_practice/image/dockerfile">Dockerfile 指令详解 - Docker —— 从入门到实践 (gitbook.io)</a></p>
 <h2 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h2><h3 id="noroot运行"><a href="#noroot运行" class="headerlink" title="noroot运行"></a>noroot运行</h3><p>vscode 使用docker必须设置rootless运行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dockerd-rootless-setuptool.sh install</span><br></pre></td></tr></table></figure>
 
@@ -335,22 +354,22 @@
 </thead>
 <tbody><tr>
 <td>bridge模式</td>
-<td>–net=bridge</td>
+<td>–net&#x3D;bridge</td>
 <td>（<strong>默认</strong>为该模式）此模式会为每一个容器分配、设置IP等，并将容器连接到一个docker0虚拟网桥。<img src="http://image.onebug.tech/202203062318773.png" alt="docker网络模式-bridge"></td>
 </tr>
 <tr>
 <td>host模式</td>
-<td>–net=host</td>
+<td>–net&#x3D;host</td>
 <td>容器和宿主机共享网络空间。<img src="http://image.onebug.tech/202203062318271.png" alt="docker网络模式-host"></td>
 </tr>
 <tr>
 <td>container模式</td>
-<td>–net=container:NAME_or_ID</td>
+<td>–net&#x3D;container:NAME_or_ID</td>
 <td>容器和另外一个容器共享网络空间。<img src="http://image.onebug.tech/202203062317644.png" alt="docker网络模式container"></td>
 </tr>
 <tr>
 <td>none模式</td>
-<td>–net=none</td>
+<td>–net&#x3D;none</td>
 <td>该模式关闭了容器的网络功能。</td>
 </tr>
 </tbody></table>
@@ -358,30 +377,30 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8000:80 -it ubuntu /bin/bash</span><br><span class="line"><span class="comment">#将容器的80端口映射到宿主机的8000端口上</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h3><p>Docker容器启动的时候，如果要挂载宿主机的一个目录，可以用<code>-v</code>参数指定，冒号<code>:</code>前面的目录是宿主机目录，后面的目录是容器内目录。这样在容器启动后，容器内会自动创建<code>/project</code>的目录。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-v &#x2F;src&#x2F;myproject:&#x2F;project</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-v /src/myproject:/project</span><br></pre></td></tr></table></figure>
 
 <h3 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h3><ul>
 <li>设置工作目录：<code>-w /project</code></li>
 <li>退出时清除自动清理容器内部的文件系统：<code>-rm</code></li>
 </ul>
 <h2 id="在Docker中使用GPU"><a href="#在Docker中使用GPU" class="headerlink" title="在Docker中使用GPU"></a>在Docker中使用GPU</h2><h3 id="安装nvidia-docker2"><a href="#安装nvidia-docker2" class="headerlink" title="安装nvidia-docker2"></a>安装nvidia-docker2</h3><blockquote>
-<p>需要提前在宿主机上安装显卡<a href="https://www.nvidia.com/Download/index.aspx?lang=en-us" target="_blank" rel="noopener">驱动</a></p>
+<p>需要提前在宿主机上安装显卡<a target="_blank" rel="noopener" href="https://www.nvidia.com/Download/index.aspx?lang=en-us">驱动</a></p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#设置NVIDIA Container Toolkit</span><br><span class="line">distribution&#x3D;$(. &#x2F;etc&#x2F;os-release;echo $ID$VERSION_ID) \</span><br><span class="line">   &amp;&amp; curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;gpgkey | sudo apt-key add - \</span><br><span class="line">   &amp;&amp; curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;$distribution&#x2F;nvidia-docker.list | sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;nvidia-docker.list</span><br><span class="line">#安装nvidia-docker2</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y nvidia-docker2</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#设置NVIDIA Container Toolkit</span><br><span class="line">distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \</span><br><span class="line">   &amp;&amp; curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \</span><br><span class="line">   &amp;&amp; curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list</span><br><span class="line">#安装nvidia-docker2</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y nvidia-docker2</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
 
-<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><p>添加<code>--gpus &lt;device id&gt;</code>参数，<code>--gpus all</code>使用所有的GPU。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --rm --gpus all nvidia&#x2F;cuda:11.0-base nvidia-smi</span><br></pre></td></tr></table></figure>
+<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><p>添加<code>--gpus &lt;device id&gt; </code>参数，<code>--gpus all</code>使用所有的GPU。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi</span><br></pre></td></tr></table></figure>
 
 <h2 id="GUI程序的运行"><a href="#GUI程序的运行" class="headerlink" title="GUI程序的运行"></a>GUI程序的运行</h2><h3 id="X11"><a href="#X11" class="headerlink" title="X11"></a>X11</h3><p>最简单的方法是暴露宿主机的xhost，这样容器就可以通过对X11的unix套接字的读写间接渲染程序界面。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#调整Xserver权限</span></span><br><span class="line">xhost +<span class="built_in">local</span>:root</span><br><span class="line"><span class="comment">#docker 设置</span></span><br><span class="line">docker run -it \</span><br><span class="line">    --env=<span class="string">"DISPLAY"</span> \</span><br><span class="line">    --env=<span class="string">"QT_X11_NO_MITSHM=1"</span> \</span><br><span class="line">    --volume=<span class="string">"/tmp/.X11-unix:/tmp/.X11-unix:rw"</span> \</span><br><span class="line">    osrf/ros:indigo-desktop-full \</span><br><span class="line">    rqt</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#调整Xserver权限</span></span><br><span class="line">xhost +<span class="built_in">local</span>:root</span><br><span class="line"><span class="comment">#docker 设置</span></span><br><span class="line">docker run -it \</span><br><span class="line">    --<span class="built_in">env</span>=<span class="string">&quot;DISPLAY&quot;</span> \</span><br><span class="line">    --<span class="built_in">env</span>=<span class="string">&quot;QT_X11_NO_MITSHM=1&quot;</span> \</span><br><span class="line">    --volume=<span class="string">&quot;/tmp/.X11-unix:/tmp/.X11-unix:rw&quot;</span> \</span><br><span class="line">    osrf/ros:indigo-desktop-full \</span><br><span class="line">    rqt</span><br></pre></td></tr></table></figure>
 
 <h3 id="x11docker"><a href="#x11docker" class="headerlink" title="x11docker"></a>x11docker</h3><p>x11docker允许在Linux容器中运行图形化桌面应用程序。</p>
 <ul>
 <li><p>安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;mviereck&#x2F;x11docker&#x2F;master&#x2F;x11docker | sudo bash -s -- --update</span><br><span class="line">docker pull x11docker&#x2F;xserver</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://raw.githubusercontent.com/mviereck/x11docker/master/x11docker | sudo bash -s -- --update</span><br><span class="line">docker pull x11docker/xserver</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x11docker IMAGENAME [COMMAND]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x11docker IMAGENAME [COMMAND] </span><br></pre></td></tr></table></figure>
 
 <p>可选参数：</p>
 <ul>
@@ -391,12 +410,12 @@
 </li>
 </ul>
 <blockquote>
-<p><a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener">Install Docker Engine | Docker Documentation</a></p>
-<p><a href="https://yeasy.gitbook.io/docker_practice/" target="_blank" rel="noopener">前言 - Docker —— 从入门到实践 (gitbook.io)</a></p>
-<p><a href="https://segmentfault.com/a/1190000040335988" target="_blank" rel="noopener">docker四种网络模式 - SegmentFault 思否</a></p>
-<p><a href="https://github.com/NVIDIA/nvidia-docker" target="_blank" rel="noopener">NVIDIA/nvidia-docker: Build and run Docker containers leveraging NVIDIA GPUs (github.com)</a></p>
-<p><a href="http://wiki.ros.org/docker/Tutorials/GUI" target="_blank" rel="noopener">docker/Tutorials/GUI - ROS Wiki</a></p>
-<p><a href="https://github.com/mviereck/x11docker" target="_blank" rel="noopener">mviereck/x11docker: Run GUI applications and desktops in docker and podman containers. Focus on security. (github.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/">Install Docker Engine | Docker Documentation</a></p>
+<p><a target="_blank" rel="noopener" href="https://yeasy.gitbook.io/docker_practice/">前言 - Docker —— 从入门到实践 (gitbook.io)</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000040335988">docker四种网络模式 - SegmentFault 思否</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/NVIDIA/nvidia-docker">NVIDIA&#x2F;nvidia-docker: Build and run Docker containers leveraging NVIDIA GPUs (github.com)</a></p>
+<p><a target="_blank" rel="noopener" href="http://wiki.ros.org/docker/Tutorials/GUI">docker&#x2F;Tutorials&#x2F;GUI - ROS Wiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mviereck/x11docker">mviereck&#x2F;x11docker: Run GUI applications and desktops in docker and podman containers. Focus on security. (github.com)</a></p>
 </blockquote>
 
     </div>
@@ -435,6 +454,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -504,13 +524,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -558,6 +578,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -636,6 +676,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

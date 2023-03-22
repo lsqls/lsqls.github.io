@@ -251,6 +251,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/08/27/%E8%BD%AF%E4%BB%B6/navicat%E6%BF%80%E6%B4%BB/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/27/%E8%BD%AF%E4%BB%B6/navicat%E6%BF%80%E6%B4%BB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -262,10 +283,10 @@
 
       
         <p>本教程用于激活windows 版本的navicat-premium。</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<h2 id="下载安装navicat"><a href="#下载安装navicat" class="headerlink" title="下载安装navicat"></a>下载安装navicat</h2><p>到官网下载navicat，<a href="https://www.navicat.com.cn/products/navicat-premium" target="_blank" rel="noopener">https://www.navicat.com.cn/products/navicat-premium</a>。下载完成后安装。安装过程中请记下navicat的安装目录，后面会用到。</p>
-<h2 id="编译激活工具"><a href="#编译激活工具" class="headerlink" title="编译激活工具"></a>编译激活工具</h2><p>激活工具的github项目地址：<a href="https://github.com/HeQuanX/navicat-keygen-tools/tree/windows" target="_blank" rel="noopener">https://github.com/HeQuanX/navicat-keygen-tools/tree/windows</a></p>
+<h2 id="下载安装navicat"><a href="#下载安装navicat" class="headerlink" title="下载安装navicat"></a>下载安装navicat</h2><p>到官网下载navicat，<a target="_blank" rel="noopener" href="https://www.navicat.com.cn/products/navicat-premium">https://www.navicat.com.cn/products/navicat-premium</a>。下载完成后安装。安装过程中请记下navicat的安装目录，后面会用到。</p>
+<h2 id="编译激活工具"><a href="#编译激活工具" class="headerlink" title="编译激活工具"></a>编译激活工具</h2><p>激活工具的github项目地址：<a target="_blank" rel="noopener" href="https://github.com/HeQuanX/navicat-keygen-tools/tree/windows">https://github.com/HeQuanX/navicat-keygen-tools/tree/windows</a></p>
 <h3 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h3><ol>
 <li><p>请确保你有 <strong>Visual Studio 2019</strong> 或者更高版本。因为这是一个VS2019项目。</p>
 </li>
@@ -281,32 +302,30 @@
 <li><code>rapidjson:x86-windows-static</code></li>
 </ul>
 <p>你可以通过下面的命令来安装它们：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ vcpkg install capstone[x86]:x64-windows-static</span><br><span class="line">$ vcpkg install capstone[x86]:x86-windows-static</span><br><span class="line">$ vcpkg install keystone:x64-windows-static</span><br><span class="line">$ vcpkg install keystone:x86-windows-static</span><br><span class="line">$ vcpkg install openssl-windows:x64-windows-static</span><br><span class="line">$ vcpkg install openssl-windows:x86-windows-static</span><br><span class="line">$ vcpkg install rapidjson:x64-windows-static</span><br><span class="line">$ vcpkg install rapidjson:x86-windows-static</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ vcpkg install capstone[x86]:x64-windows-static</span><br><span class="line">$ vcpkg install capstone[x86]:x86-windows-static</span><br><span class="line">$ vcpkg install keystone:x64-windows-static</span><br><span class="line">$ vcpkg install keystone:x86-windows-static</span><br><span class="line">$ vcpkg install openssl-windows:x64-windows-static</span><br><span class="line">$ vcpkg install openssl-windows:x86-windows-static</span><br><span class="line">$ vcpkg install rapidjson:x64-windows-static</span><br><span class="line">$ vcpkg install rapidjson:x86-windows-static</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>你的 <code>vcpkg</code> 已经和你的 <strong>Visual Studio</strong> 集成了，即你曾成功运行了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vcpkg integrate install</span><br></pre></td></tr></table></figure>
-
-</li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vcpkg integrate install</span><br></pre></td></tr></table></figure></li>
 </ol>
 <h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><ol>
 <li><p>在 <strong>Visual Studio</strong> 打开这个项目。</p>
 </li>
 <li><p>选择 <code>Release</code> 配置。</p>
 </li>
-<li><p>选择 <code>Win32</code> 来生成供32位Navicat使用的keygen/patcher。</p>
-<p>或者选择 <code>x64</code> 来生成供64位Navicat使用的keygen/patcher。</p>
+<li><p>选择 <code>Win32</code> 来生成供32位Navicat使用的keygen&#x2F;patcher。</p>
+<p>或者选择 <code>x64</code> 来生成供64位Navicat使用的keygen&#x2F;patcher。</p>
 </li>
 <li><p>选择 <strong>生成 &gt; 生成解决方案</strong>。</p>
 </li>
 </ol>
 <p>生成完成后，你会在 <code>bin/</code> 文件夹下看到编译后的<code>keygen/patcher</code>。</p>
-<h3 id="免编译"><a href="#免编译" class="headerlink" title="免编译"></a>免编译</h3><p>如果你懒得编译，可以下载我编译好的程序，<a href="http://file.onebug.tech/?/%E8%BD%AF%E4%BB%B6%E5%88%86%E4%BA%AB/navicat-keygen-for-x64.zip" target="_blank" rel="noopener">下载地址</a>。</p>
+<h3 id="免编译"><a href="#免编译" class="headerlink" title="免编译"></a>免编译</h3><p>如果你懒得编译，可以下载我编译好的程序，<a target="_blank" rel="noopener" href="http://file.onebug.tech/?/%E8%BD%AF%E4%BB%B6%E5%88%86%E4%BA%AB/navicat-keygen-for-x64.zip">下载地址</a>。</p>
 <h2 id="激活navicat"><a href="#激活navicat" class="headerlink" title="激活navicat"></a>激活navicat</h2><p>在cmd中执行，打开cmd, 进入激活程序的目录，执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">navicat-patcher.exe <span class="string">"C:\Program Files\PremiumSoft\ Premium 15"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">navicat-patcher.exe <span class="string">&quot;C:\Program Files\PremiumSoft\ Premium 15&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p><code>navicat-patcher.exe</code>是编译生成的激活程序，<code>&quot;C:\Program Files\PremiumSoft\Navicat Premium 15&quot;</code>要替换成自己的Navicat Premium的安装路径 。</p>
 <p>然后执行命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">navicat-keygen.exe -text .\RegPrivateKey.pem</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">navicat-keygen.exe -text .\RegPrivateKey.pem</span><br></pre></td></tr></table></figure>
 
 <p>输入编号选择你下载的Navicat的具体版本，然后选择语言和版本号。剩下的name和organization随便填写。</p>
 <p>复制激活工具生成的<code>Serial number</code> ，注意先不要关闭cmd窗口。此时断开网络，打开刚刚安装的Navicat，点击注册，把<code>Serial number</code> 粘贴上去。</p>
@@ -351,6 +370,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -420,13 +440,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -474,6 +494,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -552,6 +592,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

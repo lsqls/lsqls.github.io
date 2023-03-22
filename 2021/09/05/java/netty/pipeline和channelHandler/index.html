@@ -248,6 +248,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/09/05/java/netty/pipeline%E5%92%8CchannelHandler/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/05/java/netty/pipeline%E5%92%8CchannelHandler/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -259,7 +280,7 @@
 
       
         <p>为了避免逻辑判断泛滥导致的拓展性受限问题，Netty 发明了 <code>pipeline</code> 和 <code>channelHandler</code> 。它通过<strong>责任链设计模式</strong>来组织代码逻辑，并且能够支持逻辑的动态添加和删除 ，Netty 能够支持各类协议的扩展，比如 HTTP，WebSocket，Redis，靠的就是 <code>pipeline</code> 和 <code>channelHandler</code>。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h1><p><img src="http://image.onebug.tech/image-20210905211158604.png" alt="image-20210905211158604"></p>
 <p>在 Netty 整个框架里面，一条连接对应着一个 <code>Channel</code>，这条 <code>Channel</code> 所有的处理逻辑都在一个叫做 <code>ChannelPipeline</code> 的对象里面，<code>ChannelPipeline</code> 是一个双向链表结构，他和 <code>Channel</code> 之间是一对一的关系。</p>
@@ -273,7 +294,7 @@
 <p>当管道传播事件时，其会确定下一个<code>ChannelHandler</code>的类型是否与移动方向匹配，若不匹配，则会跳过并寻找下一个，直至找到相匹配的<code>ChannelHandler</code>（一个处理器可以会同时实现<code>ChannelInboundHandler</code>和<code>ChannelOutboundHandler</code>）。</p>
 <p><img src="http://image.onebug.tech/616953-20170524202716435-790612436.png" alt="img"></p>
 <p>关于<code>ChannelInboundHandler</code> 和<code>ChanneloutBoundHandler</code>的传播顺序的不同，可以看下面的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">serverBootstrap</span><br><span class="line">        .childHandler(<span class="keyword">new</span> ChannelInitializer&lt;NioSocketChannel&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(NioSocketChannel ch)</span> </span>&#123;</span><br><span class="line">                <span class="comment">// inBound，处理读数据的逻辑链</span></span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> InBoundHandlerA());</span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> InBoundHandlerB());</span><br><span class="line">                </span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> OutBoundHandlerD());</span><br><span class="line"></span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> InBoundHandlerC());</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// outBound，处理写数据的逻辑链</span></span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> OutBoundHandlerE());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">serverBootstrap</span><br><span class="line">        .childHandler(<span class="keyword">new</span> <span class="title class_">ChannelInitializer</span>&lt;NioSocketChannel&gt;() &#123;</span><br><span class="line">            <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">initChannel</span><span class="params">(NioSocketChannel ch)</span> &#123;</span><br><span class="line">                <span class="comment">// inBound，处理读数据的逻辑链</span></span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">InBoundHandlerA</span>());</span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">InBoundHandlerB</span>());</span><br><span class="line">                </span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">OutBoundHandlerD</span>());</span><br><span class="line"></span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">InBoundHandlerC</span>());</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// outBound，处理写数据的逻辑链</span></span><br><span class="line">                ch.pipeline().addLast(<span class="keyword">new</span> <span class="title class_">OutBoundHandlerE</span>());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
 
 <p>在该例子中，<code>pipeline</code> 的执行顺序是：<code>InBoundHandlerA</code>-&gt;<code>InBoundHandlerB()</code>-&gt;<code>InBoundHandlerC()</code>-&gt;<code>OutBoundHandlerE()</code></p>
 <blockquote>
@@ -319,6 +340,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -388,13 +410,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -442,6 +464,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -520,6 +562,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

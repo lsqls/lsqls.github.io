@@ -42,8 +42,8 @@
 <meta property="article:modified_time" content="2021-05-08T10:00:05.999Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
-<meta property="article:tag" content="并发">
 <meta property="article:tag" content="笔记">
+<meta property="article:tag" content="并发">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://image.onebug.tech/image-20210504002724606.png">
 
@@ -261,6 +261,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/10/java/java%E5%B9%B6%E5%8F%91/ch1%E5%9F%BA%E7%A1%80/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/10/java/java%E5%B9%B6%E5%8F%91/ch1%E5%9F%BA%E7%A1%80/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -277,7 +298,7 @@
 </li>
 <li><p>高并发</p>
 <p>高并发是互联网分布式系统架构设计中必须考虑的因素之一，它通常是指，通过设计保证系统能够同时并行处理很多请求。</p>
-<a id="more"></a>
+<span id="more"></span>
 </li>
 <li><p>CPU多级缓存</p>
 <p>CPU的频率太快了，快到主存跟不上，这样在处理器时钟周期内，CPU常常需要等待主存，浪费资源，所以cache的出现，是<strong>为了缓解CPU和内存之间速度的不匹配问题</strong>。</p>
@@ -438,7 +459,7 @@
 </li>
 </ul>
 <p>在并发环境下，通常采用<code>synchronized</code>或者<code>Lock</code>对代码块加锁保证原子性。</p>
-<h4 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h4><p>在Java中提供了一个<code>volatile</code>关键字来保证可见性。当一个主内存中的共享变量被<code>volatile</code>关键字修饰时，一个线程对该变量的修改会被立即刷新（store）到主内存，保证<strong>其他线程看到的值一定是最新的</strong>。<strong>JMM层面上<code>volatile</code>是通过load/store操作实现的可见性</strong>。</p>
+<h4 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h4><p>在Java中提供了一个<code>volatile</code>关键字来保证可见性。当一个主内存中的共享变量被<code>volatile</code>关键字修饰时，一个线程对该变量的修改会被立即刷新（store）到主内存，保证<strong>其他线程看到的值一定是最新的</strong>。<strong>JMM层面上<code>volatile</code>是通过load&#x2F;store操作实现的可见性</strong>。</p>
 <p>当然我们也可以通过<code>synchronized</code>和<code>Lock</code>通过加锁将多线程进行同步也就是串行执行来保证共享变量的可见性。</p>
 <h4 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h4><p><strong>happens-before原则</strong></p>
 <ul>
@@ -454,8 +475,8 @@
 <p><strong>happens-before与可见性</strong><br>happens-before通过以上8中规则保证可见性，<strong>如果一个操作A happens-before 另一个操作B，那么操作A的结果是对操作B可见的，这不难理解</strong>。</p>
 <p><strong>happens-before与重排序</strong><br>两个操作如果存在happens-before关系，并不意味着一定是有序进行的，这是因为JVM存在指令重排优化，如果JVM认为两个操作重排序有利于性能提升并且重排序后的操作和未重排结果一致，将进行指令重排序。当然JVM层面的重排序发生于编译期，运行时的指令重排是处理器决定的。Java语言通过volatile关键字通过向主内存加入内存屏障实现禁止指令重排。</p>
 <blockquote>
-<p><a href="https://www.cnblogs.com/yanlong300/p/8986041.html" target="_blank" rel="noopener">并发研究之CPU缓存一致性协议(MESI) - 枫飘雪落 - 博客园 (cnblogs.com)</a></p>
-<p><a href="https://blog.csdn.net/muxiqingyang/article/details/6615199" target="_blank" rel="noopener">《大话处理器》Cache一致性协议之MESI_木兮清扬的博客-CSDN博客_mesi</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yanlong300/p/8986041.html">并发研究之CPU缓存一致性协议(MESI) - 枫飘雪落 - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/muxiqingyang/article/details/6615199">《大话处理器》Cache一致性协议之MESI_木兮清扬的博客-CSDN博客_mesi</a></p>
 </blockquote>
 
     </div>
@@ -468,8 +489,8 @@
           
           <div class="post-tags">
               <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
-              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
               <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
           </div>
 
         
@@ -497,6 +518,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -566,13 +588,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -620,6 +642,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -698,6 +740,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

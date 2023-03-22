@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"blog.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="UDP在 TCP&#x2F;IP 协议的传输层除了一个 TCP 协议之外，还有一个 UDP 协议。UDP 协议是用户数据报协议的简称，也用于网络数据的传输。虽然 UDP 协议是一种不太可靠的协议，但有时在需要较快地接收数据并且可以忍受较小错误的情况下，UDP 就会表现出更大的优势。 下面是在 Java 中使用 UDP 协议发送数据的步骤。  使用 DatagramSocket() 创建一个数据包套接字。 使">
+  <meta name="description" content="UDP在 TCP&#x2F;IP 协议的传输层除了一个 TCP 协议之外，还有一个 UDP 协议。UDP 协议是用户数据报协议的简称，也用于网络数据的传输。虽然 UDP 协议是一种不太可靠的协议，但有时在需要较快地接收数据并且可以忍受较小错误的情况下，UDP 就会表现出更大的优势。 下面是在 Java 中使用 UDP 协议发送数据的步骤。  使用 DatagramSocket() 创建一个数据包套">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java UDP网络编程">
 <meta property="og:url" content="http://blog.onebug.tech/2021/05/08/java/javaIO/java%20UDP/index.html">
 <meta property="og:site_name" content="冰冻橘子的自留地">
-<meta property="og:description" content="UDP在 TCP&#x2F;IP 协议的传输层除了一个 TCP 协议之外，还有一个 UDP 协议。UDP 协议是用户数据报协议的简称，也用于网络数据的传输。虽然 UDP 协议是一种不太可靠的协议，但有时在需要较快地接收数据并且可以忍受较小错误的情况下，UDP 就会表现出更大的优势。 下面是在 Java 中使用 UDP 协议发送数据的步骤。  使用 DatagramSocket() 创建一个数据包套接字。 使">
+<meta property="og:description" content="UDP在 TCP&#x2F;IP 协议的传输层除了一个 TCP 协议之外，还有一个 UDP 协议。UDP 协议是用户数据报协议的简称，也用于网络数据的传输。虽然 UDP 协议是一种不太可靠的协议，但有时在需要较快地接收数据并且可以忍受较小错误的情况下，UDP 就会表现出更大的优势。 下面是在 Java 中使用 UDP 协议发送数据的步骤。  使用 DatagramSocket() 创建一个数据包套">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-05-07T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-05-08T09:58:08.703Z">
@@ -246,6 +246,27 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/05/08/java/javaIO/java%20UDP/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/08/java/javaIO/java%20UDP/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -256,8 +277,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h1><p>在 TCP/IP 协议的传输层除了一个 TCP 协议之外，还有一个 UDP 协议。UDP 协议是用户数据报协议的简称，也用于网络数据的传输。虽然 UDP 协议是一种不太可靠的协议，但有时在需要较快地接收数据并且可以忍受较小错误的情况下，UDP 就会表现出更大的优势。</p>
-<p>下面是在 <a href="http://c.biancheng.net/java/" target="_blank" rel="noopener">Java</a> 中使用 UDP 协议发送数据的步骤。</p>
+        <h1 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h1><p>在 TCP&#x2F;IP 协议的传输层除了一个 TCP 协议之外，还有一个 UDP 协议。UDP 协议是用户数据报协议的简称，也用于网络数据的传输。虽然 UDP 协议是一种不太可靠的协议，但有时在需要较快地接收数据并且可以忍受较小错误的情况下，UDP 就会表现出更大的优势。</p>
+<p>下面是在 <a target="_blank" rel="noopener" href="http://c.biancheng.net/java/">Java</a> 中使用 UDP 协议发送数据的步骤。</p>
 <ol>
 <li>使用 DatagramSocket() 创建一个数据包套接字。</li>
 <li>使用 DatagramPacket() 创建要发送的数据包。</li>
@@ -269,7 +290,7 @@
 <li>使用 DatagramPacket 创建字节数组来接收数据包。</li>
 <li>使用 DatagramPacket 类的 receive() 方法接收 UDP 包。</li>
 </ul>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="DatagramPacket-类"><a href="#DatagramPacket-类" class="headerlink" title="DatagramPacket 类"></a>DatagramPacket 类</h2><p>java.net 包中的 DatagramPacket 类用来表示数据报包，数据报包用来实现无连接包投递服务。每条报文仅根据该包中包含的信息从一台机器路由到另一台机器。从一台机器发送到另一台机器的多个包可能选择不同的路由，也可能按不同的顺序到达。</p>
 <table>
@@ -431,12 +452,12 @@
 </tbody></table>
 <h2 id="例"><a href="#例" class="headerlink" title="例"></a>例</h2><p>编写 UDP 程序，要求客户端程序可以向服务器端发送多条数据，服务器端程序可以接收客户端发送的多条数据并将其信息输出在控制台，主要步骤如下所示。</p>
 <p><strong>客户端</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span>  </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            DatagramSocket udpScoket=<span class="keyword">new</span> DatagramSocket();</span><br><span class="line">            InetAddress serverAddress=InetAddress.getByName(<span class="string">"127.0.0.1"</span>);</span><br><span class="line">            <span class="keyword">int</span> serverPort=<span class="number">8082</span>;</span><br><span class="line"></span><br><span class="line">            DatagramPacket udPacket=<span class="keyword">null</span>;</span><br><span class="line">            String[] messages=&#123;<span class="string">"YOLO"</span>,<span class="string">"HELLO"</span>,<span class="string">"JUST DO IT"</span>&#125;;</span><br><span class="line">            <span class="keyword">for</span> (String message:messages)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">byte</span>[] data=message.getBytes();</span><br><span class="line">                udPacket=<span class="keyword">new</span> DatagramPacket(data,data.length,serverAddress,serverPort);</span><br><span class="line">                udpScoket.send(udPacket);</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            udpScoket.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(IOException | InterruptedException e)</span><br><span class="line">        &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Client</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>  &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            DatagramSocket udpScoket=<span class="keyword">new</span> <span class="title class_">DatagramSocket</span>();</span><br><span class="line">            InetAddress serverAddress=InetAddress.getByName(<span class="string">&quot;127.0.0.1&quot;</span>);</span><br><span class="line">            <span class="type">int</span> serverPort=<span class="number">8082</span>;</span><br><span class="line"></span><br><span class="line">            DatagramPacket udPacket=<span class="literal">null</span>;</span><br><span class="line">            String[] messages=&#123;<span class="string">&quot;YOLO&quot;</span>,<span class="string">&quot;HELLO&quot;</span>,<span class="string">&quot;JUST DO IT&quot;</span>&#125;;</span><br><span class="line">            <span class="keyword">for</span> (String message:messages)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="type">byte</span>[] data=message.getBytes();</span><br><span class="line">                udPacket=<span class="keyword">new</span> <span class="title class_">DatagramPacket</span>(data,data.length,serverAddress,serverPort);</span><br><span class="line">                udpScoket.send(udPacket);</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            udpScoket.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(IOException | InterruptedException e)</span><br><span class="line">        &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p><strong>服务器</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            DatagramSocket ds=<span class="keyword">new</span> DatagramSocket(<span class="number">8082</span>);</span><br><span class="line">            System.out.println(<span class="string">"UDP服务器已启动。。。"</span>);</span><br><span class="line">            DatagramPacket dpReceive;</span><br><span class="line">            <span class="keyword">byte</span>[] b=<span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="keyword">while</span>(ds.isClosed()==<span class="keyword">false</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                dpReceive=<span class="keyword">new</span> DatagramPacket(b, b.length);</span><br><span class="line">                <span class="keyword">try</span></span><br><span class="line">                &#123;</span><br><span class="line">                    ds.receive(dpReceive);</span><br><span class="line">                    <span class="keyword">byte</span>[] Data=dpReceive.getData();</span><br><span class="line">                    <span class="keyword">int</span> len=Data.length;</span><br><span class="line">                    System.out.println(<span class="string">"UDP客户端"</span>+dpReceive.getSocketAddress()+<span class="string">"发送的内容是："</span> + <span class="keyword">new</span> String(Data, <span class="number">0</span>, len).trim());</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">catch</span>(IOException e)</span><br><span class="line">                &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(SocketException e1)</span><br><span class="line">        &#123;</span><br><span class="line">            e1.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Server</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            DatagramSocket ds=<span class="keyword">new</span> <span class="title class_">DatagramSocket</span>(<span class="number">8082</span>);</span><br><span class="line">            System.out.println(<span class="string">&quot;UDP服务器已启动。。。&quot;</span>);</span><br><span class="line">            DatagramPacket dpReceive;</span><br><span class="line">            <span class="type">byte</span>[] b=<span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="keyword">while</span>(ds.isClosed()==<span class="literal">false</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                dpReceive=<span class="keyword">new</span> <span class="title class_">DatagramPacket</span>(b, b.length);</span><br><span class="line">                <span class="keyword">try</span></span><br><span class="line">                &#123;</span><br><span class="line">                    ds.receive(dpReceive);</span><br><span class="line">                    <span class="type">byte</span>[] Data=dpReceive.getData();</span><br><span class="line">                    <span class="type">int</span> len=Data.length;</span><br><span class="line">                    System.out.println(<span class="string">&quot;UDP客户端&quot;</span>+dpReceive.getSocketAddress()+<span class="string">&quot;发送的内容是：&quot;</span> + <span class="keyword">new</span> <span class="title class_">String</span>(Data, <span class="number">0</span>, len).trim());</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">catch</span>(IOException e)</span><br><span class="line">                &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(SocketException e1)</span><br><span class="line">        &#123;</span><br><span class="line">            e1.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UDP服务器已启动。。。</span><br><span class="line">UDP客户端&#x2F;127.0.0.1:64656发送的内容是：YOLO                             </span><br><span class="line">UDP客户端&#x2F;127.0.0.1:64656发送的内容是：HELLO                                             </span><br><span class="line">UDP客户端&#x2F;127.0.0.1:64656发送的内容是：JUST DO IT</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UDP服务器已启动。。。</span><br><span class="line">UDP客户端/127.0.0.1:64656发送的内容是：YOLO                             </span><br><span class="line">UDP客户端/127.0.0.1:64656发送的内容是：HELLO                                             </span><br><span class="line">UDP客户端/127.0.0.1:64656发送的内容是：JUST DO IT                                             </span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -479,6 +500,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -548,13 +570,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -602,6 +624,26 @@
 </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -680,6 +722,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'rgKeMFnmp0aWEhXeGVBy2O2O-gzGzoHsz',
+      appKey     : 'Z1j4e74g08UxbczRbRQrr4WJ',
+      placeholder: "请友善发言哦",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
