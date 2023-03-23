@@ -3,11 +3,11 @@
   <title>冰冻橘子的自留地</title>
   
   
-  <link href="http://blog.onebug.tech/atom.xml" rel="self"/>
+  <link href="https://www.onebug.tech/atom.xml" rel="self"/>
   
-  <link href="http://blog.onebug.tech/"/>
+  <link href="https://www.onebug.tech/"/>
   <updated>2023-03-23T15:29:43.014Z</updated>
-  <id>http://blog.onebug.tech/</id>
+  <id>https://www.onebug.tech/</id>
   
   <author>
     <name>冰冻橘子</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Docker使用大全</title>
-    <link href="http://blog.onebug.tech/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/"/>
-    <id>http://blog.onebug.tech/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/</id>
+    <link href="https://www.onebug.tech/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/"/>
+    <id>https://www.onebug.tech/2022/02/23/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/docker/</id>
     <published>2022-02-22T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:43.014Z</updated>
     
@@ -31,21 +31,21 @@
     
     
     
-    <category term="工具" scheme="http://blog.onebug.tech/categories/%E5%B7%A5%E5%85%B7/"/>
+    <category term="工具" scheme="https://www.onebug.tech/categories/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="docker" scheme="http://blog.onebug.tech/tags/docker/"/>
+    <category term="docker" scheme="https://www.onebug.tech/tags/docker/"/>
     
-    <category term="gpu" scheme="http://blog.onebug.tech/tags/gpu/"/>
+    <category term="gpu" scheme="https://www.onebug.tech/tags/gpu/"/>
     
-    <category term="gui" scheme="http://blog.onebug.tech/tags/gui/"/>
+    <category term="gui" scheme="https://www.onebug.tech/tags/gui/"/>
     
   </entry>
   
   <entry>
     <title>多类型设备时间同步方案</title>
-    <link href="http://blog.onebug.tech/2022/02/21/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/"/>
-    <id>http://blog.onebug.tech/2022/02/21/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/</id>
+    <link href="https://www.onebug.tech/2022/02/21/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/"/>
+    <id>https://www.onebug.tech/2022/02/21/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/</id>
     <published>2022-02-20T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:43.016Z</updated>
     
@@ -56,21 +56,21 @@
     
     
     
-    <category term="ROS" scheme="http://blog.onebug.tech/categories/ROS/"/>
+    <category term="ROS" scheme="https://www.onebug.tech/categories/ROS/"/>
     
     
-    <category term="docker" scheme="http://blog.onebug.tech/tags/docker/"/>
+    <category term="docker" scheme="https://www.onebug.tech/tags/docker/"/>
     
-    <category term="gpu" scheme="http://blog.onebug.tech/tags/gpu/"/>
+    <category term="gpu" scheme="https://www.onebug.tech/tags/gpu/"/>
     
-    <category term="gui" scheme="http://blog.onebug.tech/tags/gui/"/>
+    <category term="gui" scheme="https://www.onebug.tech/tags/gui/"/>
     
   </entry>
   
   <entry>
     <title>git备忘录</title>
-    <link href="http://blog.onebug.tech/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/"/>
-    <id>http://blog.onebug.tech/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/</id>
+    <link href="https://www.onebug.tech/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/"/>
+    <id>https://www.onebug.tech/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/</id>
     <published>2022-02-18T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:43.015Z</updated>
     
@@ -81,21 +81,21 @@
     
     
     
-    <category term="工具" scheme="http://blog.onebug.tech/categories/%E5%B7%A5%E5%85%B7/"/>
+    <category term="工具" scheme="https://www.onebug.tech/categories/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="git" scheme="http://blog.onebug.tech/tags/git/"/>
+    <category term="git" scheme="https://www.onebug.tech/tags/git/"/>
     
-    <category term="git lfs" scheme="http://blog.onebug.tech/tags/git-lfs/"/>
+    <category term="git lfs" scheme="https://www.onebug.tech/tags/git-lfs/"/>
     
-    <category term="ci/cd" scheme="http://blog.onebug.tech/tags/ci-cd/"/>
+    <category term="ci/cd" scheme="https://www.onebug.tech/tags/ci-cd/"/>
     
   </entry>
   
   <entry>
     <title>GTEST</title>
-    <link href="http://blog.onebug.tech/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/"/>
-    <id>http://blog.onebug.tech/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/</id>
+    <link href="https://www.onebug.tech/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/"/>
+    <id>https://www.onebug.tech/2022/02/18/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/GTEST/</id>
     <published>2022-02-17T16:00:00.000Z</published>
     <updated>2022-03-07T01:55:27.503Z</updated>
     
@@ -106,19 +106,19 @@
     
     
     
-    <category term="工具" scheme="http://blog.onebug.tech/categories/%E5%B7%A5%E5%85%B7/"/>
+    <category term="工具" scheme="https://www.onebug.tech/categories/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="gtest" scheme="http://blog.onebug.tech/tags/gtest/"/>
+    <category term="gtest" scheme="https://www.onebug.tech/tags/gtest/"/>
     
-    <category term="测试" scheme="http://blog.onebug.tech/tags/%E6%B5%8B%E8%AF%95/"/>
+    <category term="测试" scheme="https://www.onebug.tech/tags/%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>ROS2备忘录</title>
-    <link href="http://blog.onebug.tech/2022/02/13/ROS/ROS2/"/>
-    <id>http://blog.onebug.tech/2022/02/13/ROS/ROS2/</id>
+    <link href="https://www.onebug.tech/2022/02/13/ROS/ROS2/"/>
+    <id>https://www.onebug.tech/2022/02/13/ROS/ROS2/</id>
     <published>2022-02-12T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:43.007Z</updated>
     
@@ -134,17 +134,17 @@
     
     
     
-    <category term="ROS2" scheme="http://blog.onebug.tech/categories/ROS2/"/>
+    <category term="ROS2" scheme="https://www.onebug.tech/categories/ROS2/"/>
     
     
-    <category term="ros" scheme="http://blog.onebug.tech/tags/ros/"/>
+    <category term="ros" scheme="https://www.onebug.tech/tags/ros/"/>
     
   </entry>
   
   <entry>
     <title>ros2与dds</title>
-    <link href="http://blog.onebug.tech/2022/02/13/ROS/ros2dds/"/>
-    <id>http://blog.onebug.tech/2022/02/13/ROS/ros2dds/</id>
+    <link href="https://www.onebug.tech/2022/02/13/ROS/ros2dds/"/>
+    <id>https://www.onebug.tech/2022/02/13/ROS/ros2dds/</id>
     <published>2022-02-12T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:43.008Z</updated>
     
@@ -156,17 +156,17 @@
     
     
     
-    <category term="ROS2" scheme="http://blog.onebug.tech/categories/ROS2/"/>
+    <category term="ROS2" scheme="https://www.onebug.tech/categories/ROS2/"/>
     
     
-    <category term="ros" scheme="http://blog.onebug.tech/tags/ros/"/>
+    <category term="ros" scheme="https://www.onebug.tech/tags/ros/"/>
     
   </entry>
   
   <entry>
     <title>ROS的基础——DDS</title>
-    <link href="http://blog.onebug.tech/2022/02/01/ROS/DDS/"/>
-    <id>http://blog.onebug.tech/2022/02/01/ROS/DDS/</id>
+    <link href="https://www.onebug.tech/2022/02/01/ROS/DDS/"/>
+    <id>https://www.onebug.tech/2022/02/01/ROS/DDS/</id>
     <published>2022-01-31T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:43.000Z</updated>
     
@@ -177,19 +177,19 @@
     
     
     
-    <category term="ROS" scheme="http://blog.onebug.tech/categories/ROS/"/>
+    <category term="ROS" scheme="https://www.onebug.tech/categories/ROS/"/>
     
     
-    <category term="dds" scheme="http://blog.onebug.tech/tags/dds/"/>
+    <category term="dds" scheme="https://www.onebug.tech/tags/dds/"/>
     
-    <category term="ros" scheme="http://blog.onebug.tech/tags/ros/"/>
+    <category term="ros" scheme="https://www.onebug.tech/tags/ros/"/>
     
   </entry>
   
   <entry>
     <title>Java并发队列简介</title>
-    <link href="http://blog.onebug.tech/2021/12/01/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E5%B9%B6%E5%8F%91%E9%98%9F%E5%88%97/"/>
-    <id>http://blog.onebug.tech/2021/12/01/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E5%B9%B6%E5%8F%91%E9%98%9F%E5%88%97/</id>
+    <link href="https://www.onebug.tech/2021/12/01/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E5%B9%B6%E5%8F%91%E9%98%9F%E5%88%97/"/>
+    <id>https://www.onebug.tech/2021/12/01/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E5%B9%B6%E5%8F%91%E9%98%9F%E5%88%97/</id>
     <published>2021-11-30T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.974Z</updated>
     
@@ -200,23 +200,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>读多写少的性能考虑--ReentrantReadWriteLock的原理剖析</title>
-    <link href="http://blog.onebug.tech/2021/11/27/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E8%AF%BB%E5%86%99%E9%94%81/"/>
-    <id>http://blog.onebug.tech/2021/11/27/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E8%AF%BB%E5%86%99%E9%94%81/</id>
+    <link href="https://www.onebug.tech/2021/11/27/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E8%AF%BB%E5%86%99%E9%94%81/"/>
+    <id>https://www.onebug.tech/2021/11/27/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E8%AF%BB%E5%86%99%E9%94%81/</id>
     <published>2021-11-26T16:00:00.000Z</published>
     <updated>2021-11-27T05:06:57.220Z</updated>
     
@@ -228,23 +228,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>AQS的经典应用--可重入独占锁的原理剖析</title>
-    <link href="http://blog.onebug.tech/2021/11/22/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E7%8B%AC%E5%8D%A0%E9%94%81/"/>
-    <id>http://blog.onebug.tech/2021/11/22/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E7%8B%AC%E5%8D%A0%E9%94%81/</id>
+    <link href="https://www.onebug.tech/2021/11/22/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E7%8B%AC%E5%8D%A0%E9%94%81/"/>
+    <id>https://www.onebug.tech/2021/11/22/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E7%8B%AC%E5%8D%A0%E9%94%81/</id>
     <published>2021-11-21T16:00:00.000Z</published>
     <updated>2021-11-27T04:51:53.438Z</updated>
     
@@ -257,23 +257,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>Java并发包的基石--抽象同步队列(AQS)</title>
-    <link href="http://blog.onebug.tech/2021/10/27/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/AQS/"/>
-    <id>http://blog.onebug.tech/2021/10/27/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/AQS/</id>
+    <link href="https://www.onebug.tech/2021/10/27/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/AQS/"/>
+    <id>https://www.onebug.tech/2021/10/27/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/AQS/</id>
     <published>2021-10-26T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.946Z</updated>
     
@@ -284,23 +284,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>写时复制与弱一致性--CopyOnWriteArrayList源码剖析</title>
-    <link href="http://blog.onebug.tech/2021/10/21/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/CopyOnWriteList/"/>
-    <id>http://blog.onebug.tech/2021/10/21/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/CopyOnWriteList/</id>
+    <link href="https://www.onebug.tech/2021/10/21/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/CopyOnWriteList/"/>
+    <id>https://www.onebug.tech/2021/10/21/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/CopyOnWriteList/</id>
     <published>2021-10-20T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.957Z</updated>
     
@@ -313,23 +313,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>原子性操作类--高并发下的CAS解决方案</title>
-    <link href="http://blog.onebug.tech/2021/10/19/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/AtomicLong%E5%92%8CLongAdder/"/>
-    <id>http://blog.onebug.tech/2021/10/19/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/AtomicLong%E5%92%8CLongAdder/</id>
+    <link href="https://www.onebug.tech/2021/10/19/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/AtomicLong%E5%92%8CLongAdder/"/>
+    <id>https://www.onebug.tech/2021/10/19/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/AtomicLong%E5%92%8CLongAdder/</id>
     <published>2021-10-18T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.951Z</updated>
     
@@ -340,23 +340,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>高并发下随机数的获取--ThreadlocalRandom</title>
-    <link href="http://blog.onebug.tech/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/"/>
-    <id>http://blog.onebug.tech/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/</id>
+    <link href="https://www.onebug.tech/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/"/>
+    <id>https://www.onebug.tech/2021/10/16/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal%20Random/</id>
     <published>2021-10-15T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.972Z</updated>
     
@@ -367,23 +367,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>java多线程编程基础（二）</title>
-    <link href="http://blog.onebug.tech/2021/10/15/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
-    <id>http://blog.onebug.tech/2021/10/15/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
+    <link href="https://www.onebug.tech/2021/10/15/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <id>https://www.onebug.tech/2021/10/15/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
     <published>2021-10-14T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.971Z</updated>
     
@@ -394,23 +394,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>线程封闭的常用策略--ThreadLocal</title>
-    <link href="http://blog.onebug.tech/2021/10/10/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal/"/>
-    <id>http://blog.onebug.tech/2021/10/10/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal/</id>
+    <link href="https://www.onebug.tech/2021/10/10/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal/"/>
+    <id>https://www.onebug.tech/2021/10/10/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/ThreadLocal/</id>
     <published>2021-10-09T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.973Z</updated>
     
@@ -423,23 +423,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>java多线程编程基础（一）</title>
-    <link href="http://blog.onebug.tech/2021/10/08/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89/"/>
-    <id>http://blog.onebug.tech/2021/10/08/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89/</id>
+    <link href="https://www.onebug.tech/2021/10/08/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>https://www.onebug.tech/2021/10/08/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89/</id>
     <published>2021-10-07T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.964Z</updated>
     
@@ -450,23 +450,23 @@
     
     
     
-    <category term="读书笔记" scheme="http://blog.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://www.onebug.tech/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="笔记" scheme="http://blog.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://www.onebug.tech/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="并发" scheme="http://blog.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="并发" scheme="https://www.onebug.tech/tags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="java并发编程之美" scheme="http://blog.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
+    <category term="java并发编程之美" scheme="https://www.onebug.tech/tags/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/"/>
     
   </entry>
   
   <entry>
     <title>Netty的优化</title>
-    <link href="http://blog.onebug.tech/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/"/>
-    <id>http://blog.onebug.tech/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/</id>
+    <link href="https://www.onebug.tech/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/"/>
+    <id>https://www.onebug.tech/2021/09/30/java/netty/Netty%E4%BC%98%E5%8C%96/</id>
     <published>2021-09-29T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.983Z</updated>
     
@@ -480,19 +480,19 @@
     
     
     
-    <category term="netty" scheme="http://blog.onebug.tech/categories/netty/"/>
+    <category term="netty" scheme="https://www.onebug.tech/categories/netty/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="netty" scheme="http://blog.onebug.tech/tags/netty/"/>
+    <category term="netty" scheme="https://www.onebug.tech/tags/netty/"/>
     
   </entry>
   
   <entry>
     <title>心跳与空闲检测</title>
-    <link href="http://blog.onebug.tech/2021/09/30/java/netty/%E5%BF%83%E8%B7%B3%E4%B8%8E%E7%A9%BA%E9%97%B2%E6%A3%80%E6%B5%8B/"/>
-    <id>http://blog.onebug.tech/2021/09/30/java/netty/%E5%BF%83%E8%B7%B3%E4%B8%8E%E7%A9%BA%E9%97%B2%E6%A3%80%E6%B5%8B/</id>
+    <link href="https://www.onebug.tech/2021/09/30/java/netty/%E5%BF%83%E8%B7%B3%E4%B8%8E%E7%A9%BA%E9%97%B2%E6%A3%80%E6%B5%8B/"/>
+    <id>https://www.onebug.tech/2021/09/30/java/netty/%E5%BF%83%E8%B7%B3%E4%B8%8E%E7%A9%BA%E9%97%B2%E6%A3%80%E6%B5%8B/</id>
     <published>2021-09-29T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.992Z</updated>
     
@@ -506,19 +506,19 @@
     
     
     
-    <category term="netty" scheme="http://blog.onebug.tech/categories/netty/"/>
+    <category term="netty" scheme="https://www.onebug.tech/categories/netty/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="netty" scheme="http://blog.onebug.tech/tags/netty/"/>
+    <category term="netty" scheme="https://www.onebug.tech/tags/netty/"/>
     
   </entry>
   
   <entry>
     <title>TCP的拆包和粘包</title>
-    <link href="http://blog.onebug.tech/2021/09/06/java/netty/%E6%8B%86%E5%8C%85%E4%B8%8E%E7%B2%98%E5%8C%85/"/>
-    <id>http://blog.onebug.tech/2021/09/06/java/netty/%E6%8B%86%E5%8C%85%E4%B8%8E%E7%B2%98%E5%8C%85/</id>
+    <link href="https://www.onebug.tech/2021/09/06/java/netty/%E6%8B%86%E5%8C%85%E4%B8%8E%E7%B2%98%E5%8C%85/"/>
+    <id>https://www.onebug.tech/2021/09/06/java/netty/%E6%8B%86%E5%8C%85%E4%B8%8E%E7%B2%98%E5%8C%85/</id>
     <published>2021-09-05T16:00:00.000Z</published>
     <updated>2023-03-23T15:29:42.993Z</updated>
     
@@ -533,12 +533,12 @@
     
     
     
-    <category term="netty" scheme="http://blog.onebug.tech/categories/netty/"/>
+    <category term="netty" scheme="https://www.onebug.tech/categories/netty/"/>
     
     
-    <category term="java" scheme="http://blog.onebug.tech/tags/java/"/>
+    <category term="java" scheme="https://www.onebug.tech/tags/java/"/>
     
-    <category term="netty" scheme="http://blog.onebug.tech/tags/netty/"/>
+    <category term="netty" scheme="https://www.onebug.tech/tags/netty/"/>
     
   </entry>
   
