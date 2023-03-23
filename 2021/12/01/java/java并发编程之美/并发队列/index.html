@@ -29,20 +29,20 @@
 <meta property="og:site_name" content="冰冻橘子的自留地">
 <meta property="og:description" content="JDK 中提供了一系列场景的并发安全队列。总的来说，按照实现方式的不同可分为阻塞队列和非阻塞队列，前者使用锁实现，而后者则使用CAS 非阻塞算法实现。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://image.onebug.tech/image-20211201121242572.png">
-<meta property="og:image" content="http://image.onebug.tech/image-20211201121921403.png">
-<meta property="og:image" content="http://image.onebug.tech/image-20211201122330680.png">
-<meta property="og:image" content="http://image.onebug.tech/image-20211201122801247.png">
-<meta property="og:image" content="http://image.onebug.tech/image-20211201185757443.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20211201121242572.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20211201121921403.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20211201122330680.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20211201122801247.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20211201185757443.png">
 <meta property="article:published_time" content="2021-11-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-01T11:03:00.611Z">
+<meta property="article:modified_time" content="2023-03-23T15:29:42.974Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="笔记">
 <meta property="article:tag" content="并发">
 <meta property="article:tag" content="java并发编程之美">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://image.onebug.tech/image-20211201121242572.png">
+<meta name="twitter:image" content="https://image.onebug.tech/image-20211201121242572.png">
 
 <link rel="canonical" href="http://blog.onebug.tech/2021/12/01/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E5%B9%B6%E5%8F%91%E9%98%9F%E5%88%97/">
 
@@ -218,7 +218,7 @@
     <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2021/12/01/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/%E5%B9%B6%E5%8F%91%E9%98%9F%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="image" content="https://image.onebug.tech/avatar.png">
       <meta itemprop="name" content="冰冻橘子">
       <meta itemprop="description" content="渺沧海之一粟">
     </span>
@@ -237,10 +237,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-12-01 00:00:00 / 修改时间：19:03:00" itemprop="dateCreated datePublished" datetime="2021-12-01T00:00:00+08:00">2021-12-01</time>
+              <time title="创建时间：2021-12-01 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-01T00:00:00+08:00">2021-12-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-23 23:29:42" itemprop="dateModified" datetime="2023-03-23T23:29:42+08:00">2023-03-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -289,24 +295,24 @@
 <h1 id="ConcurrentLinkedQueue"><a href="#ConcurrentLinkedQueue" class="headerlink" title="ConcurrentLinkedQueue"></a>ConcurrentLinkedQueue</h1><p><code>ConcurrentLinkedQueue</code> 是线程安全的无界非阻塞队列，其底层数据结构使用单向链表实现，对于入队和出队操作<strong>使用CAS 来实现线程安全</strong>。</p>
 <p><code>ConcurrentLinkedQueue</code> 的底层使用单向链表数据结构来保存队列元素，每个元素被包装成一个Node 节点。队列是靠头、尾节点来维护的，创建队列时头、尾节点指向一个item 为null 的哨兵节点。第一次执行<code>peek</code> 操作时会把head 指向第一个真正的队列元素。由于使用非阻塞CAS 算法，没有加锁，所以在计算size 时有可能进行了<code>offer</code>、 <code>poll</code> 或者<code>remove</code> 操作， 导致<strong>计算的元素个数不精确</strong>，所以在井发情况下<code>size</code> 函数不是很有用。</p>
 <p>如图所示，入队、出队都是操作使用<code>volatile</code> 修饰的<code>tail</code> 、<code>head</code> 节点，要保证在多线程下出入队线程安全，<strong>只需要保证这两个Node 操作的可见性和原子性即可</strong>。由于<code>volatile</code> 本身可以保证可见性，所以只需要保证对两个变量操作的原子性即可。</p>
-<p><img src="http://image.onebug.tech/image-20211201121242572.png" alt="image-20211201121242572"></p>
+<p><img src="https://image.onebug.tech/image-20211201121242572.png" alt="image-20211201121242572"></p>
 <h1 id="LinkedBlockingQueue"><a href="#LinkedBlockingQueue" class="headerlink" title="LinkedBlockingQueue"></a>LinkedBlockingQueue</h1><p><code>LinkedBlockingQueue</code>是使用独占锁实现的阻塞队列。<code>LinkedBlockingQueue</code> 的内部是通过单向链表实现的，使用头、尾节点来进行入队和出队操作，也就是入队操作都是对尾节点进行操作，出队操作都是对头节点进行操作。</p>
 <p>如图所示，<strong>对头、尾节点的操作分别使用了单独的独占锁从而保证了原子性，所以出队和入队操作是可以同时进行的。</strong>另外对头、尾节点的独占锁都配备了一个条件队列，用来存放被阻塞的线程，并结合入队、出队操作实现了一个生产消费模型。</p>
-<p><img src="http://image.onebug.tech/image-20211201121921403.png" alt="image-20211201121921403"></p>
+<p><img src="https://image.onebug.tech/image-20211201121921403.png" alt="image-20211201121921403"></p>
 <h1 id="ArrayBlockingQueue"><a href="#ArrayBlockingQueue" class="headerlink" title="ArrayBlockingQueue"></a>ArrayBlockingQueue</h1><p><code>ArrayBlockingQueue</code>是有界数组方式实现的阻塞队列。</p>
 <p>如图所示， <code>ArrayBlockingQueue</code> 通过<strong>使用全局独占锁实现了同时只能有一个线程进行入队或者出队操作</strong>，这个锁的粒度比较大。</p>
 <p>其中，<code>offer</code>和<code>poll</code> 操作通过简单的加锁进行入队、出队操作，而<code>put</code> 、<code>take</code> 操作则使用条件变量实现，如果队列满则等待，如果队列空则等待，然后分别在出队和入队操作中发送信号激活等待线程实现同步。</p>
 <p>另外，<strong>相比<code>LinkedBlockingQueue</code>，<code>ArrayBlockingQueue</code> 的<code>size</code>操作的结果是精确的</strong>， 因为计算前加了全局锁。</p>
-<p><img src="http://image.onebug.tech/image-20211201122330680.png" alt="image-20211201122330680"></p>
+<p><img src="https://image.onebug.tech/image-20211201122330680.png" alt="image-20211201122330680"></p>
 <h1 id="PriorityBlockingQueue"><a href="#PriorityBlockingQueue" class="headerlink" title="PriorityBlockingQueue"></a>PriorityBlockingQueue</h1><p><code>PriorityBlockingQueue</code> 是带优先级的无界阻塞队列，<strong>每次出队都返回优先级最高或者最低的元素</strong>。其内部是使用<strong>平衡二叉树堆</strong>实现的，所以直接遍历队列元素不保证有序。默认使用对象的<code>compareTo</code> 方法提供比较规则，如果你需要自定义比较规则则可以自定义<code>comparators</code> 。</p>
 <p>PriorityBlockingQueue 队列在内部使用二叉树堆维护元素优先级，使用数组作为元素存储的数据结构，这个数组是可扩容的。当元素个数＞＝最大容量时会通过CAS 算法扩容。</p>
 <p><code>PriorityBlockingQueue</code> 类似于<code>ArrayBlockingQueue</code> ，<strong>在内部使用一个独占锁来控制，同时只有一个线程可以进行入队和出队操作</strong>。另外，<code>PriorityBlockingQueue</code>只使用了一个<code>notEmpty</code> 条件变量而没有使用<code>notFull</code> ，这是因为前者是无界队列。</p>
-<p><img src="http://image.onebug.tech/image-20211201122801247.png" alt="image-20211201122801247"></p>
+<p><img src="https://image.onebug.tech/image-20211201122801247.png" alt="image-20211201122801247"></p>
 <h1 id="DelayQueue"><a href="#DelayQueue" class="headerlink" title="DelayQueue"></a>DelayQueue</h1><p><code>DelayQueue</code> 并发队列是一个无界阻塞延迟队列，队列中的每个元素都有个过期时间，<strong>当从队列获取元素时，只有过期元素才会出队列</strong>。队列头元素是最快要过期的元素。</p>
 <p><strong>DelayQueue 内部使用PriorityQueue存放数据</strong>，使用<code>ReentrantLock</code> 实现线程同步。另外，队列里面的<strong>元素要实现<code>Delayed</code> 接口</strong>，由于每个元素都有一个过期时间，所以要实现获知当前元素还剩下多少时间就过期了的接口。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Delayed</span> <span class="keyword">extends</span> <span class="title class_">Comparable</span>&lt;Delayed&gt; &#123;</span><br><span class="line">    <span class="comment">//获知当前元素还剩下多少时间就过期</span></span><br><span class="line">    <span class="type">long</span> <span class="title function_">getDelay</span><span class="params">(TimeUnit unit)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://image.onebug.tech/image-20211201185757443.png" alt="image-20211201185757443"></p>
+<p><img src="https://image.onebug.tech/image-20211201185757443.png" alt="image-20211201185757443"></p>
 
     </div>
 
@@ -402,7 +408,7 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="冰冻橘子"
-      src="http://image.onebug.tech/avatar.png">
+      src="https://image.onebug.tech/avatar.png">
   <p class="site-author-name" itemprop="name">冰冻橘子</p>
   <div class="site-description" itemprop="description">渺沧海之一粟</div>
 </div>

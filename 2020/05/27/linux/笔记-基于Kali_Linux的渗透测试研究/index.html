@@ -29,17 +29,17 @@
 <meta property="og:site_name" content="冰冻橘子的自留地">
 <meta property="og:description" content="本文是阅读《基于Kali_Linux的渗透研究》之后写下的笔记。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://image.onebug.tech/image-20200514161950520.png">
-<meta property="og:image" content="http://image.onebug.tech/image-20200514175813811.png">
-<meta property="og:image" content="http://image.onebug.tech/image-20200514182000220.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20200514161950520.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20200514175813811.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20200514182000220.png">
 <meta property="article:published_time" content="2020-05-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-24T05:31:48.209Z">
+<meta property="article:modified_time" content="2023-03-23T15:29:42.999Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="博客">
 <meta property="article:tag" content="web渗透">
 <meta property="article:tag" content="安全">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://image.onebug.tech/image-20200514161950520.png">
+<meta name="twitter:image" content="https://image.onebug.tech/image-20200514161950520.png">
 
 <link rel="canonical" href="http://blog.onebug.tech/2020/05/27/linux/%E7%AC%94%E8%AE%B0-%E5%9F%BA%E4%BA%8EKali_Linux%E7%9A%84%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%A0%94%E7%A9%B6/">
 
@@ -215,7 +215,7 @@
     <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2020/05/27/linux/%E7%AC%94%E8%AE%B0-%E5%9F%BA%E4%BA%8EKali_Linux%E7%9A%84%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%A0%94%E7%A9%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="image" content="https://image.onebug.tech/avatar.png">
       <meta itemprop="name" content="冰冻橘子">
       <meta itemprop="description" content="渺沧海之一粟">
     </span>
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 13:31:48" itemprop="dateModified" datetime="2020-06-24T13:31:48+08:00">2020-06-24</time>
+                <time title="修改时间：2023-03-23 23:29:42" itemprop="dateModified" datetime="2023-03-23T23:29:42+08:00">2023-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -317,14 +317,14 @@
 <h5 id="Python编程实现端口扫描"><a href="#Python编程实现端口扫描" class="headerlink" title="Python编程实现端口扫描"></a>Python编程实现端口扫描</h5><p>使用BSD套接字的接口进行编程</p>
 <h5 id="Nmap探测服务"><a href="#Nmap探测服务" class="headerlink" title="Nmap探测服务"></a>Nmap探测服务</h5><p>端口扫描可以得到服务的简单信息，如果需要获取更加详细的服务版本信心，需要添加<code>-sV</code>选项。</p>
 <h4 id="探测结果分析"><a href="#探测结果分析" class="headerlink" title="探测结果分析"></a>探测结果分析</h4><p>将探测到的信息汇总在表上，将端口和服务信息进行归类，并按照可能的攻击路线进行分类。</p>
-<p><img src="http://image.onebug.tech/image-20200514161950520.png" alt="常见端口极其说明，以及攻击方向"></p>
+<p><img src="https://image.onebug.tech/image-20200514161950520.png" alt="常见端口极其说明，以及攻击方向"></p>
 <h3 id="网络服务扫描与查点"><a href="#网络服务扫描与查点" class="headerlink" title="网络服务扫描与查点"></a>网络服务扫描与查点</h3><p>对网络上特定服务进行扫描，可以增加渗透成功的概率。在确定开放端口后，通常会对相应端口上运行服务的信息进行更加升入的挖掘，这被称为服务查点。</p>
 <h4 id="Telnet-服务扫描"><a href="#Telnet-服务扫描" class="headerlink" title="Telnet 服务扫描"></a>Telnet 服务扫描</h4><p>Telnet是一个历史悠久但缺乏安全性的网络服务，由于Telnet没有对传输过程中的数据进行加密，这使得使用Telnet的网络设备存在安全风险。可以使用Metasploit<code>中的辅助模块telnet_version</code>进行Telnet服务查点。</p>
 <h4 id="SSH服务扫描"><a href="#SSH服务扫描" class="headerlink" title="SSH服务扫描"></a>SSH服务扫描</h4><p>与Telnet服务相比，SSH采用的是安全的加密信息传输方式。可以使用Metasploit中的<code>ssh_version</code>进行SSH服务查点。</p>
 <h4 id="FPT服务查点"><a href="#FPT服务查点" class="headerlink" title="FPT服务查点"></a>FPT服务查点</h4><p>FPT（File Transfer Protocol）是用于在网络上进行文件传输的一套协议标准，使用的是客户&#x2F;服务模式，属于网络传输协议的应用层。可以使用Metasploit中的<code>fpt_version</code>进行FPT服务查点。</p>
 <h4 id="数据库服务查点"><a href="#数据库服务查点" class="headerlink" title="数据库服务查点"></a>数据库服务查点</h4><p>这是漏洞频发的“重灾区”，常见的有：SQL Server 的1433端口、Oracle SQL的1521端口、MySQL的3306端口、Postgre SQL的5453。可以使用Metasploit中不同的数据库查询模块进行服务查点：<code>msssql_ping</code>、<code>tnssnr_version</code>、<code>mysql_version</code>、<code>postgres_version</code>。</p>
 <h3 id="网络漏洞扫描"><a href="#网络漏洞扫描" class="headerlink" title="网络漏洞扫描"></a>网络漏洞扫描</h3><p>常见的获取漏洞的方法是使用漏洞扫描工具，主要有<strong>Nessus</strong>和OpenVas，还可以直接到官方网站获取一些设备或系统的漏洞信息。</p>
-<h2 id="Web渗透测试"><a href="#Web渗透测试" class="headerlink" title="Web渗透测试"></a>Web渗透测试</h2><h3 id="常见的Web攻击类型"><a href="#常见的Web攻击类型" class="headerlink" title="常见的Web攻击类型"></a>常见的Web攻击类型</h3><p><img src="http://image.onebug.tech/image-20200514175813811.png" alt="2017年Web应用的各类攻击次数占比"></p>
+<h2 id="Web渗透测试"><a href="#Web渗透测试" class="headerlink" title="Web渗透测试"></a>Web渗透测试</h2><h3 id="常见的Web攻击类型"><a href="#常见的Web攻击类型" class="headerlink" title="常见的Web攻击类型"></a>常见的Web攻击类型</h3><p><img src="https://image.onebug.tech/image-20200514175813811.png" alt="2017年Web应用的各类攻击次数占比"></p>
 <h3 id="SQL注入攻击"><a href="#SQL注入攻击" class="headerlink" title="SQL注入攻击"></a>SQL注入攻击</h3><p>SQL注入漏洞产生需要满足两个条件：</p>
 <ol>
 <li>参数用户可控，即前端传给后端的参数内容是用户可以控制的</li>
@@ -332,7 +332,7 @@
 </ol>
 <h4 id="SQL注入实例分析"><a href="#SQL注入实例分析" class="headerlink" title="SQL注入实例分析"></a>SQL注入实例分析</h4><ul>
 <li><p>测试是否存在注入点，以及注入的类型</p>
-<p><img src="http://image.onebug.tech/image-20200514182000220.png" alt="SQL注入测试数据"></p>
+<p><img src="https://image.onebug.tech/image-20200514182000220.png" alt="SQL注入测试数据"></p>
 </li>
 <li><p>获取数据库相关信息</p>
 <p>首先使用<code>order by  num</code>判断数据库查询字段数，然后通过<code>union select 1,2,3...</code>联合查询语句判断出具体显示字段的显示位，确定显示位后，可以使用SQL注入常用的内置函数获取数据库的信息，最后获取数据库中表名和列名并导出数据库中的数据，验证数据的有效性可以到<a href="www.cmd5.com">www.cmd5.com</a>。</p>
@@ -456,7 +456,7 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="冰冻橘子"
-      src="http://image.onebug.tech/avatar.png">
+      src="https://image.onebug.tech/avatar.png">
   <p class="site-author-name" itemprop="name">冰冻橘子</p>
   <div class="site-description" itemprop="description">渺沧海之一粟</div>
 </div>

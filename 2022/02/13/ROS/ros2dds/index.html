@@ -29,15 +29,15 @@
 <meta property="og:site_name" content="冰冻橘子的自留地">
 <meta property="og:description" content="在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。 使用端到端中间件（如DDS）的好处是">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://image.onebug.tech/202203062322524.png">
-<meta property="og:image" content="http://image.onebug.tech/202202241356558.svg+xml">
-<meta property="og:image" content="http://image.onebug.tech/202203062320088.png">
+<meta property="og:image" content="https://image.onebug.tech/202203062322524.png">
+<meta property="og:image" content="https://image.onebug.tech/202202241356558.svg+xml">
+<meta property="og:image" content="https://image.onebug.tech/202203062320088.png">
 <meta property="article:published_time" content="2022-02-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-07T01:55:41.053Z">
+<meta property="article:modified_time" content="2023-03-23T15:29:43.008Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="ros">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://image.onebug.tech/202203062322524.png">
+<meta name="twitter:image" content="https://image.onebug.tech/202203062322524.png">
 
 <link rel="canonical" href="http://blog.onebug.tech/2022/02/13/ROS/ros2dds/">
 
@@ -213,7 +213,7 @@
     <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2022/02/13/ROS/ros2dds/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="image" content="https://image.onebug.tech/avatar.png">
       <meta itemprop="name" content="冰冻橘子">
       <meta itemprop="description" content="渺沧海之一粟">
     </span>
@@ -240,7 +240,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-07 09:55:41" itemprop="dateModified" datetime="2022-03-07T09:55:41+08:00">2022-03-07</time>
+                <time title="修改时间：2023-03-23 23:29:43" itemprop="dateModified" datetime="2023-03-23T23:29:43+08:00">2023-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -298,18 +298,18 @@
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><strong>eProsima的FastRTPS实现可在GitHub上获得</strong>，并获得LGPL许可。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/eProsima/Fast-RTPS">https://github.com/eProsima/Fast-RTPS</a></p>
 <h1 id="构建在DDS上的ROS"><a href="#构建在DDS上的ROS" class="headerlink" title="构建在DDS上的ROS"></a>构建在DDS上的ROS</h1><p>ROS 2将在DDS之上提供一个类似于ROS 1的接口，为大多数ROS用户隐藏了DDS的复杂性，但又为那些有极端用例或需要与其他现有DDS系统集成的用户单独提供对底层DDS实现的访问。</p>
-<p><img src="http://image.onebug.tech/202203062322524.png" alt="DDS and ROS API Layout"></p>
+<p><img src="https://image.onebug.tech/202203062322524.png" alt="DDS and ROS API Layout"></p>
 <h2 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h2><p>DDS将完全取代ROS1基于主控的发现系统。ROS需要利用DDS的API来获取信息，如所有节点的列表，所有主题的列表，以及它们是如何连接的。对这些信息的访问将被隐藏在ROS定义的API后面，防止用户直接调用DDS。</p>
 <p><strong>DDS发现系统的优点是，在默认情况下，它是完全分布式的，不会出现中央故障点</strong>。DDS还允许用户在其发现系统中定义元数据，这将使ROS能够在发布-订阅上附加更高级别的概念。</p>
 <h2 id="发布-订阅传输"><a href="#发布-订阅传输" class="headerlink" title="发布-订阅传输"></a>发布-订阅传输</h2><p>DDSI-RTPS协议取代ROS的TCPROS和UDPROS线协议，用于发布&#x2F;订阅。DDS API为ROS的典型发布&#x2F;订阅模式提供了更多的参与者。 </p>
 <p>DDS的主题（Topic）与ROS中的主题概念相似。</p>
 <p><strong>DDS中的参与者（Participant）ROS的节点（Node）概念相似</strong>。但在DDS中，节点会被表示为独立的代码对象，既不是订阅者也不是发布者。</p>
-<p><img src="http://image.onebug.tech/202202241356558.svg+xml" alt="../../_images/dds_domain.svg"></p>
+<p><img src="https://image.onebug.tech/202202241356558.svg+xml" alt="../../_images/dds_domain.svg"></p>
 <h2 id="高效的传输方式"><a href="#高效的传输方式" class="headerlink" title="高效的传输方式"></a>高效的传输方式</h2><p>在ROS 1中，没有一个标准的共享内存传输，如果有任务需要比本地主机TCP更快的速度时，可以使用Nodelets。Nodelets允许发布者和订阅者通过传递<code>boost::shared_ptrs</code>到消息中来共享数据。这种进程内的通信几乎比任何进程间的通信选项更快，而且与网络发布-订阅实现向兼容。</p>
 <p><strong>大多数DDS供应商会以透明的方式使用共享内存来优化消息流量（甚至在进程之间），只在离开Localhost时使用有线协议和UDP套接字</strong>，这为DDS提供了相当大的性能提升。</p>
 <h2 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h2><p>目前的ROS消息定义有很大的价值。格式很简单，而且消息本身已经在机器人社区的多年使用中得到了发展。当前ROS代码的大部分语义内容都是由这些消息的结构和内容驱动的，因此保留消息的格式和内存表示法具有很大的价值。为了达到这个目标，<strong>ROS 2保留ROS 1那样的消息定义和内存表示</strong>。</p>
 <p>因此，<strong>ROS 1的<code>.msg</code>文件将继续使用，.msg文件会被转换为<code>.idl</code>文件，以便它们可以被DDS使用。</strong>ROS 2 API将专门处理内存中的<code>.msg</code>风格的消息对象，并在发布前将其转换为.idl对象。</p>
-<p><img src="http://image.onebug.tech/202203062320088.png" alt="Message Generation Diagram"></p>
+<p><img src="https://image.onebug.tech/202203062320088.png" alt="Message Generation Diagram"></p>
 <blockquote>
 <p>在每次调用发布时将消息逐字段转换为另一种对象类型的似乎是一个巨大的性能问题，但实验表明，与序列化的成本相比，这种转换的成本是微不足道的。</p>
 </blockquote>
@@ -408,7 +408,7 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="冰冻橘子"
-      src="http://image.onebug.tech/avatar.png">
+      src="https://image.onebug.tech/avatar.png">
   <p class="site-author-name" itemprop="name">冰冻橘子</p>
   <div class="site-description" itemprop="description">渺沧海之一粟</div>
 </div>

@@ -29,16 +29,16 @@
 <meta property="og:site_name" content="冰冻橘子的自留地">
 <meta property="og:description" content="线程池线程池与new Thread线程池的好处 重用存在的线程，减少对象创建、消亡的开销，性能好 可有效控制最大并发线程数，提高系统资源利用率，同时可以避免过多资源竞争，避免阻塞。 提供定时执行、定期执行、单线程、并发数控制等功能。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://image.onebug.tech/image-20210504093153759.png">
-<meta property="og:image" content="http://image.onebug.tech/20170914114339689">
+<meta property="og:image" content="https://image.onebug.tech/image-20210504093153759.png">
+<meta property="og:image" content="https://image.onebug.tech/20170914114339689">
 <meta property="article:published_time" content="2021-04-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-05-08T10:00:59.892Z">
+<meta property="article:modified_time" content="2023-03-23T15:29:42.907Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="笔记">
 <meta property="article:tag" content="并发">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://image.onebug.tech/image-20210504093153759.png">
+<meta name="twitter:image" content="https://image.onebug.tech/image-20210504093153759.png">
 
 <link rel="canonical" href="http://blog.onebug.tech/2021/04/20/java/java%E5%B9%B6%E5%8F%91/ch11%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
 
@@ -214,7 +214,7 @@
     <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2021/04/20/java/java%E5%B9%B6%E5%8F%91/ch11%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="image" content="https://image.onebug.tech/avatar.png">
       <meta itemprop="name" content="冰冻橘子">
       <meta itemprop="description" content="渺沧海之一粟">
     </span>
@@ -241,7 +241,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-08 18:00:59" itemprop="dateModified" datetime="2021-05-08T18:00:59+08:00">2021-05-08</time>
+                <time title="修改时间：2023-03-23 23:29:42" itemprop="dateModified" datetime="2023-03-23T23:29:42+08:00">2023-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,14 +297,14 @@
 <li>线程缺乏统一管理，可能无限制的新建线程，相互竞争，可能占用过多的系统资源导致死机或者OOM（out of memory 内存溢出），这种问题的原因不是因为单纯的new一个Thread，而是可能因为程序的bug或者设计上的缺陷导致不断new Thread造成的。</li>
 <li>缺少更多功能，如更多执行、定期执行、线程中断。</li>
 </ul>
-<h2 id="线程池的结构"><a href="#线程池的结构" class="headerlink" title="线程池的结构"></a>线程池的结构</h2><p><img src="http://image.onebug.tech/image-20210504093153759.png" alt="image-20210504093153759"></p>
+<h2 id="线程池的结构"><a href="#线程池的结构" class="headerlink" title="线程池的结构"></a>线程池的结构</h2><p><img src="https://image.onebug.tech/image-20210504093153759.png" alt="image-20210504093153759"></p>
 <p>在线程池的类图中，我们最常使用的是最下边的Executors，用它来创建线程池使用线程。那么在上边的类图中，包含了一个Executor框架，它是一个根据一组执行策略的调用调度执行和控制异步任务的框架，目的是提供一种将任务提交与任务如何运行分离开的机制。它包含了三个executor接口：</p>
 <ul>
 <li>Executor：运行新任务的简单接口</li>
 <li>ExecutorService：扩展了Executor，添加了用来管理执行器生命周期和任务生命周期的方法</li>
 <li>ScheduleExcutorService：扩展了ExecutorService，支持Future和定期执行任务</li>
 </ul>
-<h2 id="ThreadPoolExecutor"><a href="#ThreadPoolExecutor" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h2><h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p><img src="http://image.onebug.tech/20170914114339689" alt="这里写图片描述"></p>
+<h2 id="ThreadPoolExecutor"><a href="#ThreadPoolExecutor" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h2><h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p><img src="https://image.onebug.tech/20170914114339689" alt="这里写图片描述"></p>
 <ol>
 <li>线程池刚创建时，里面没有一个线程。任务队列是作为参数传进来的。不过，就算队列里面有任务，线程池也不会马上执行它们。</li>
 <li>当调用 execute() 方法添加一个任务时，线程池会做如下判断：</li>
@@ -481,7 +481,7 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="冰冻橘子"
-      src="http://image.onebug.tech/avatar.png">
+      src="https://image.onebug.tech/avatar.png">
   <p class="site-author-name" itemprop="name">冰冻橘子</p>
   <div class="site-description" itemprop="description">渺沧海之一粟</div>
 </div>

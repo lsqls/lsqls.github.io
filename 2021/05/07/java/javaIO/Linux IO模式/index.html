@@ -29,23 +29,23 @@
 <meta property="og:site_name" content="冰冻橘子的自留地">
 <meta property="og:description" content="Linux IO模式概念用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对Linu">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://image.onebug.tech/29f80b4c7e9aa6f9dd77da9721433cf5.png">
-<meta property="og:image" content="http://image.onebug.tech/image-20210507184156017.png">
-<meta property="og:image" content="http://image.onebug.tech/image-20210507184628247.png">
-<meta property="og:image" content="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932383431363831325f342e706e67">
-<meta property="og:image" content="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932393030303336315f352e706e67">
-<meta property="og:image" content="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932393434343831385f362e706e67">
-<meta property="og:image" content="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323933303234333238365f382e706e67">
-<meta property="og:image" content="http://image.onebug.tech/image-20210507185322599.png">
+<meta property="og:image" content="https://image.onebug.tech/29f80b4c7e9aa6f9dd77da9721433cf5.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20210507184156017.png">
+<meta property="og:image" content="https://image.onebug.tech/image-20210507184628247.png">
+<meta property="og:image" content="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932383431363831325f342e706e67">
+<meta property="og:image" content="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932393030303336315f352e706e67">
+<meta property="og:image" content="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932393434343831385f362e706e67">
+<meta property="og:image" content="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323933303234333238365f382e706e67">
+<meta property="og:image" content="https://image.onebug.tech/image-20210507185322599.png">
 <meta property="article:published_time" content="2021-05-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-05-08T09:56:00.285Z">
+<meta property="article:modified_time" content="2023-03-23T15:29:42.881Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="IO">
 <meta property="article:tag" content="socket">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://image.onebug.tech/29f80b4c7e9aa6f9dd77da9721433cf5.png">
+<meta name="twitter:image" content="https://image.onebug.tech/29f80b4c7e9aa6f9dd77da9721433cf5.png">
 
 <link rel="canonical" href="http://blog.onebug.tech/2021/05/07/java/javaIO/Linux%20IO%E6%A8%A1%E5%BC%8F/">
 
@@ -221,7 +221,7 @@
     <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2021/05/07/java/javaIO/Linux%20IO%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="image" content="https://image.onebug.tech/avatar.png">
       <meta itemprop="name" content="冰冻橘子">
       <meta itemprop="description" content="渺沧海之一粟">
     </span>
@@ -248,7 +248,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-08 17:56:00" itemprop="dateModified" datetime="2021-05-08T17:56:00+08:00">2021-05-08</time>
+                <time title="修改时间：2023-03-23 23:29:42" itemprop="dateModified" datetime="2023-03-23T23:29:42+08:00">2023-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -294,7 +294,7 @@
       
         <h1 id="Linux-IO模式"><a href="#Linux-IO模式" class="headerlink" title="Linux IO模式"></a>Linux IO模式</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="用户空间与内核空间"><a href="#用户空间与内核空间" class="headerlink" title="用户空间与内核空间"></a>用户空间与内核空间</h3><p>现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对Linux操作系统而言，将最高的1G字节（从虚拟地址<code>0xC0000000</code>到<code>0xFFFFFFFF</code>），供内核使用，称为内核空间，而将较低的3G字节（从虚拟地址<code>0x00000000</code>到<code>0xBFFFFFFF</code>），供各个进程使用，称为用户空间。</p>
 <p>每个进程可以通过系统调用进入内核，因此，Linux内核由系统内的所有进程共享。于是，从具体进程的角度来看，每个进程可以拥有4G字节的虚拟空间。</p>
-<p><img src="http://image.onebug.tech/29f80b4c7e9aa6f9dd77da9721433cf5.png" alt="Linux 内核空间与用户空间_程序地带"></p>
+<p><img src="https://image.onebug.tech/29f80b4c7e9aa6f9dd77da9721433cf5.png" alt="Linux 内核空间与用户空间_程序地带"></p>
 <span id="more"></span>
 
 <h3 id="文件描述符fd"><a href="#文件描述符fd" class="headerlink" title="文件描述符fd"></a>文件描述符fd</h3><p>文件描述符（File descriptor）是计算机科学中的一个术语，是一个用于表述指向文件的引用的抽象化概念。</p>
@@ -303,7 +303,7 @@
 <p>Socket：正如应用程序使用文件描述符访问文件一样，应用程序也使用套接字描述符(socket descriptors )访问套接字。<strong>套接字描述符在 UNIX 系统中作为文件描述符实现</strong>，这也符合UNIX系统“一切皆文件”的设计思想。</p>
 </blockquote>
 <h3 id="缓存-I-x2F-O"><a href="#缓存-I-x2F-O" class="headerlink" title="缓存 I&#x2F;O"></a>缓存 I&#x2F;O</h3><p>缓存 IO 又被称作标准 IO，大多数文件系统的默认 IO 操作都是缓存 IO。在 Linux 的缓存 IO 机制中，操作系统会将 IO 的数据缓存在文件系统的页缓存（ page cache ）中，也就是说，数据会先被拷贝到操作系统内核的缓冲区中，然后才会从操作系统内核的缓冲区拷贝到应用程序的地址空间。数据在传输过程中需要在应用程序地址空间和内核进行多次数据拷贝操作，这些数据拷贝操作所带来的 CPU 以及内存开销是非常大的。</p>
-<p><img src="http://image.onebug.tech/image-20210507184156017.png" alt="image-20210507184156017"></p>
+<p><img src="https://image.onebug.tech/image-20210507184156017.png" alt="image-20210507184156017"></p>
 <h2 id="Linux-IO-模式"><a href="#Linux-IO-模式" class="headerlink" title="Linux IO 模式"></a>Linux IO 模式</h2><p>对于一次IO访问（以read举例），数据会先被拷贝到操作系统内核的缓冲区中，然后才会从操作系统内核的缓冲区拷贝到应用程序的地址空间。所以说，当一个read操作发生时，它会经历<strong>两个阶段</strong>：</p>
 <ol>
 <li><strong>等待数据准备 (Waiting for the data to be ready)</strong></li>
@@ -322,17 +322,17 @@
 </blockquote>
 <p>在数据传输的过程中，避免数据在操作系统内核地址空间的缓冲区和用户应用程序地址空间的缓冲区之间进行拷贝。有的时候，应用程序在数据进行传输的过程中不需要对数据进行访问，那么，将数据从 Linux 的页缓存拷贝到用户进程的缓冲区中就可以完全避免，传输的数据在页缓存中就可以得到处理。在某些特殊的情况下，这种零拷贝技术可以获得较好的性能。Linux 中提供类似的系统调用主要有 <code>mmap()</code>，<code>sendfile()</code> 以及 <code>splice()</code>。</p>
 <p>如果使用<code>mmap()</code>，磁盘上的数据会通过 <code>DMA</code>被拷贝的内核缓冲区，接着操作系统会把这段内核缓冲区与应用程序共享，这样就不需要把内核缓冲区的内容往用户空间拷贝。应用程序调用 <code>write()</code>时，操作系统直接将内核缓冲区的内容拷贝到 <code>socket</code>缓冲区中，这一切都发生在内核态，最后， <code>socket</code>缓冲区再把数据发到网卡去。相对于<code>read()</code>很明显减少了一次拷贝，当拷贝数据量很大时，无疑提升了效率。</p>
-<p><img src="http://image.onebug.tech/image-20210507184628247.png" alt="image-20210507184628247"></p>
+<p><img src="https://image.onebug.tech/image-20210507184628247.png" alt="image-20210507184628247"></p>
 <h3 id="阻塞IO"><a href="#阻塞IO" class="headerlink" title="阻塞IO"></a>阻塞IO</h3><p>在Linux中，默认情况下所有的socket都是blocking，一个典型的读操作流程大概是这样：</p>
-<p><img src="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932383431363831325f342e706e67" alt="img"></p>
+<p><img src="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932383431363831325f342e706e67" alt="img"></p>
 <p>当用户进程调用了<code>recvfrom</code>这个系统调用，kernel就开始了IO的第一个阶段：准备数据（对于网络IO来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候kernel就要等待足够的数据到来）。这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的，而在用户进程这边，整个进程会被阻塞。当kernel一直等到数据准备好了，它就会将数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才解除阻塞的状态，重新运行起来。</p>
 <p>所以，所以，阻塞IO的特点就是<strong>在IO执行的两个阶段都被block了。</strong></p>
 <h3 id="非阻塞-I-x2F-O"><a href="#非阻塞-I-x2F-O" class="headerlink" title="非阻塞 I&#x2F;O"></a>非阻塞 I&#x2F;O</h3><p>Linux下，可以通过设置socket使其变为non-blocking。当对一个non-blocking socket执行读操作时，流程是这个样子</p>
-<p><img src="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932393030303336315f352e706e67" alt="img"></p>
+<p><img src="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932393030303336315f352e706e67" alt="img"></p>
 <p>当用户进程调用<code>recvfrom</code>时，系统不会阻塞用户进程，而是立刻返回一个<code>ewouldblock</code>错误，从用户进程角度讲 ，并不需要等待，而是马上就得到了一个结果。用户进程判断标志是<code>ewouldblock</code>时，就知道数据还没准备好，于是它就可以去做其他的事了，于是它可以再次发送<code>recvfrom</code>，一旦内核中的数据准备好了。并且又再次收到了用户进程的系统，那么它马上就将数据拷贝到了用户内存，然后返回。</p>
 <p>当一个应用程序在一个循环里对一个非阻塞调用<code>recvfrom</code>，我们称为轮询。应用程序不断轮询内核，看看是否已经准备好了某些操作。这通常是浪费CPU时间，但这种模式偶尔会遇到。</p>
 <h3 id="I-x2F-O-复用"><a href="#I-x2F-O-复用" class="headerlink" title="I&#x2F;O 复用"></a>I&#x2F;O 复用</h3><p>IO multiplexing就是我们说的select，poll，epoll，有时候也称这种IO方式为事件驱动IO（event driven IO）。select&#x2F;epoll的好处就在于单个进程就可以同时处理多个网络连接的IO。当某个socket有数据到达了，就通知用户进程。</p>
-<p><img src="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932393434343831385f362e706e67" alt="img"></p>
+<p><img src="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323932393434343831385f362e706e67" alt="img"></p>
 <p>当用户进程调用了select，那么整个进程会被阻塞，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从kernel拷贝到用户进程。</p>
 <p>这个图和阻塞IO的图其实并没有太大的不同，事实上，还更差一些。因为这里需要进行两次系统调用 (select 和 <code>recvfrom</code>)，而阻塞IO只进行一次系统调用 (<code>recvfrom</code>)。但是，用select的优势在于它可以同时处理多个连接。</p>
 <p>所以处理的连接数不是很高的话，使用【select&#x2F;epoll】的服务器不一定比使用【多线程 + 阻塞IO】的web server性能更好，可能延迟还更大。</p>
@@ -365,7 +365,7 @@
 </blockquote>
 <h3 id="异步I-x2F-O"><a href="#异步I-x2F-O" class="headerlink" title="异步I&#x2F;O"></a>异步I&#x2F;O</h3><p>应用进程执行 <code>aio_read</code> 系统调用会立即返回，应用进程可以继续执行，不会被阻塞，内核会在所有操作完成之后向应用进程发送信号。</p>
 <p>异步 I&#x2F;O 与信号驱动 I&#x2F;O 的区别在于，异步 I&#x2F;O 的信号是通知应用进程 I&#x2F;O 完成，而信号驱动 I&#x2F;O 的信号是通知应用进程可以开始 I&#x2F;O。</p>
-<p><img src="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323933303234333238365f382e706e67" alt="img"></p>
+<p><img src="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f313439323933303234333238365f382e706e67" alt="img"></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>同步 I&#x2F;O：将数据从内核缓冲区复制到应用进程缓冲区的阶段（第二阶段），应用进程会阻塞。</li>
 <li>异步 I&#x2F;O：第二阶段应用进程不会阻塞。</li>
@@ -373,7 +373,7 @@
 <p>同步 I&#x2F;O 包括阻塞式 I&#x2F;O、非阻塞式 I&#x2F;O、I&#x2F;O 复用和信号驱动 I&#x2F;O ，它们的主要区别在第一个阶段。</p>
 <p>非阻塞式 I&#x2F;O 、信号驱动 I&#x2F;O 和异步 I&#x2F;O 在第一阶段不会阻塞。</p>
 <p>从同步、异步，以及阻塞、非阻塞两个维度来划分来看，IO模式可以分为：</p>
-<p><img src="http://image.onebug.tech/image-20210507185322599.png" alt="image-20210507185322599"></p>
+<p><img src="https://image.onebug.tech/image-20210507185322599.png" alt="image-20210507185322599"></p>
 
     </div>
 
@@ -469,7 +469,7 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="冰冻橘子"
-      src="http://image.onebug.tech/avatar.png">
+      src="https://image.onebug.tech/avatar.png">
   <p class="site-author-name" itemprop="name">冰冻橘子</p>
   <div class="site-description" itemprop="description">渺沧海之一粟</div>
 </div>

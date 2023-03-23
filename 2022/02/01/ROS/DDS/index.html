@@ -29,18 +29,18 @@
 <meta property="og:site_name" content="冰冻橘子的自留地">
 <meta property="og:description" content="DDS（数据分发服务）是一套通信协议和API标准，以数据为中心是他的特点，它基于发布-订阅模型进行设计。而FastRTPS是eProsima公司对DDS的一个开源实现。DDS是一套中间件，提供介于操作系统和应用程序之间的功能，提供了低延迟、高可靠的通信以及可扩展的架构。DDS其实分为两部分，一部分是DDS规范，一部份则是DDSI-RTPS协议，是一个互操作性协议，也就是真正实现通讯机制的部分，在R">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://image.onebug.tech/202202241359562.svg+xml">
-<meta property="og:image" content="http://image.onebug.tech/20220225121143.svg+xml">
-<meta property="og:image" content="http://image.onebug.tech/202203062318832.jpeg">
-<meta property="og:image" content="http://image.onebug.tech/202203062318265.svg+xml">
-<meta property="og:image" content="http://image.onebug.tech/202203062318554.svg+xml">
+<meta property="og:image" content="https://image.onebug.tech/202202241359562.svg+xml">
+<meta property="og:image" content="https://image.onebug.tech/20220225121143.svg+xml">
+<meta property="og:image" content="https://image.onebug.tech/202203062318832.jpeg">
+<meta property="og:image" content="https://image.onebug.tech/202203062318265.svg+xml">
+<meta property="og:image" content="https://image.onebug.tech/202203062318554.svg+xml">
 <meta property="article:published_time" content="2022-01-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-07T01:55:50.726Z">
+<meta property="article:modified_time" content="2023-03-23T15:29:43.000Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="dds">
 <meta property="article:tag" content="ros">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://image.onebug.tech/202202241359562.svg+xml">
+<meta name="twitter:image" content="https://image.onebug.tech/202202241359562.svg+xml">
 
 <link rel="canonical" href="http://blog.onebug.tech/2022/02/01/ROS/DDS/">
 
@@ -216,7 +216,7 @@
     <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2022/02/01/ROS/DDS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="image" content="https://image.onebug.tech/avatar.png">
       <meta itemprop="name" content="冰冻橘子">
       <meta itemprop="description" content="渺沧海之一粟">
     </span>
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-07 09:55:50" itemprop="dateModified" datetime="2022-03-07T09:55:50+08:00">2022-03-07</time>
+                <time title="修改时间：2023-03-23 23:29:43" itemprop="dateModified" datetime="2023-03-23T23:29:43+08:00">2023-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -294,7 +294,7 @@
 <p>所谓互操作性协议，就是为了满足互操作性而产生的一个协议，互操作性就是指两个实体的通信能力，如果两个实体之间能够在任何情况下都无误解的进行通信，那么我们就说这两个实体可以正确的互操作。</p>
 </blockquote>
 <p>DDS的架构是这个样子的：</p>
-<p><img src="http://image.onebug.tech/202202241359562.svg+xml" alt="../../_images/library_overview.svg"></p>
+<p><img src="https://image.onebug.tech/202202241359562.svg+xml" alt="../../_images/library_overview.svg"></p>
 <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><strong>DDS实现的数据共享可以理解成一个抽象的全局数据空间，任何应用程序，不论开发语言，或者运行的操作系统类型，都可以通过相同的方式访问这个全局数据空间，就好像访问本地的存储空间一样。</strong>当然全局数据空间仅仅是一个抽象的概念，在实现时仍然是分别存储在每个应用程序的本地空间当中。在系统运行时，数据是按需传输或存储的，数据的发布者仅仅发送对方需要的数据，而订阅者仅接收并存储本地应用程序当前需要的数据。</p>
 <p><strong>DDS还提供了非常灵活的QoS策略</strong>，以满足用户对数据共享方式的不同需求，比如可靠性，故障处理等等。针对数据安全性要求比较高的系统，<strong>DDS还提供了细颗粒度的数据安全控制</strong>，包括应用程序身份认证，权限控制，数据加密等等。</p>
 <p><strong>DDS提供了对数据发布者和订阅者的动态发现机制</strong>，这意味着用户不必去配置通信节点的地址或其他属性信息，因为他们在运行的过程中会自动发现对方，并自动完成相关配置，即实现了即插即用。</p>
@@ -308,7 +308,7 @@
 <li><strong>Subscriber：</strong>订阅者，订阅主题数据，至少与1个DataReader关联。当数据到达时，应用程序可能忙于执行其他操作或应用程序只是等待该消息时，这样就会存在两种情况，同步访问和异步通知。</li>
 </ul>
 <h1 id="DPSC模型"><a href="#DPSC模型" class="headerlink" title="DPSC模型"></a>DPSC模型</h1><p><strong>DCPS（Data-Centric Publish-Subscribe）是DDS标准中定义的以数据为中心的订阅-发布模型。在这个模型中，向全局数据空间写入数据的一方称为Publishers和DataWriter，同样地，在全局数据空间中读取数据的一方称为Subscriber和DataReader</strong>。下图中展示了它们之间的逻辑关系。除了DCPS模型，DDS标准中还定义了一套完整的应用程序接口（API），该接口标准是与平台无关的，这意味着不论应用程序使用什么开发语言，或运行在什么平台之上，只要DDS中间件的实现符合DDS标准，那么相关的应用程序即可实现不同平台间的移植。</p>
-<p><img src="http://image.onebug.tech/20220225121143.svg+xml" alt="../../_images/rtps_domain.svg"></p>
+<p><img src="https://image.onebug.tech/20220225121143.svg+xml" alt="../../_images/rtps_domain.svg"></p>
 <p>数据的发送过程，简单来说就是应用程序调用DataWriter对象提供的write方法，把数据传递给Publisher对象，而Publisher负责将数据在网络上发送出去。</p>
 <blockquote>
 <p>一个DataWriter只能从属一个Publisher，而Publisher可以拥有多个DataWriter，每一个DataWriter都绑定一个Topic。</p>
@@ -325,13 +325,13 @@
 <li>HISTORY（DataWriter保存并发送旧的采样数据）</li>
 <li>RELIABILITY（”可靠传输”）</li>
 </ul>
-<p><img src="http://image.onebug.tech/202203062318832.jpeg" alt="img"></p>
+<p><img src="https://image.onebug.tech/202203062318832.jpeg" alt="img"></p>
 <h1 id="RTSP协议"><a href="#RTSP协议" class="headerlink" title="RTSP协议"></a>RTSP协议</h1><p>DDS的标准中并不包含传输层协议，RTPS（Real-Time Publish Subscribe）能够很好的契合DDS协议特点。<strong>RTPS基于多播、无连接的传输模型，这个模型可以映射到不同的传输协议上，如UDP&#x2F;IP（这也是目前RTPS标准中唯一被标准化的传输协议）。</strong></p>
-<p><img src="http://image.onebug.tech/202203062318265.svg+xml" alt="../../_images/transport_comparison.svg"></p>
+<p><img src="https://image.onebug.tech/202203062318265.svg+xml" alt="../../_images/transport_comparison.svg"></p>
 <blockquote>
 <p>组播的原理：组播IP地址到底是谁的IP？？ - 车小胖的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27233903/answer/108374395">https://www.zhihu.com/question/27233903/answer/108374395</a></p>
 </blockquote>
-<p><img src="http://image.onebug.tech/202203062318554.svg+xml" alt="../_images/DDS_concept.svg"></p>
+<p><img src="https://image.onebug.tech/202203062318554.svg+xml" alt="../_images/DDS_concept.svg"></p>
 
     </div>
 
@@ -425,7 +425,7 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="冰冻橘子"
-      src="http://image.onebug.tech/avatar.png">
+      src="https://image.onebug.tech/avatar.png">
   <p class="site-author-name" itemprop="name">冰冻橘子</p>
   <div class="site-description" itemprop="description">渺沧海之一粟</div>
 </div>

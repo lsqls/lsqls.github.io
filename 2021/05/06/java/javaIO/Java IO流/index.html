@@ -29,18 +29,18 @@
 <meta property="og:site_name" content="冰冻橘子的自留地">
 <meta property="og:description" content="JAVA IO流基础IO数据的传输，可以看做是一种数据的流动，按照流动的方向，以内存为基准，分为输入Input 和输出Output ，即流向内存是输入流，流出内存的输出流，统称为 IO流。 Java中I&#x2F;O操作主要是指使用java.io包下的内容，进行输入、输出操作。输入也叫做读取数据，输出也叫做作写出数据。 流流代表任何有能力产出数据的数据源对象或者是有能力接受数据的接收端对象；流的本">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f39373039363934622d646230352d346363652d386432662d3163386230396634643932312e706e67">
-<meta property="og:image" content="http://image.onebug.tech/IO%E6%B5%81.png">
+<meta property="og:image" content="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f39373039363934622d646230352d346363652d386432662d3163386230396634643932312e706e67">
+<meta property="og:image" content="https://image.onebug.tech/IO%E6%B5%81.png">
 <meta property="og:image" content="https://img2020.cnblogs.com/blog/1745215/202103/1745215-20210328205030750-1032064608.png">
 <meta property="article:published_time" content="2021-05-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-05-08T09:58:19.677Z">
+<meta property="article:modified_time" content="2023-03-23T15:29:42.863Z">
 <meta property="article:author" content="冰冻橘子">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="IO">
 <meta property="article:tag" content="网络编程">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f39373039363934622d646230352d346363652d386432662d3163386230396634643932312e706e67">
+<meta name="twitter:image" content="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f39373039363934622d646230352d346363652d386432662d3163386230396634643932312e706e67">
 
 <link rel="canonical" href="http://blog.onebug.tech/2021/05/06/java/javaIO/Java%20IO%E6%B5%81/">
 
@@ -216,7 +216,7 @@
     <link itemprop="mainEntityOfPage" href="http://blog.onebug.tech/2021/05/06/java/javaIO/Java%20IO%E6%B5%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://image.onebug.tech/avatar.png">
+      <meta itemprop="image" content="https://image.onebug.tech/avatar.png">
       <meta itemprop="name" content="冰冻橘子">
       <meta itemprop="description" content="渺沧海之一粟">
     </span>
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-08 17:58:19" itemprop="dateModified" datetime="2021-05-08T17:58:19+08:00">2021-05-08</time>
+                <time title="修改时间：2023-03-23 23:29:42" itemprop="dateModified" datetime="2023-03-23T23:29:42+08:00">2023-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -317,7 +317,7 @@
 <li>FileInputStream 是 InputStream 的子类，属于具体组件，提供了字节流的输入操作；</li>
 <li>FilterInputStream 属于抽象装饰者，装饰者用于装饰组件，为组件提供额外的功能。例如 BufferedInputStream 为 FileInputStream 提供缓存的功能</li>
 </ul>
-<p><img src="http://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f39373039363934622d646230352d346363652d386432662d3163386230396634643932312e706e67" alt="img"></p>
+<p><img src="https://image.onebug.tech/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f39373039363934622d646230352d346363652d386432662d3163386230396634643932312e706e67" alt="img"></p>
 <p>实例化一个具有缓存功能的字节流对象时，只需要在 FileInputStream 对象上再套一层 BufferedInputStream 对象即可。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">FileInputStream</span> <span class="variable">fileInputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filePath);</span><br><span class="line"><span class="type">BufferedInputStream</span> <span class="variable">bufferedInputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedInputStream</span>(fileInputStream);</span><br></pre></td></tr></table></figure>
 
@@ -346,7 +346,7 @@
 <li>Serializable（序列化操作）：是一个空接口，为对象提供标准的序列化与反序列化操作。</li>
 </ul>
 <p>Java IO流的整体架构图如下：</p>
-<p><img src="http://image.onebug.tech/IO%E6%B5%81.png" alt="IO流"></p>
+<p><img src="https://image.onebug.tech/IO%E6%B5%81.png" alt="IO流"></p>
 <h2 id="File类"><a href="#File类" class="headerlink" title="File类"></a>File类</h2><p>File类是文件和目录路径名的抽象表示形式，主要用于文件和目录的创建、查找和删除等操作。即Java中把文件或者目录（文件夹）都封装成File对象。也就是说如果我们要去操作硬盘上的文件或者目录只要创建File这个类即可。不过要注意的是File类只是对文件的操作类，只能对文件本身进行操作，不能对文件内容进行操作。</p>
 <h3 id="File类常用方法"><a href="#File类常用方法" class="headerlink" title="File类常用方法"></a>File类常用方法</h3><p><strong>获取文件的相关信息</strong></p>
 <ul>
@@ -782,7 +782,7 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="冰冻橘子"
-      src="http://image.onebug.tech/avatar.png">
+      src="https://image.onebug.tech/avatar.png">
   <p class="site-author-name" itemprop="name">冰冻橘子</p>
   <div class="site-description" itemprop="description">渺沧海之一粟</div>
 </div>
