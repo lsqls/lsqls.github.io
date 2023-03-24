@@ -4760,4 +4760,56 @@ public class DeadLock implements Runnable &#123;
         <tag>netty</tag>
       </tags>
   </entry>
+  <entry>
+    <title>升级HTTPS全记录</title>
+    <url>/2023/03/24/%E7%BD%91%E7%AB%99/%E5%8D%9A%E5%AE%A2%E5%8D%87%E7%BA%A7HTTPS/</url>
+    <content><![CDATA[<p>近期把博客升级为HTTPS访问了。记录一下升级过程。</p>
+<h1 id="泛域名证书"><a href="#泛域名证书" class="headerlink" title="泛域名证书"></a>泛域名证书</h1><p>为了在网站上启用 HTTPS，需要从证书颁发机构申请 SSL 证书。Let’s Encrypt 是一个证书颁发机构，向 Let’s Encrypt 申请证书是免费的。Let’s Encrypt 支持泛域名证书，可以满足我不想为每个子域名单独申请证书的要求。目前常用的 Let’s Encrypt 证书生成工具有 <code>certbot</code>、<code>acme.sh</code>、<code>acme-tiny</code>，我使用的是 <code>acme.sh</code>。<code>acme.sh</code> 申请和安装泛域名 SSL 证书相对来说是比较方便的。</p>
+<span id="more"></span>
+
+<h2 id="安装acme-sh"><a href="#安装acme-sh" class="headerlink" title="安装acme.sh"></a>安装acme.sh</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install ca-certificates</span><br><span class="line">curl https://get.acme.sh | sh -s email=your@email.com</span><br></pre></td></tr></table></figure>
+
+<p>安装完之后需要重新打开终端来使 alias 生效。</p>
+<h2 id="申请并部署证书"><a href="#申请并部署证书" class="headerlink" title="申请并部署证书"></a>申请并部署证书</h2><h3 id="申请证书"><a href="#申请证书" class="headerlink" title="申请证书"></a>申请证书</h3><p><img src="https://image.onebug.tech/image-20230324170953556.png" alt="image-20230324170953556"></p>
+<p>到<a href="https://console.dnspod.cn/account/token/token">DNSPod控制台</a>申请Token并设置环境变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export DP_Id=&quot;YourId&quot;</span><br><span class="line">export DP_Key=&quot;YourToken&quot;</span><br></pre></td></tr></table></figure>
+
+<p>再通过下面命令生成证书：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">acme.sh --issue --dns dns_dp -d onebug.tech -d *.onebug.tech</span><br></pre></td></tr></table></figure>
+
+<p>这里第一个域名为顶级域名，后面一个为泛域名。这种方式将自动为域名添加一条 TXT 解析，验证成功后，这条解析记录会被自动删除。证书生成成功后，默认保存在下图的<code>~/.acme.sh</code>下中。</p>
+<p><img src="https://image.onebug.tech/image-20230324171022293.png" alt="image-20230324171022293"></p>
+<h3 id="部署证书"><a href="#部署证书" class="headerlink" title="部署证书"></a>部署证书</h3><p>使用 acme.sh 部署到七牛之前，需要确保部署的域名已打开 HTTPS 功能</p>
+<p>从七牛个人中心的密钥管理里获取 AK 和 SK，设置七牛云密钥的环境变量（建议写到.<code>bashrc</code>中）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export QINIU_AK=&quot;foo&quot;</span><br><span class="line">export QINIU_SK=&quot;bar&quot;</span><br></pre></td></tr></table></figure>
+
+<p>运行 acme.sh 命令部署到七牛，由于部署的证书为泛域名证书，还需要设置 <code>QINIU_CDN_DOMAIN</code> 变量，指定实际需要部署的域名（用空格将域名分隔开来）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export QINIU_CDN_DOMAIN=&quot;www.onebug.tech image.onebug.tech&quot;</span><br><span class="line">acme.sh --deploy -d onebug.tech --deploy-hook qiniu</span><br></pre></td></tr></table></figure>
+
+<p>在<a href="https://portal.qiniu.com/certificate/ssl#cert">七牛云 - 证书管理 </a>处可以确认部署的情况，并进一步进行HTTPS的设置。</p>
+<p><img src="https://image.onebug.tech/image-20230324181302656.png" alt="image-20230324181302656"></p>
+<h2 id="定时更新"><a href="#定时更新" class="headerlink" title="定时更新"></a>定时更新</h2><p>acme.sh 已经创建了定时任务，会定期更新证书（证书的有效期为90 天，acme.sh 会60天强制更新一次）。</p>
+<p>需要添加一条来自动部署到七牛的定时任务<code>crontab -e</code>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0 0 1 * * <span class="string">&quot;/home/ubuntu/.acme.sh&quot;</span>/acme.sh --deploy -d www.example.com --deploy-hook qiniu --home <span class="string">&quot;/home/ubuntu/.acme.sh&quot;</span> &gt; /dev/null</span><br><span class="line">0 0 1 * * <span class="string">&quot;/root/.acme.sh&quot;</span>/acme.sh --deploy -d onebug.tech --deploy-hook qiniu --home <span class="string">&quot;/root/.acme.sh&quot;</span> &gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+<h1 id="更新博客设置"><a href="#更新博客设置" class="headerlink" title="更新博客设置"></a>更新博客设置</h1><p>写脚本更新markdown笔记中的http链接</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> fnmatch</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find_markdown_files</span>(<span class="params">root</span>):</span><br><span class="line">    markdown_files = []</span><br><span class="line">    <span class="keyword">for</span> path, dirnames, filenames <span class="keyword">in</span> os.walk(root):</span><br><span class="line">        <span class="keyword">for</span> filename <span class="keyword">in</span> fnmatch.<span class="built_in">filter</span>(filenames, <span class="string">&#x27;*.md&#x27;</span>):</span><br><span class="line">            markdown_files.append(os.path.join(path, filename))</span><br><span class="line">    <span class="keyword">return</span> markdown_files</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">replace_http_with_https</span>(<span class="params">files,src,dst</span>):</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> files:</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(file, <span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            content = f.read()</span><br><span class="line">        content = re.sub(src, dst, content)</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(file, <span class="string">&#x27;w&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(content)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用函数并传入要查找的目录</span></span><br><span class="line">markdown_files = find_markdown_files(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换所有markdown文件中的http为https</span></span><br><span class="line">replace_http_with_https(markdown_files,<span class="string">r&#x27;http://image.onebug.tech&#x27;</span>,<span class="string">r&#x27;https://image.onebug.tech&#x27;</span>)</span><br><span class="line">replace_http_with_https(markdown_files,<span class="string">r&#x27;http://www.onebug.tech&#x27;</span>,<span class="string">r&#x27;https://www.onebug.tech&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>修改站点链接、头像图链接、picgo图床等设置。</p>
+<p>执行hexo更新命令后同步文件。</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/445852299">Let’s Encrypt SSL 泛域名证书申请和配置 - 知乎 (zhihu.com)</a></p>
+<p><a href="https://blog.csdn.net/weixin_39924179/article/details/111715772">acme云服务器生成证书_使用 acme.sh 自动签发 letsencrypt 证书并部署到七牛云融合 CDN…_weixin_39924179的博客-CSDN博客</a>、</p>
+<p><a href="https://github.com/acmesh-official/acme.sh/wiki/deployhooks#13-deploy-your-certificate-to-qiniucom">deployhooks · acmesh-official&#x2F;acme.sh Wiki (github.com)</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>博客</tag>
+        <tag>hexo</tag>
+        <tag>https</tag>
+      </tags>
+  </entry>
 </search>
