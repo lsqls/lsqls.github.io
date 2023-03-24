@@ -1413,6 +1413,7 @@
 
 <h4 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h4><p>比较常用的开源项目 CDN 服务商主要有 unpkg、bootcdn、 cdnjs、jsdelivr 和 cloudflare，本站主要使用 jsdelivr 提供的 CDN 加速服务。</p>
 <h4 id="评论系统"><a href="#评论系统" class="headerlink" title="评论系统"></a>评论系统</h4><p><a href="https://yueyue200830.github.io/2020/05/17/Hexo-Next%E6%B7%BB%E5%8A%A0Valine%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/">Hexo+Next添加Valine评论系统 | Z Blog (yueyue200830.github.io)</a></p>
+<p><a href="https://blog.wu-zy.com/myblog/leanCloud%E9%85%8D%E7%BD%AE%E5%9F%9F%E5%90%8D%E8%A7%A3%E5%86%B3%E5%8D%9A%E5%AE%A2valine%E6%97%A0%E6%B3%95%E8%AF%84%E8%AE%BA%E9%97%AE%E9%A2%98/">leanCloud配置域名解决博客valine无法评论问题 | 吴志勇的博客 (wu-zy.com)</a></p>
 <h2 id="博客部署"><a href="#博客部署" class="headerlink" title="博客部署"></a>博客部署</h2><h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><ul>
 <li>git</li>
 <li>nginx</li>
