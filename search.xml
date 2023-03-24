@@ -630,6 +630,8 @@
 <li><p>JDK1.8之后：链表长度过长会自动转成红黑树，减少搜索时间</p>
 </li>
 </ul>
+<span id="more"></span>
+
 <h2 id="ArrayList与LinkedList区别"><a href="#ArrayList与LinkedList区别" class="headerlink" title="ArrayList与LinkedList区别"></a>ArrayList与LinkedList区别</h2><p> <code>Arraylist</code> 底层使用的是 <code>Object</code> 数组；<code>LinkedList</code> 底层使用的是双向链表数据结构</p>
 <h2 id="Jvm内存模型"><a href="#Jvm内存模型" class="headerlink" title="Jvm内存模型"></a>Jvm内存模型</h2><p><img src="https://image.onebug.tech/202203151539359.png" alt="img"></p>
 <p><img src="https://image.onebug.tech/202203151536380.png" alt="img"></p>
