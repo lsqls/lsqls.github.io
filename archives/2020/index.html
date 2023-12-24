@@ -12,10 +12,10 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
-  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.staticfile.org/pace/1.0.2/themes/black/pace-theme-minimal.css">
+  <script src="//cdn.staticfile.org/pace/1.0.2/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
@@ -542,9 +542,9 @@
   </div>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+  <script src="//cdn.staticfile.org/animejs/3.1.0/anime.js"></script>
+  <script src="//cdn.staticfile.org/velocity/1.2.1/velocity.min.js"></script>
+  <script src="//cdn.staticfile.org/velocity/1.2.1/velocity.ui.min.js"></script>
 
 <script src="/js/utils.js"></script>
 
@@ -611,7 +611,7 @@
 
 <script>
 NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+  NexT.utils.getScript('//cdn.staticfile.org/valine/1.5.1/Valine.min.js', () => {
     var GUEST = ['nick', 'mail', 'link'];
     var guest = 'nick,mail,link';
     guest = guest.split(',').filter(item => {
