@@ -1,61 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>ROS的基础——DDS</title>
-    <url>/2022/02/01/ROS/DDS/</url>
-    <content><![CDATA[<p>DDS（数据分发服务）是一套通信协议和API标准，以数据为中心是他的特点，它基于发布-订阅模型进行设计。而FastRTPS是<em>eProsima</em>公司对DDS的一个开源实现。DDS是一套中间件，提供介于操作系统和应用程序之间的功能，提供了低延迟、高可靠的通信以及可扩展的架构。DDS其实分为两部分，一部分是DDS规范，一部份则是DDSI-RTPS协议，是一个互操作性协议，也就是真正实现通讯机制的部分，在ROS2中，也正是这部分，取代了ROS1的TCPROS和UDPROS。</p>
+    <title>2025年终终结</title>
+    <url>/2026/01/22/2025%E5%B9%B4%E7%BB%88%E7%BB%88%E7%BB%93/</url>
+    <content><![CDATA[<p>今年研究生毕业整两年，相比于刚毕业时的茫然，这两年确实让我看清了一些事情。</p>
 <span id="more"></span>
 
-<blockquote>
-<p>所谓互操作性协议，就是为了满足互操作性而产生的一个协议，互操作性就是指两个实体的通信能力，如果两个实体之间能够在任何情况下都无误解的进行通信，那么我们就说这两个实体可以正确的互操作。</p>
-</blockquote>
-<p>DDS的架构是这个样子的：</p>
-<p><img src="https://image.onebug.tech/202202241359562.svg+xml" alt="../../_images/library_overview.svg"></p>
-<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><strong>DDS实现的数据共享可以理解成一个抽象的全局数据空间，任何应用程序，不论开发语言，或者运行的操作系统类型，都可以通过相同的方式访问这个全局数据空间，就好像访问本地的存储空间一样。</strong>当然全局数据空间仅仅是一个抽象的概念，在实现时仍然是分别存储在每个应用程序的本地空间当中。在系统运行时，数据是按需传输或存储的，数据的发布者仅仅发送对方需要的数据，而订阅者仅接收并存储本地应用程序当前需要的数据。</p>
-<p><strong>DDS还提供了非常灵活的QoS策略</strong>，以满足用户对数据共享方式的不同需求，比如可靠性，故障处理等等。针对数据安全性要求比较高的系统，<strong>DDS还提供了细颗粒度的数据安全控制</strong>，包括应用程序身份认证，权限控制，数据加密等等。</p>
-<p><strong>DDS提供了对数据发布者和订阅者的动态发现机制</strong>，这意味着用户不必去配置通信节点的地址或其他属性信息，因为他们在运行的过程中会自动发现对方，并自动完成相关配置，即实现了即插即用。</p>
-<h1 id="专业名词"><a href="#专业名词" class="headerlink" title="专业名词"></a>专业名词</h1><ul>
-<li><strong>Domain：</strong>代表一个通信平面，由Domain ID唯一标识，只有在同一个域内的通信实体才可以通信；如果考虑车内通信，可以只划分1个Domain，也可以按照交互规则或其他规则，定义多个Domain；</li>
-<li><strong>Domain Participant：</strong>代表域内通信的应用程序的本地成员身份，简单来说，就是说明同一数据域内的通信成员；</li>
-<li><strong>Topic：</strong>是数据的抽象概念，由TopicName标识，关联相应数据的数据类型(DataType)，如果把车内所涉及的所有Topic集合在一起，这样就形成一个虚拟的全局数据空间“Global Data Space”，进一步弱化了节点的概念，所以域参与者已经不是节点的概念了；</li>
-<li><strong>DataWriter：</strong>数据写入者，类似缓存，把需要发布的主题数据从应用层写入到DataWriter中；</li>
-<li><strong>DataReader：</strong>数据读取者，同样可以理解为一种缓存，从订阅者得到主题数据，随之传给应用层；</li>
-<li><strong>Publisher：</strong>发布者，发布主题数据，至少与1个DataWriter关联，通过调用DataWriter的相关函数将数据发出去；</li>
-<li><strong>Subscriber：</strong>订阅者，订阅主题数据，至少与1个DataReader关联。当数据到达时，应用程序可能忙于执行其他操作或应用程序只是等待该消息时，这样就会存在两种情况，同步访问和异步通知。</li>
-</ul>
-<h1 id="DPSC模型"><a href="#DPSC模型" class="headerlink" title="DPSC模型"></a>DPSC模型</h1><p><strong>DCPS（Data-Centric Publish-Subscribe）是DDS标准中定义的以数据为中心的订阅-发布模型。在这个模型中，向全局数据空间写入数据的一方称为Publishers和DataWriter，同样地，在全局数据空间中读取数据的一方称为Subscriber和DataReader</strong>。下图中展示了它们之间的逻辑关系。除了DCPS模型，DDS标准中还定义了一套完整的应用程序接口（API），该接口标准是与平台无关的，这意味着不论应用程序使用什么开发语言，或运行在什么平台之上，只要DDS中间件的实现符合DDS标准，那么相关的应用程序即可实现不同平台间的移植。</p>
-<p><img src="https://image.onebug.tech/20220225121143.svg+xml" alt="../../_images/rtps_domain.svg"></p>
-<p>数据的发送过程，简单来说就是应用程序调用DataWriter对象提供的write方法，把数据传递给Publisher对象，而Publisher负责将数据在网络上发送出去。</p>
-<blockquote>
-<p>一个DataWriter只能从属一个Publisher，而Publisher可以拥有多个DataWriter，每一个DataWriter都绑定一个Topic。</p>
-</blockquote>
-<p>数据的接收过程，简单来说就是Subscriber负责从网络上接收数据，并把它存储在对应的DataReader中。</p>
-<blockquote>
-<p>一个DataReader只能从属一个Subscriber，而Subscriber可以拥有多个DataReader，每一个DataReader都绑定一个Topic。</p>
-</blockquote>
-<h1 id="Qos策略"><a href="#Qos策略" class="headerlink" title="Qos策略"></a>Qos策略</h1><p><strong>用户可以通过设置QoS策略来控制数据在应用程序之间共享的方式</strong>，每个DCPS实体，包括Topic，DataWriter，Publisher，DataReader，Subscriber等，都能够独立配置相应的QoS策略。</p>
-<p>下面是几种常用的QoS策略（略）：</p>
-<ul>
-<li>DEADLINE(Topic周期更新)</li>
-<li>LIFESPAN（DataWriter写入的数据样本具有到期时间）</li>
-<li>HISTORY（DataWriter保存并发送旧的采样数据）</li>
-<li>RELIABILITY（”可靠传输”）</li>
-</ul>
-<p><img src="https://image.onebug.tech/202203062318832.jpeg" alt="img"></p>
-<h1 id="RTSP协议"><a href="#RTSP协议" class="headerlink" title="RTSP协议"></a>RTSP协议</h1><p>DDS的标准中并不包含传输层协议，RTPS（Real-Time Publish Subscribe）能够很好的契合DDS协议特点。<strong>RTPS基于多播、无连接的传输模型，这个模型可以映射到不同的传输协议上，如UDP&#x2F;IP（这也是目前RTPS标准中唯一被标准化的传输协议）。</strong></p>
-<p><img src="https://image.onebug.tech/202203062318265.svg+xml" alt="../../_images/transport_comparison.svg"></p>
-<blockquote>
-<p>组播的原理：组播IP地址到底是谁的IP？？ - 车小胖的回答 - 知乎 <a href="https://www.zhihu.com/question/27233903/answer/108374395">https://www.zhihu.com/question/27233903/answer/108374395</a></p>
-</blockquote>
-<p><img src="https://image.onebug.tech/202203062318554.svg+xml" alt="../_images/DDS_concept.svg"></p>
+<p>记录一下今年的几个关键词。</p>
+<p><img src="https://image.onebug.tech/1814cd10abcf5bc06c71c96119b1a7a7.jpg" alt="2025 年终总结"></p>
+<h2 id="一、-止损"><a href="#一、-止损" class="headerlink" title="一、 止损"></a>一、 止损</h2><p>今年做的最正确的一件事，是离开了设计院。</p>
+<p>上半年，身体状况亮起了黄灯。这让我意识到，<strong>任何一份工作，如果需要透支健康来维持，那它在商业模式上对个人来说就是亏损的。</strong> 所谓的“抗压能力”，不应该用来对抗有毒的环境。</p>
+<p>离职后，环境变了，从乙方到了甲方，工作强度确实降下来了，但因为更多承担项目管理的工作，以前更多是管技术实现，现在要管人、管进度、管资源，涉及的知识体系也更为前沿和全面，这对我来说也是全新的挑战。</p>
+<h2 id="二、-远行"><a href="#二、-远行" class="headerlink" title="二、 远行"></a>二、 远行</h2><p>今年走了很多地方。</p>
+<p>从祖国大地南边的防城港、百色、涠洲岛、茂名，到中部的长沙。当然，印象最深的还是西北的新疆。</p>
+<p>当你真正站在祖国西北的大地上，看着那种广阔无垠的地貌时，你会觉得城市里的那些焦虑变得很不真实。</p>
+<p>不管是看海还是看山，本质上都是一种“抽离”。把自己从狭窄的工位上拔出来，放到一个巨大的空间里，人的心境自然会发生变化。</p>
+<h2 id="三、-生活的实感"><a href="#三、-生活的实感" class="headerlink" title="三、 生活的实感"></a>三、 生活的实感</h2><p>在考证方面，拿下了软件设计师。我没有报项目管理的科目，这算是一个策略性的取巧，管理经验我在工作中慢慢补后，再去取一个成果吧。</p>
+<p>生活技能上，今年有两个惊喜和一个遗憾。</p>
+<p>惊喜是学会了露营和做饭。露营让我学会了如何在混乱中建立秩序，而做饭让我找回了对生活的掌控感。看着食材变成美味，是一种非常具体且即时的快乐，比写完一段代码的反馈更直接。</p>
+<p>遗憾的是，游泳还是没学会。有些技能确实需要更多的耐心，明年继续吧。</p>
+<h2 id="四、-镜子"><a href="#四、-镜子" class="headerlink" title="四、 镜子"></a>四、 镜子</h2><p>今年对亲密关系有了新的理解。</p>
+<p>以前总觉得，谈恋爱是两个人的事。现在发现，伴侣其实是自己的一面镜子。</p>
+<p>在与伴侣的相处中，我看到了自己很多未曾察觉的侧面。无论是优点还是缺点，都在这段关系中被放大了。这让我开始重新审视自己，原来我还有这样那样的性格特质。</p>
+<p>透过对方看清自己，这或许是亲密关系最大的价值之一吧。</p>
+<h2 id="五、-小结"><a href="#五、-小结" class="headerlink" title="五、 小结"></a>五、 小结</h2><p>2025 年，我从一个让自己不舒服的环境中逃离，尝试建立新的秩序。</p>
+<p>这一年，我看过了大好河山，也学会了在厨房里寻找安宁。</p>
+<p>27，路还很长，慢慢走，欣赏沿途的风景。</p>
+<p>（完）</p>
 ]]></content>
-      <categories>
-        <category>ROS</category>
-      </categories>
-      <tags>
-        <tag>dds</tag>
-        <tag>ros</tag>
-      </tags>
+  </entry>
+  <entry>
+    <title>vibecoding之我见</title>
+    <url>/2026/03/09/vibecoding%E4%B9%8B%E6%88%91%E8%A7%81/</url>
+    <content><![CDATA[<p>Vibe Coding（直觉编程&#x2F;氛围编程），简单来说，就是开发者不再一行行敲代码，而是通过自然语言与 AI 持续对话，顺着直觉把程序“聊”出来。</p>
+<p>这段时间，我正好在处理一些繁杂的 Python 后端逻辑，并重构了几个 Vue 前端组件，期间大量尝试了这种开发模式。</p>
+<span id="more"></span>
+<p>经过初期的兴奋和随之而来的踩坑，我的总体体会是：<strong>Vibe Coding 并非无所不能的银弹，它本质上是一次工程管理方式的转移。</strong></p>
+<p>并非所有场景都适合让 AI 接管。下面是我总结的几点观察与个人最佳实践。</p>
+<p><img src="https://image.onebug.tech/Gemini_Generated_Image_5m4xo55m4xo55m4x-1773130148911-1.png"></p>
+<hr>
+<h3 id="一、-代码的层次：AI-的边界在哪里？"><a href="#一、-代码的层次：AI-的边界在哪里？" class="headerlink" title="一、 代码的层次：AI 的边界在哪里？"></a>一、 代码的层次：AI 的边界在哪里？</h3><p>在使用 AI 写代码之前，最大的忌讳就是把整个项目像一团乱麻一样丢给它。根据“业务定制化程度”和“AI 生成可靠性”，我们应该将项目代码清晰地解构为三个层次。</p>
+<p><strong>1. 基础设施与工程化代码（底层）</strong> 这是项目的地基，通常属于非功能性需求，有着高度程式化的行业标准。</p>
+<ul>
+<li><strong>例子：</strong> 前端的 Vite 工程配置、Axios 请求拦截器；后端的 Python 运行环境 Dockerfile、SQLAlchemy 数据库连接池初始化，以及 CI&#x2F;CD 流水线脚本。</li>
+<li><strong>策略：完全释放，一键生成。</strong> 这类代码在开源世界有海量标准答案，AI 极少犯错。你可以用几句简单的指令，让 AI 直接把地基打好。</li>
+</ul>
+<p><strong>2. 标准业务模块与通用组件（中层）</strong> 这是日常开发中“重复造轮子”的重灾区。逻辑虽然庞大，但模式相对固定。</p>
+<ul>
+<li><strong>例子：</strong> 基于 JWT 的登录鉴权模块、RBAC 权限系统；前端带有分页与导出功能的 DataGrid 表格、标准的 CRUD 表单模板。</li>
+<li><strong>策略：微调与组装。</strong> 让 AI 生成基础版本，然后通过对话补充业务字段和调整 UI。通常 3 到 4 个回合的对话就能得到满意的结果。</li>
+</ul>
+<p><strong>3. 核心领域逻辑（顶层）</strong> 这是系统的灵魂，包含了项目中独一无二的业务规则。</p>
+<ul>
+<li><strong>例子：</strong> 金融系统中复杂的资金对账与清算算法、涉及多级部门的审批流状态机、动态表单的复杂联动校验。</li>
+<li><strong>策略：严密监控，人工主导。</strong> 绝不能用一句话让 AI 直接写核心逻辑。必须由人类先划定严密的逻辑边界，将大问题拆解为极小的函数，再让 AI 填空。</li>
+</ul>
+<h3 id="二、-思考与执行的分离：双模型协作"><a href="#二、-思考与执行的分离：双模型协作" class="headerlink" title="二、 思考与执行的分离：双模型协作"></a>二、 思考与执行的分离：双模型协作</h3><p>在实际落地中，我发现单一模型往往难以兼顾所有环节。比如 Claude Code 的工程落建能力极强，但在面对模糊的内部需求或缺乏开源语料的非通用领域时，部分第三方模型（比如Minmax、GLM等）在长上下文的逻辑推理上依然存在瓶颈。</p>
+<p>一种比较好的实践是<strong>分离“思考”与“执行”</strong>：</p>
+<p>遇到复杂任务，先使用 Gemini 这类具备强大长文本与逻辑分析能力的模型进行需求澄清。把模糊的想法转化为清晰的结构，理清技术实现路径，最终输出一份确定的“技术设计产物”（Spec）。 拿到这份详尽的“施工图纸”后，再交给工程能力强的模型去完成具体的代码编写。</p>
+<h3 id="三、-流程的尺度：什么时候需要写文档？"><a href="#三、-流程的尺度：什么时候需要写文档？" class="headerlink" title="三、 流程的尺度：什么时候需要写文档？"></a>三、 流程的尺度：什么时候需要写文档？</h3><p>文档（Spec）的轻重，取决于任务的颗粒度和生命周期。</p>
+<ul>
+<li><strong>轻量级介入：</strong> 对于日常修复 Bug、调整 Vue 组件参数，直接用短对话进行 Vibe Coding 即可。强行写详尽的说明书反而丧失了敏捷性。</li>
+<li><strong>重度介入：</strong> 如果面对的是一个全新的重构，或是一次伤筋动骨的大版本迭代，前期的 Spec 绝对不能省。没有清晰的架构规划，AI 最终只会产出一堆看似能跑、实则无法拼接的碎片代码。</li>
+</ul>
+<h3 id="四、-防御性协作：应对-AI-的“失控”"><a href="#四、-防御性协作：应对-AI-的“失控”" class="headerlink" title="四、 防御性协作：应对 AI 的“失控”"></a>四、 防御性协作：应对 AI 的“失控”</h3><p>AI 会遗忘上下文，会产生幻觉，甚至会煞有介事地虚构不存在的 API。在长周期的开发中，我们需要建立一套“防御机制”：</p>
+<ol>
+<li><strong>善用回顾（Insight）：</strong> 在多轮对话后，定期让 AI 总结当前的上下文、已完成的工作和接下来的技术原则，防止它偏离主线。</li>
+<li><strong>打破信息隔离（MCP）：</strong> 很多幻觉来源于 AI 知识库的滞后。配置好联网搜索等 MCP（模型上下文协议）工具，让 AI 实时获取最新的官方文档，这是减少幻觉最有效的物理手段。</li>
+<li><strong>果断回滚（Rewind）：</strong> 如果 AI 开始瞎编逻辑，千万不要试图通过无休止的对话去“纠正”它。错误的上下文只会越积越多。果断回滚到出错前的干净状态。</li>
+<li><strong>守住底线（人工介入）：</strong> 如果 AI 在同一段报错上连续踩坑两三次，立刻停止对话，人工介入审查源码。试图通过写更多的 Prompt 让 AI 自己领悟，消耗的时间往往比自己手写还要长。</li>
+</ol>
+<h3 id="五、-工具的祛魅"><a href="#五、-工具的祛魅" class="headerlink" title="五、 工具的祛魅"></a>五、 工具的祛魅</h3><p>现在社区里经常把各种自定义的技能插件（Skill）吹得天花乱坠。但现实是，每个人的技术栈和项目结构都有其独特性，生搬硬套别人的“最佳实践”往往会水土不服。</p>
+<p>不要过度追求复杂的自动化工具链。大道至简，找到符合自己节奏的提示词（Prompt）习惯，熟练运用官方提供的通用基础能力，比折腾一堆炫酷的插件重要得多。</p>
+<hr>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>Vibe Coding 确实正在重塑开发体验，极大降低了编写“胶水代码”的体力消耗。但也正因如此，它将软件开发的重心<strong>从“如何写代码”转移到了“如何提出正确的问题”</strong>。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>黑五 VPS 购买记录：RackNerd</title>
+    <url>/2025/11/26/%E9%BB%91%E4%BA%94%20VPS%20%E8%B4%AD%E4%B9%B0%E8%AE%B0%E5%BD%95%EF%BC%9ARackNerd/</url>
+    <content><![CDATA[<h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><p>每年的“黑色星期五”（Black Friday），不仅是消费电子产品的促销季，也是海外 VPS（虚拟专用服务器）提供商的重要战场。</p>
+<p>对于开发者和个人用户来说，这是一个以较低成本购入一台海外服务器的好时机。</p>
+<span id="more"></span>
+
+<p>可以用它来搭建个人网站、部署实验性项目，或者学习 Linux 系统管理。</p>
+<p>今年，我选择的是 <strong>RackNerd</strong>。这家提供商在性价比方面口碑不错，尤其适合作为入门的第一台 VPS。</p>
+<p><img src="https://image.onebug.tech/1764208556360-1.jpg" alt="黑五 VPS 购买记录：RackNerd"></p>
+<h3 id="二、为什么选择-RackNerd"><a href="#二、为什么选择-RackNerd" class="headerlink" title="二、为什么选择 RackNerd"></a>二、为什么选择 RackNerd</h3><p>在选择 VPS 时，我主要考虑以下几个因素：</p>
+<ol>
+<li><strong>价格</strong>：年付 10-15 美元左右，是完全可以接受的试错成本。</li>
+<li><strong>支付方式</strong>：支持支付宝，购买流程对国内用户非常友好。</li>
+<li><strong>口碑</strong>：在相关社区有一定知名度，相对稳定，减少“跑路”风险。</li>
+</ol>
+<p>RackNerd 的黑五套餐满足了以上所有条件。我最终选择了 <strong>$10.60&#x2F;年</strong> （实际付款**$9.70**）的套餐，配置如下：</p>
+<ul>
+<li>1 vCPU Core</li>
+<li>1 GB RAM</li>
+<li>25 GB SSD Storage</li>
+<li>2 TB Monthly Bandwidth</li>
+<li>洛杉矶 DC机房</li>
+</ul>
+<p>下单、用支付宝付款，整个过程非常顺畅。几分钟后，就收到了包含服务器 IP 地址、用户名和密码的邮件。</p>
+<h3 id="三、遇到的问题：SSH-登录失败"><a href="#三、遇到的问题：SSH-登录失败" class="headerlink" title="三、遇到的问题：SSH 登录失败"></a>三、遇到的问题：SSH 登录失败</h3><p>按照惯例，我立即尝试通过 SSH 连接服务器。</p>
+<p>然而，连接请求长时间挂起，最终报错 <code>Connection timed out</code>。这通常意味着网络层面的不通，而不是密码错误。</p>
+<p>我进行了简单的排查：</p>
+<ol>
+<li><strong>确认 IP 地址</strong>：无误。</li>
+<li><strong>使用手机热点</strong>：排除本地网络问题，同样失败。</li>
+<li><strong>Ping 测试</strong>：<code>ping 服务器IP</code>，结果也是 100% 丢包。</li>
+</ol>
+<p>情况很明确：从中国大陆地区，根本无法通过 ICMP 和 TCP 22 端口访问到这台新开的服务器。</p>
+<h3 id="四、解决方案：提交工单"><a href="#四、解决方案：提交工单" class="headerlink" title="四、解决方案：提交工单"></a>四、解决方案：提交工单</h3><p>遇到这种自己无法解决的问题，最有效的办法就是联系服务商的客服。RackNerd 是通过“工单”（Ticket）系统来提供支持的。</p>
+<ol>
+<li>登录 RackNerd 客户后台。</li>
+<li>找到 Open Ticket -&gt; Support。</li>
+</ol>
+<p>清晰描述问题：</p>
+<blockquote>
+<p>标题：Unable to Connect to VPS via SSH from Mainland China<br>内容：<br>I am writing to report a persistent issue with SSH connectivity to my VPS from Mainland China. Below are the details:<br>VPS IP Address: xxxx<br>Operating System: xxxx<br>SSH Port: xxxx<br>Problem Description<br>When attempting to SSH into the VPS from networks in Mainland China, the connection times out consistently. This suggests a potential network restriction or routing issue specific to China.</p>
+</blockquote>
+<p>提交工单后，我原本以为需要等待半天甚至更久。但出乎意料的是，<strong>大约 30分钟后，就收到了回复</strong>。</p>
+<p>客服的回复很直接，他们确认了问题，并告知我需要进行一次“迁移”（Migration）来解决网络路由问题。他们提供了一个目标机房（同样是洛杉矶的另一个数据中心），问我是否同意迁移。</p>
+<p>我回复同意后，大约又过了 10 分钟，收到了一封新邮件，通知我服务器已经迁移完成，并附上了<strong>新的 IP 地址</strong>。</p>
+<h3 id="五、问题解决与后续"><a href="#五、问题解决与后续" class="headerlink" title="五、问题解决与后续"></a>五、问题解决与后续</h3><p>使用新的 IP 地址，SSH 连接一次性成功。后续的服务器初始化工作（更新系统、修改 SSH 端口、配置密钥登录、安装必备软件）都进行得非常顺利。</p>
+<p><strong>总结一下这次经历：</strong></p>
+<ol>
+<li><strong>问题</strong>：新购的 RackNerd VPS 可能因网络路由或防火墙策略，导致从中国大陆无法直接连接。</li>
+<li><strong>解决</strong>：通过后台提交工单是唯一正确的途径。客服响应迅速，通过迁移机房（更换IP）解决了问题。</li>
+<li><strong>启示</strong>：对于海外 VPS，遇到初始连接问题并不罕见。保持耐心，积极与客服沟通，通常都能得到解决。RackNerd 的工单响应速度给我留下了不错的印象。</li>
+</ol>
+<h3 id="六、服务器安全加固"><a href="#六、服务器安全加固" class="headerlink" title="六、服务器安全加固"></a>六、服务器安全加固</h3><p>登录新购买的 VPS 后，我立即开始进行安全加固。一个刚开通的服务器如果保持默认设置，很快就会被网络上的自动化脚本发现并攻击。</p>
+<p>我的加固工作主要围绕三个核心措施：隐匿、强化认证和最小化暴露面。</p>
+<p><strong>1. 修改 SSH 端口</strong></p>
+<p>首先，我将 SSH 默认的 22 端口改为一个不常见的高位端口。这是最基础的隐匿措施，可以避开大部分自动化扫描。</p>
+<p>修改配置文件后，我遇到了一个特殊情况：执行重启 SSH 服务的命令时失败了。经过排查，发现这个系统使用 <strong>systemd socket activation</strong> 机制运行 SSH 服务。</p>
+<p>这种机制的特点是：平时不运行 sshd 守护进程，只有当有连接请求到达 22 端口时，才临时启动服务。这与传统的常驻进程模式不同，导致标准的服务管理命令无法正常工作。</p>
+<p>解决方法是将 SSH 服务从 socket 激活模式切换到传统的守护进程模式。切换后，新端口立即生效。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 禁用 socket 激活，改为标准的常驻守护进程模式</span><br><span class="line">sudo systemctl enable ssh.service</span><br><span class="line">sudo systemctl start ssh.service</span><br><span class="line">sudo systemctl disable ssh.socket</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 强制使用密钥认证</strong></p>
+<p>端口修改完成后，下一步是彻底禁用密码登录，强制使用 SSH 密钥认证。密钥认证比密码安全得多，因为它几乎不可能被暴力破解。</p>
+<p>我先将本地的公钥上传到服务器，然后在配置文件中关闭密码认证功能。这样，服务器就只认密钥不认密码了。</p>
+<p><strong>3. 配置防火墙</strong></p>
+<p>最后，我设置了防火墙规则，采用”默认拒绝”的策略：禁止所有传入连接，只单独开放 SSH 管理端口。</p>
+<p>这种最小化暴露面的做法，确保服务器只对外开放绝对必要的服务端口。</p>
+<h3 id="七、参考资料"><a href="#七、参考资料" class="headerlink" title="七、参考资料"></a>七、参考资料</h3><blockquote>
+<p> <a href="https://uuzi.net/racknerd-black-friday-2025-review/?ref=blog.onebug.tech#RackNerd_2025">年轻人的第一台 VPS：RackNerd 2025 黑五大促，10美元开启数字自由 - 兔哥博客</a></p>
+<p><a href="https://www.racknerd.com/">RackNerd - Introducing Infrastructure Stability</a></p>
+</blockquote>
+]]></content>
   </entry>
   <entry>
     <title>ROS2备忘录</title>
@@ -355,6 +448,106 @@
       </tags>
   </entry>
   <entry>
+    <title>ROS的基础——DDS</title>
+    <url>/2022/02/01/ROS/DDS/</url>
+    <content><![CDATA[<p>DDS（数据分发服务）是一套通信协议和API标准，以数据为中心是他的特点，它基于发布-订阅模型进行设计。而FastRTPS是<em>eProsima</em>公司对DDS的一个开源实现。DDS是一套中间件，提供介于操作系统和应用程序之间的功能，提供了低延迟、高可靠的通信以及可扩展的架构。DDS其实分为两部分，一部分是DDS规范，一部份则是DDSI-RTPS协议，是一个互操作性协议，也就是真正实现通讯机制的部分，在ROS2中，也正是这部分，取代了ROS1的TCPROS和UDPROS。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>所谓互操作性协议，就是为了满足互操作性而产生的一个协议，互操作性就是指两个实体的通信能力，如果两个实体之间能够在任何情况下都无误解的进行通信，那么我们就说这两个实体可以正确的互操作。</p>
+</blockquote>
+<p>DDS的架构是这个样子的：</p>
+<p><img src="https://image.onebug.tech/202202241359562.svg+xml" alt="../../_images/library_overview.svg"></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><strong>DDS实现的数据共享可以理解成一个抽象的全局数据空间，任何应用程序，不论开发语言，或者运行的操作系统类型，都可以通过相同的方式访问这个全局数据空间，就好像访问本地的存储空间一样。</strong>当然全局数据空间仅仅是一个抽象的概念，在实现时仍然是分别存储在每个应用程序的本地空间当中。在系统运行时，数据是按需传输或存储的，数据的发布者仅仅发送对方需要的数据，而订阅者仅接收并存储本地应用程序当前需要的数据。</p>
+<p><strong>DDS还提供了非常灵活的QoS策略</strong>，以满足用户对数据共享方式的不同需求，比如可靠性，故障处理等等。针对数据安全性要求比较高的系统，<strong>DDS还提供了细颗粒度的数据安全控制</strong>，包括应用程序身份认证，权限控制，数据加密等等。</p>
+<p><strong>DDS提供了对数据发布者和订阅者的动态发现机制</strong>，这意味着用户不必去配置通信节点的地址或其他属性信息，因为他们在运行的过程中会自动发现对方，并自动完成相关配置，即实现了即插即用。</p>
+<h1 id="专业名词"><a href="#专业名词" class="headerlink" title="专业名词"></a>专业名词</h1><ul>
+<li><strong>Domain：</strong>代表一个通信平面，由Domain ID唯一标识，只有在同一个域内的通信实体才可以通信；如果考虑车内通信，可以只划分1个Domain，也可以按照交互规则或其他规则，定义多个Domain；</li>
+<li><strong>Domain Participant：</strong>代表域内通信的应用程序的本地成员身份，简单来说，就是说明同一数据域内的通信成员；</li>
+<li><strong>Topic：</strong>是数据的抽象概念，由TopicName标识，关联相应数据的数据类型(DataType)，如果把车内所涉及的所有Topic集合在一起，这样就形成一个虚拟的全局数据空间“Global Data Space”，进一步弱化了节点的概念，所以域参与者已经不是节点的概念了；</li>
+<li><strong>DataWriter：</strong>数据写入者，类似缓存，把需要发布的主题数据从应用层写入到DataWriter中；</li>
+<li><strong>DataReader：</strong>数据读取者，同样可以理解为一种缓存，从订阅者得到主题数据，随之传给应用层；</li>
+<li><strong>Publisher：</strong>发布者，发布主题数据，至少与1个DataWriter关联，通过调用DataWriter的相关函数将数据发出去；</li>
+<li><strong>Subscriber：</strong>订阅者，订阅主题数据，至少与1个DataReader关联。当数据到达时，应用程序可能忙于执行其他操作或应用程序只是等待该消息时，这样就会存在两种情况，同步访问和异步通知。</li>
+</ul>
+<h1 id="DPSC模型"><a href="#DPSC模型" class="headerlink" title="DPSC模型"></a>DPSC模型</h1><p><strong>DCPS（Data-Centric Publish-Subscribe）是DDS标准中定义的以数据为中心的订阅-发布模型。在这个模型中，向全局数据空间写入数据的一方称为Publishers和DataWriter，同样地，在全局数据空间中读取数据的一方称为Subscriber和DataReader</strong>。下图中展示了它们之间的逻辑关系。除了DCPS模型，DDS标准中还定义了一套完整的应用程序接口（API），该接口标准是与平台无关的，这意味着不论应用程序使用什么开发语言，或运行在什么平台之上，只要DDS中间件的实现符合DDS标准，那么相关的应用程序即可实现不同平台间的移植。</p>
+<p><img src="https://image.onebug.tech/20220225121143.svg+xml" alt="../../_images/rtps_domain.svg"></p>
+<p>数据的发送过程，简单来说就是应用程序调用DataWriter对象提供的write方法，把数据传递给Publisher对象，而Publisher负责将数据在网络上发送出去。</p>
+<blockquote>
+<p>一个DataWriter只能从属一个Publisher，而Publisher可以拥有多个DataWriter，每一个DataWriter都绑定一个Topic。</p>
+</blockquote>
+<p>数据的接收过程，简单来说就是Subscriber负责从网络上接收数据，并把它存储在对应的DataReader中。</p>
+<blockquote>
+<p>一个DataReader只能从属一个Subscriber，而Subscriber可以拥有多个DataReader，每一个DataReader都绑定一个Topic。</p>
+</blockquote>
+<h1 id="Qos策略"><a href="#Qos策略" class="headerlink" title="Qos策略"></a>Qos策略</h1><p><strong>用户可以通过设置QoS策略来控制数据在应用程序之间共享的方式</strong>，每个DCPS实体，包括Topic，DataWriter，Publisher，DataReader，Subscriber等，都能够独立配置相应的QoS策略。</p>
+<p>下面是几种常用的QoS策略（略）：</p>
+<ul>
+<li>DEADLINE(Topic周期更新)</li>
+<li>LIFESPAN（DataWriter写入的数据样本具有到期时间）</li>
+<li>HISTORY（DataWriter保存并发送旧的采样数据）</li>
+<li>RELIABILITY（”可靠传输”）</li>
+</ul>
+<p><img src="https://image.onebug.tech/202203062318832.jpeg" alt="img"></p>
+<h1 id="RTSP协议"><a href="#RTSP协议" class="headerlink" title="RTSP协议"></a>RTSP协议</h1><p>DDS的标准中并不包含传输层协议，RTPS（Real-Time Publish Subscribe）能够很好的契合DDS协议特点。<strong>RTPS基于多播、无连接的传输模型，这个模型可以映射到不同的传输协议上，如UDP&#x2F;IP（这也是目前RTPS标准中唯一被标准化的传输协议）。</strong></p>
+<p><img src="https://image.onebug.tech/202203062318265.svg+xml" alt="../../_images/transport_comparison.svg"></p>
+<blockquote>
+<p>组播的原理：组播IP地址到底是谁的IP？？ - 车小胖的回答 - 知乎 <a href="https://www.zhihu.com/question/27233903/answer/108374395">https://www.zhihu.com/question/27233903/answer/108374395</a></p>
+</blockquote>
+<p><img src="https://image.onebug.tech/202203062318554.svg+xml" alt="../_images/DDS_concept.svg"></p>
+]]></content>
+      <categories>
+        <category>ROS</category>
+      </categories>
+      <tags>
+        <tag>ros</tag>
+        <tag>dds</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ros2与dds</title>
+    <url>/2022/02/13/ROS/ros2dds/</url>
+    <content><![CDATA[<p>在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。</p>
+<p>使用端到端中间件（如DDS）的好处是，需要维护的代码要少得多，而且中间件的行为和确切规格已经被提炼成文档。有了这种具体的规范，第三方可以审查、审计和实施具有不同程度的互操作性的中间件。此外，如果要从现有的库中构建一个新的中间件，无论如何都需要创建这种类型的规范。</p>
+<span id="more"></span>
+
+<h1 id="什么是DDS"><a href="#什么是DDS" class="headerlink" title="什么是DDS"></a>什么是DDS</h1><p><strong>DDS提供了一个发布-订阅的传输（publish-subscribe transport ）</strong>，这与ROS1的发布-订阅的传输非常相似。<strong>DDS使用OMG定义的接口描述语言进行消息定义和序列化。</strong></p>
+<p>类似于ROS的服务系统，DDS有一个请求-响应式的传输（request-response style transport）。</p>
+<p><strong>DDS提供的发现系统是一个分布式发现系统，这允许任何两个DDS程序进行通信，而不需要像ROS1 master那样的工具。</strong>这使得系统的容错性和灵活性更高。同时，DDS不需要使用动态发现机制，多个DDS供应商提供了静态发现的选项。</p>
+<h2 id="技术上的可行性"><a href="#技术上的可行性" class="headerlink" title="技术上的可行性"></a>技术上的可行性</h2><p>DDSI-RTPS非常灵活，允许它用于可靠的、高水平的系统集成以及嵌入式设备上的实时应用。<strong>由于DDS默认是在UDP上实现的，它不依赖于可靠的传输或硬件进行通信。这意味着DDS必须重新发明可靠性轮子（基本上是TCP加上或减去一些功能），但作为交换，DDS获得了便携性和对行为的控制。通过对几个可靠性参数的控制，即DDS所说的服务质量（QoS），为控制通信行为提供了最大的灵活性。</strong></p>
+<blockquote>
+<p>尽管DDS的默认实现是通过UDP，并且只要求传输的功能水平，但有供应商支持通过TCP实现的DDS。</p>
+</blockquote>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><strong>eProsima的FastRTPS实现可在GitHub上获得</strong>，并获得LGPL许可。</p>
+<p><a href="https://github.com/eProsima/Fast-RTPS">https://github.com/eProsima/Fast-RTPS</a></p>
+<h1 id="构建在DDS上的ROS"><a href="#构建在DDS上的ROS" class="headerlink" title="构建在DDS上的ROS"></a>构建在DDS上的ROS</h1><p>ROS 2将在DDS之上提供一个类似于ROS 1的接口，为大多数ROS用户隐藏了DDS的复杂性，但又为那些有极端用例或需要与其他现有DDS系统集成的用户单独提供对底层DDS实现的访问。</p>
+<p><img src="https://image.onebug.tech/202203062322524.png" alt="DDS and ROS API Layout"></p>
+<h2 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h2><p>DDS将完全取代ROS1基于主控的发现系统。ROS需要利用DDS的API来获取信息，如所有节点的列表，所有主题的列表，以及它们是如何连接的。对这些信息的访问将被隐藏在ROS定义的API后面，防止用户直接调用DDS。</p>
+<p><strong>DDS发现系统的优点是，在默认情况下，它是完全分布式的，不会出现中央故障点</strong>。DDS还允许用户在其发现系统中定义元数据，这将使ROS能够在发布-订阅上附加更高级别的概念。</p>
+<h2 id="发布-订阅传输"><a href="#发布-订阅传输" class="headerlink" title="发布-订阅传输"></a>发布-订阅传输</h2><p>DDSI-RTPS协议取代ROS的TCPROS和UDPROS线协议，用于发布&#x2F;订阅。DDS API为ROS的典型发布&#x2F;订阅模式提供了更多的参与者。 </p>
+<p>DDS的主题（Topic）与ROS中的主题概念相似。</p>
+<p><strong>DDS中的参与者（Participant）ROS的节点（Node）概念相似</strong>。但在DDS中，节点会被表示为独立的代码对象，既不是订阅者也不是发布者。</p>
+<p><img src="https://image.onebug.tech/202202241356558.svg+xml" alt="../../_images/dds_domain.svg"></p>
+<h2 id="高效的传输方式"><a href="#高效的传输方式" class="headerlink" title="高效的传输方式"></a>高效的传输方式</h2><p>在ROS 1中，没有一个标准的共享内存传输，如果有任务需要比本地主机TCP更快的速度时，可以使用Nodelets。Nodelets允许发布者和订阅者通过传递<code>boost::shared_ptrs</code>到消息中来共享数据。这种进程内的通信几乎比任何进程间的通信选项更快，而且与网络发布-订阅实现向兼容。</p>
+<p><strong>大多数DDS供应商会以透明的方式使用共享内存来优化消息流量（甚至在进程之间），只在离开Localhost时使用有线协议和UDP套接字</strong>，这为DDS提供了相当大的性能提升。</p>
+<h2 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h2><p>目前的ROS消息定义有很大的价值。格式很简单，而且消息本身已经在机器人社区的多年使用中得到了发展。当前ROS代码的大部分语义内容都是由这些消息的结构和内容驱动的，因此保留消息的格式和内存表示法具有很大的价值。为了达到这个目标，<strong>ROS 2保留ROS 1那样的消息定义和内存表示</strong>。</p>
+<p>因此，<strong>ROS 1的<code>.msg</code>文件将继续使用，.msg文件会被转换为<code>.idl</code>文件，以便它们可以被DDS使用。</strong>ROS 2 API将专门处理内存中的<code>.msg</code>风格的消息对象，并在发布前将其转换为.idl对象。</p>
+<p><img src="https://image.onebug.tech/202203062320088.png" alt="Message Generation Diagram"></p>
+<blockquote>
+<p>在每次调用发布时将消息逐字段转换为另一种对象类型的似乎是一个巨大的性能问题，但实验表明，与序列化的成本相比，这种转换的成本是微不足道的。</p>
+</blockquote>
+<h2 id="语言支持"><a href="#语言支持" class="headerlink" title="语言支持"></a>语言支持</h2><p>DDS供应商通常至少提供C、C++和Java的实现，因为这些语言的API是由DDS规范明确定义的。ROS 2系统的其中一个目标是提供功能完整的C语言API，开发人员可以将C语言的API包装成一个像Python、Ruby和Lisp这样的语言。</p>
+<h2 id="DDS实现的依赖"><a href="#DDS实现的依赖" class="headerlink" title="DDS实现的依赖"></a>DDS实现的依赖</h2><p>ROS 2的目标之一是要尽量减少依赖的数量，以提高可移植性并保持精简的依赖列表。</p>
+<p>DDS的一个亮点，就是依赖的精简。DDS的C语言实现只依赖于系统库，C++实现只依赖于C++03编译器，而Java实现只需要JVM和Java标准库。在Ubuntu和OS X上，OpenSplice（其中一种实现）的C、C++、Java和C#实现加在一起，其大小不到3兆字节，并且没有其他依赖性。就依赖的精简性而言，DDS非常有吸引力。</p>
+]]></content>
+      <categories>
+        <category>ROS2</category>
+      </categories>
+      <tags>
+        <tag>ros</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux备忘录</title>
     <url>/2020/06/27/linux/linux%E5%A4%87%E5%BF%98%E5%BD%95/</url>
     <content><![CDATA[<p>Linux备忘录，记录经常忘记的一些命令以及概念。</p>
@@ -478,49 +671,6 @@
       <tags>
         <tag>linux</tag>
         <tag>备忘录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ros2与dds</title>
-    <url>/2022/02/13/ROS/ros2dds/</url>
-    <content><![CDATA[<p>在探索ROS下一代通信系统的选项时，最初的选择是改进ROS 1的传输，或者使用ZeroMQ、Protocol Buffers和zeroconf（Bonjour&#x2F;Avahi）等组件库构建一个新的中间件。然而，除了这些选项（这两个选项都涉及到我们从头开始构建一个中间件），ROS项目组还考虑了其他端到端的中间件。在研究中，一个中间件脱颖而出，那就是DDS。</p>
-<p>使用端到端中间件（如DDS）的好处是，需要维护的代码要少得多，而且中间件的行为和确切规格已经被提炼成文档。有了这种具体的规范，第三方可以审查、审计和实施具有不同程度的互操作性的中间件。此外，如果要从现有的库中构建一个新的中间件，无论如何都需要创建这种类型的规范。</p>
-<span id="more"></span>
-
-<h1 id="什么是DDS"><a href="#什么是DDS" class="headerlink" title="什么是DDS"></a>什么是DDS</h1><p><strong>DDS提供了一个发布-订阅的传输（publish-subscribe transport ）</strong>，这与ROS1的发布-订阅的传输非常相似。<strong>DDS使用OMG定义的接口描述语言进行消息定义和序列化。</strong></p>
-<p>类似于ROS的服务系统，DDS有一个请求-响应式的传输（request-response style transport）。</p>
-<p><strong>DDS提供的发现系统是一个分布式发现系统，这允许任何两个DDS程序进行通信，而不需要像ROS1 master那样的工具。</strong>这使得系统的容错性和灵活性更高。同时，DDS不需要使用动态发现机制，多个DDS供应商提供了静态发现的选项。</p>
-<h2 id="技术上的可行性"><a href="#技术上的可行性" class="headerlink" title="技术上的可行性"></a>技术上的可行性</h2><p>DDSI-RTPS非常灵活，允许它用于可靠的、高水平的系统集成以及嵌入式设备上的实时应用。<strong>由于DDS默认是在UDP上实现的，它不依赖于可靠的传输或硬件进行通信。这意味着DDS必须重新发明可靠性轮子（基本上是TCP加上或减去一些功能），但作为交换，DDS获得了便携性和对行为的控制。通过对几个可靠性参数的控制，即DDS所说的服务质量（QoS），为控制通信行为提供了最大的灵活性。</strong></p>
-<blockquote>
-<p>尽管DDS的默认实现是通过UDP，并且只要求传输的功能水平，但有供应商支持通过TCP实现的DDS。</p>
-</blockquote>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><strong>eProsima的FastRTPS实现可在GitHub上获得</strong>，并获得LGPL许可。</p>
-<p><a href="https://github.com/eProsima/Fast-RTPS">https://github.com/eProsima/Fast-RTPS</a></p>
-<h1 id="构建在DDS上的ROS"><a href="#构建在DDS上的ROS" class="headerlink" title="构建在DDS上的ROS"></a>构建在DDS上的ROS</h1><p>ROS 2将在DDS之上提供一个类似于ROS 1的接口，为大多数ROS用户隐藏了DDS的复杂性，但又为那些有极端用例或需要与其他现有DDS系统集成的用户单独提供对底层DDS实现的访问。</p>
-<p><img src="https://image.onebug.tech/202203062322524.png" alt="DDS and ROS API Layout"></p>
-<h2 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h2><p>DDS将完全取代ROS1基于主控的发现系统。ROS需要利用DDS的API来获取信息，如所有节点的列表，所有主题的列表，以及它们是如何连接的。对这些信息的访问将被隐藏在ROS定义的API后面，防止用户直接调用DDS。</p>
-<p><strong>DDS发现系统的优点是，在默认情况下，它是完全分布式的，不会出现中央故障点</strong>。DDS还允许用户在其发现系统中定义元数据，这将使ROS能够在发布-订阅上附加更高级别的概念。</p>
-<h2 id="发布-订阅传输"><a href="#发布-订阅传输" class="headerlink" title="发布-订阅传输"></a>发布-订阅传输</h2><p>DDSI-RTPS协议取代ROS的TCPROS和UDPROS线协议，用于发布&#x2F;订阅。DDS API为ROS的典型发布&#x2F;订阅模式提供了更多的参与者。 </p>
-<p>DDS的主题（Topic）与ROS中的主题概念相似。</p>
-<p><strong>DDS中的参与者（Participant）ROS的节点（Node）概念相似</strong>。但在DDS中，节点会被表示为独立的代码对象，既不是订阅者也不是发布者。</p>
-<p><img src="https://image.onebug.tech/202202241356558.svg+xml" alt="../../_images/dds_domain.svg"></p>
-<h2 id="高效的传输方式"><a href="#高效的传输方式" class="headerlink" title="高效的传输方式"></a>高效的传输方式</h2><p>在ROS 1中，没有一个标准的共享内存传输，如果有任务需要比本地主机TCP更快的速度时，可以使用Nodelets。Nodelets允许发布者和订阅者通过传递<code>boost::shared_ptrs</code>到消息中来共享数据。这种进程内的通信几乎比任何进程间的通信选项更快，而且与网络发布-订阅实现向兼容。</p>
-<p><strong>大多数DDS供应商会以透明的方式使用共享内存来优化消息流量（甚至在进程之间），只在离开Localhost时使用有线协议和UDP套接字</strong>，这为DDS提供了相当大的性能提升。</p>
-<h2 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h2><p>目前的ROS消息定义有很大的价值。格式很简单，而且消息本身已经在机器人社区的多年使用中得到了发展。当前ROS代码的大部分语义内容都是由这些消息的结构和内容驱动的，因此保留消息的格式和内存表示法具有很大的价值。为了达到这个目标，<strong>ROS 2保留ROS 1那样的消息定义和内存表示</strong>。</p>
-<p>因此，<strong>ROS 1的<code>.msg</code>文件将继续使用，.msg文件会被转换为<code>.idl</code>文件，以便它们可以被DDS使用。</strong>ROS 2 API将专门处理内存中的<code>.msg</code>风格的消息对象，并在发布前将其转换为.idl对象。</p>
-<p><img src="https://image.onebug.tech/202203062320088.png" alt="Message Generation Diagram"></p>
-<blockquote>
-<p>在每次调用发布时将消息逐字段转换为另一种对象类型的似乎是一个巨大的性能问题，但实验表明，与序列化的成本相比，这种转换的成本是微不足道的。</p>
-</blockquote>
-<h2 id="语言支持"><a href="#语言支持" class="headerlink" title="语言支持"></a>语言支持</h2><p>DDS供应商通常至少提供C、C++和Java的实现，因为这些语言的API是由DDS规范明确定义的。ROS 2系统的其中一个目标是提供功能完整的C语言API，开发人员可以将C语言的API包装成一个像Python、Ruby和Lisp这样的语言。</p>
-<h2 id="DDS实现的依赖"><a href="#DDS实现的依赖" class="headerlink" title="DDS实现的依赖"></a>DDS实现的依赖</h2><p>ROS 2的目标之一是要尽量减少依赖的数量，以提高可移植性并保持精简的依赖列表。</p>
-<p>DDS的一个亮点，就是依赖的精简。DDS的C语言实现只依赖于系统库，C++实现只依赖于C++03编译器，而Java实现只需要JVM和Java标准库。在Ubuntu和OS X上，OpenSplice（其中一种实现）的C、C++、Java和C#实现加在一起，其大小不到3兆字节，并且没有其他依赖性。就依赖的精简性而言，DDS非常有吸引力。</p>
-]]></content>
-      <categories>
-        <category>ROS2</category>
-      </categories>
-      <tags>
-        <tag>ros</tag>
       </tags>
   </entry>
   <entry>
@@ -897,51 +1047,40 @@
       </tags>
   </entry>
   <entry>
-    <title>git备忘录</title>
-    <url>/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/</url>
-    <content><![CDATA[<h1 id="Git-LFS"><a href="#Git-LFS" class="headerlink" title="Git LFS"></a>Git LFS</h1><p>Git LFS（Large File Storage，大文件存储）协议，可以把音乐、图片、视频等指定的任意大文件资源存储在Git仓库之外，对于使用者而言，类似在操作一个完整的Git仓库，非常方便。通过将大文件存储在Git原有的数据结构之中，可以减小Git仓库本身的体积，使克隆Git仓库的速度加快，也使得Git不会因为仓库中充满大文件而损失性能。</p>
+    <title>顶级域名注册</title>
+    <url>/2020/06/24/%E7%BD%91%E7%AB%99/freenom/</url>
+    <content><![CDATA[<p>众所周知，<a href="https://freenom.com/">Freenom</a>是地球上唯一一个提供免费顶级域名的商家，不过需要每年续期，每次续期最多一年，而管理界面并不是很人性化。下面介绍如何注册一个免费的顶级域名，使用github action 自动续费，以及托管于cloudflare。</p>
 <span id="more"></span>
 
-<p><img src="https://image.onebug.tech/202202241351274.gif" alt="a diagram showing how Git LFS works"></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash</span><br><span class="line">sudo apt-get install git-lfs</span><br><span class="line">git lfs install</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置追踪文件"><a href="#配置追踪文件" class="headerlink" title="配置追踪文件"></a>配置追踪文件</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#追踪所有后缀名为“.mp4”的文件：</span></span><br><span class="line">git lfs track <span class="string">&quot;*.MP4&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看已追踪的文件，已经追踪的文件保存在“.gitattributes”中</span></span><br><span class="line">git lfs track</span><br></pre></td></tr></table></figure>
-
-<h2 id="提交大文件"><a href="#提交大文件" class="headerlink" title="提交大文件"></a>提交大文件</h2><p>提交代码时需要将“.gitattributes”文件也提交到仓库，提交完成后，就可以和原有操作一样使用git的提交功能。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#提交</span></span><br><span class="line">git push origin master</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看 LFS 跟踪的文件列表</span></span><br><span class="line">git lfs ls-files</span><br></pre></td></tr></table></figure>
-
-<h1 id="Gitlab-CI-x2F-CD"><a href="#Gitlab-CI-x2F-CD" class="headerlink" title="Gitlab CI&#x2F;CD"></a>Gitlab CI&#x2F;CD</h1><p>GitLab CI&#x2F;CD 是一个内置在GitLab中的工具，用于通过持续方法进行软件开发：</p>
+<h3 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h3><p>注册教程参见<a href="https://zhuanlan.zhihu.com/p/109553641">https://zhuanlan.zhihu.com/p/109553641</a>，需要注意的是：</p>
 <ul>
-<li>Continuous Integration (CI) 持续集成</li>
-<li>Continuous Delivery (CD)   持续交付</li>
-<li>Continuous Deployment (CD)  持续部署</li>
+<li>注册过程中你的ip地址要全程保持不变</li>
+<li>个人信息可以瞎填，但是<strong>国家</strong>信息尽量与你的ip地址相对应</li>
+<li>账号注册成功后，如果在申请顶级域名的过程中出现问题的话，多刷新几次，或者等一天再回来申请，还不成功可以尝试给freenom发封邮件，附上自己的<strong>customer id</strong>（我几乎没遇到问题就是了）</li>
 </ul>
-<p>持续集成的工作原理是将小的代码块推送到Git仓库中托管的应用程序代码库中，并且每次推送时，都要运行一系列脚本来构建、测试和验证代码更改，然后再将其合并到主分支中。</p>
-<p>持续交付和部署相当于更进一步的CI，可以在每次推送到仓库默认分支的同时将应用程序部署到生产环境。</p>
-<p><img src="https://image.onebug.tech/202202241351844.png" alt="img"></p>
-<h2 id="gitlab-ci-yml"><a href="#gitlab-ci-yml" class="headerlink" title=".gitlab-ci.yml"></a>.gitlab-ci.yml</h2><p>了使用GitLab CI&#x2F;CD，你需要一个托管在GitLab上的应用程序代码库，并且在根目录中的.gitlab-ci.yml文件中指定构建、测试和部署的脚本。一旦你已经添加了.gitlab-ci.yml到仓库中，GitLab将检测到该文件，并使用名为GitLab Runner的工具运行你的脚本。该工具的操作与终端类似。这些脚本被分组到jobs，它们共同组成一个pipeline。一个最简单的.gitlab-ci.yml文件可能是这样的：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">before_script: </span><br><span class="line">  - apt-get install rubygems ruby-dev -y </span><br><span class="line"></span><br><span class="line">run-test: </span><br><span class="line">  script: </span><br><span class="line">    - ruby --version 6</span><br></pre></td></tr></table></figure>
-
-<p>before_script属性将在运行任何内容之前为你的应用安装依赖，一个名为run-test的job（作业）将打印当前系统的Ruby版本。二者共同构成了在每次推送到仓库的任何分支时都会被触发的Pipeline（管道）。</p>
-<h2 id="Runner"><a href="#Runner" class="headerlink" title="Runner"></a>Runner</h2><p>在GitLab中，Runner运行你定义在.gitlab-ci.yml中的作业（job）。一个Runner可以是一个虚拟机、物理机、docker容器，或者一个容器集群。GitLab与Runner之间通过API进行通信，因此只需要Runner所在的机器有网络并且可以访问GitLab服务器即可。在成功配置Runner以后，你应该可以看到你最近的提交的状态 。</p>
-<blockquote>
-<p><a href="https://support.huaweicloud.com/usermanual-codehub/devcloud_hlp_0960.html">Git LFS使用_代码托管 CodeHub_用户指南_更多Git知识_华为云 (huaweicloud.com)</a></p>
-<p><a href="https://www.cnblogs.com/cjsblog/p/12256843.html">GitLab CI&#x2F;CD - 废物大师兄 - 博客园 (cnblogs.com)</a></p>
-</blockquote>
-<h1 id="Git初始化"><a href="#Git初始化" class="headerlink" title="Git初始化"></a>Git初始化</h1><h2 id="设置用户名"><a href="#设置用户名" class="headerlink" title="设置用户名"></a>设置用户名</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;username&quot;</span></span><br><span class="line">git config --global user.email useremail@xxx.com </span><br></pre></td></tr></table></figure>
-
-<h2 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global https.proxy http://127.0.0.1:1080</span><br><span class="line">git config --global https.proxy https://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
-
-<h2 id="记住github-x2F-gitlab账号密码"><a href="#记住github-x2F-gitlab账号密码" class="headerlink" title="记住github&#x2F;gitlab账号密码"></a>记住github&#x2F;gitlab账号密码</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global credential.helper store</span><br></pre></td></tr></table></figure>
-
+<h3 id="使用cloudflare管理域名"><a href="#使用cloudflare管理域名" class="headerlink" title="使用cloudflare管理域名"></a>使用<a href="https://www.cloudflare.com/">cloudflare</a>管理域名</h3><p>直接按照cloudflare的提示进行操作，非常简单，无非就是修改DNS服务器地址。添加域名的时候，如果出现<code>XXX is not a registered domain</code>的错误，要先在freenom管理页面随便添加一条解析记录，然后才能在cloudflare处继续操作。freenom更改DNS服务器一般需要一天时间，这段时间cloudflare上的域名状态会一直显示<code>Pending Nameserver Update</code>，你只需要等待就行。</p>
+<p>如果你只需要域名解析服务，注意添加域名解析时不要点亮小云朵，使用<strong>dns only</strong>就可以了。</p>
+<p><img src="https://image.onebug.tech/image-20200624103558605.png-d" alt="image-20200624103558605"></p>
+<h3 id="使用github-action自动续期"><a href="#使用github-action自动续期" class="headerlink" title="使用github action自动续期"></a>使用<a href="http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html">github action</a>自动续期</h3><ul>
+<li><p>fork项目<a href="https://github.com/luolongfei/freenom">https://github.com/luolongfei/freenom</a> </p>
+</li>
+<li><p>查看<a href="https://github.com/lsqls/freenom#--%E6%9C%AC%E9%A1%B9%E7%9B%AE%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">项目使用方法</a></p>
+</li>
+<li><p>设置<strong>Secrets</strong></p>
+</li>
+<li><p>启用github action</p>
+</li>
+</ul>
+<p>附上一张我的<strong>Secrets</strong>截图 ，我是直接把邮件通知关了<code>MAIL_EBABLE=false</code>（如果你需要这个功能，请自行设置）</p>
+<p><img src="https://image.onebug.tech/image-20200624104312825.png-d" alt="image-20200624104312825"></p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>免费的就是最贵的，而且还不能保证稳定。我就遇到域名被污染的情况，最后通过重新注册才解决该问题。域名这玩意并不贵，我的建议是嫌麻烦直接去<a href="https://sg.godaddy.com/zh">godday</a>购买一个首年域名，价格不会超过10RMB。</p>
 ]]></content>
       <categories>
-        <category>工具</category>
+        <category>网站</category>
       </categories>
       <tags>
-        <tag>git</tag>
-        <tag>git lfs</tag>
-        <tag>ci/cd</tag>
+        <tag>域名</tag>
+        <tag>cloudflare</tag>
       </tags>
   </entry>
   <entry>
@@ -989,43 +1128,6 @@
         <tag>docker</tag>
         <tag>gpu</tag>
         <tag>gui</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>顶级域名注册</title>
-    <url>/2020/06/24/%E7%BD%91%E7%AB%99/freenom/</url>
-    <content><![CDATA[<p>众所周知，<a href="https://freenom.com/">Freenom</a>是地球上唯一一个提供免费顶级域名的商家，不过需要每年续期，每次续期最多一年，而管理界面并不是很人性化。下面介绍如何注册一个免费的顶级域名，使用github action 自动续费，以及托管于cloudflare。</p>
-<span id="more"></span>
-
-<h3 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h3><p>注册教程参见<a href="https://zhuanlan.zhihu.com/p/109553641">https://zhuanlan.zhihu.com/p/109553641</a>，需要注意的是：</p>
-<ul>
-<li>注册过程中你的ip地址要全程保持不变</li>
-<li>个人信息可以瞎填，但是<strong>国家</strong>信息尽量与你的ip地址相对应</li>
-<li>账号注册成功后，如果在申请顶级域名的过程中出现问题的话，多刷新几次，或者等一天再回来申请，还不成功可以尝试给freenom发封邮件，附上自己的<strong>customer id</strong>（我几乎没遇到问题就是了）</li>
-</ul>
-<h3 id="使用cloudflare管理域名"><a href="#使用cloudflare管理域名" class="headerlink" title="使用cloudflare管理域名"></a>使用<a href="https://www.cloudflare.com/">cloudflare</a>管理域名</h3><p>直接按照cloudflare的提示进行操作，非常简单，无非就是修改DNS服务器地址。添加域名的时候，如果出现<code>XXX is not a registered domain</code>的错误，要先在freenom管理页面随便添加一条解析记录，然后才能在cloudflare处继续操作。freenom更改DNS服务器一般需要一天时间，这段时间cloudflare上的域名状态会一直显示<code>Pending Nameserver Update</code>，你只需要等待就行。</p>
-<p>如果你只需要域名解析服务，注意添加域名解析时不要点亮小云朵，使用<strong>dns only</strong>就可以了。</p>
-<p><img src="https://image.onebug.tech/image-20200624103558605.png-d" alt="image-20200624103558605"></p>
-<h3 id="使用github-action自动续期"><a href="#使用github-action自动续期" class="headerlink" title="使用github action自动续期"></a>使用<a href="http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html">github action</a>自动续期</h3><ul>
-<li><p>fork项目<a href="https://github.com/luolongfei/freenom">https://github.com/luolongfei/freenom</a> </p>
-</li>
-<li><p>查看<a href="https://github.com/lsqls/freenom#--%E6%9C%AC%E9%A1%B9%E7%9B%AE%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">项目使用方法</a></p>
-</li>
-<li><p>设置<strong>Secrets</strong></p>
-</li>
-<li><p>启用github action</p>
-</li>
-</ul>
-<p>附上一张我的<strong>Secrets</strong>截图 ，我是直接把邮件通知关了<code>MAIL_EBABLE=false</code>（如果你需要这个功能，请自行设置）</p>
-<p><img src="https://image.onebug.tech/image-20200624104312825.png-d" alt="image-20200624104312825"></p>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>免费的就是最贵的，而且还不能保证稳定。我就遇到域名被污染的情况，最后通过重新注册才解决该问题。域名这玩意并不贵，我的建议是嫌麻烦直接去<a href="https://sg.godaddy.com/zh">godday</a>购买一个首年域名，价格不会超过10RMB。</p>
-]]></content>
-      <categories>
-        <category>网站</category>
-      </categories>
-      <tags>
-        <tag>域名</tag>
-        <tag>cloudflare</tag>
       </tags>
   </entry>
   <entry>
@@ -1078,6 +1180,54 @@
       </tags>
   </entry>
   <entry>
+    <title>git备忘录</title>
+    <url>/2022/02/19/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/git/</url>
+    <content><![CDATA[<h1 id="Git-LFS"><a href="#Git-LFS" class="headerlink" title="Git LFS"></a>Git LFS</h1><p>Git LFS（Large File Storage，大文件存储）协议，可以把音乐、图片、视频等指定的任意大文件资源存储在Git仓库之外，对于使用者而言，类似在操作一个完整的Git仓库，非常方便。通过将大文件存储在Git原有的数据结构之中，可以减小Git仓库本身的体积，使克隆Git仓库的速度加快，也使得Git不会因为仓库中充满大文件而损失性能。</p>
+<span id="more"></span>
+
+<p><img src="https://image.onebug.tech/202202241351274.gif" alt="a diagram showing how Git LFS works"></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash</span><br><span class="line">sudo apt-get install git-lfs</span><br><span class="line">git lfs install</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置追踪文件"><a href="#配置追踪文件" class="headerlink" title="配置追踪文件"></a>配置追踪文件</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#追踪所有后缀名为“.mp4”的文件：</span></span><br><span class="line">git lfs track <span class="string">&quot;*.MP4&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看已追踪的文件，已经追踪的文件保存在“.gitattributes”中</span></span><br><span class="line">git lfs track</span><br></pre></td></tr></table></figure>
+
+<h2 id="提交大文件"><a href="#提交大文件" class="headerlink" title="提交大文件"></a>提交大文件</h2><p>提交代码时需要将“.gitattributes”文件也提交到仓库，提交完成后，就可以和原有操作一样使用git的提交功能。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#提交</span></span><br><span class="line">git push origin master</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看 LFS 跟踪的文件列表</span></span><br><span class="line">git lfs ls-files</span><br></pre></td></tr></table></figure>
+
+<h1 id="Gitlab-CI-x2F-CD"><a href="#Gitlab-CI-x2F-CD" class="headerlink" title="Gitlab CI&#x2F;CD"></a>Gitlab CI&#x2F;CD</h1><p>GitLab CI&#x2F;CD 是一个内置在GitLab中的工具，用于通过持续方法进行软件开发：</p>
+<ul>
+<li>Continuous Integration (CI) 持续集成</li>
+<li>Continuous Delivery (CD)   持续交付</li>
+<li>Continuous Deployment (CD)  持续部署</li>
+</ul>
+<p>持续集成的工作原理是将小的代码块推送到Git仓库中托管的应用程序代码库中，并且每次推送时，都要运行一系列脚本来构建、测试和验证代码更改，然后再将其合并到主分支中。</p>
+<p>持续交付和部署相当于更进一步的CI，可以在每次推送到仓库默认分支的同时将应用程序部署到生产环境。</p>
+<p><img src="https://image.onebug.tech/202202241351844.png" alt="img"></p>
+<h2 id="gitlab-ci-yml"><a href="#gitlab-ci-yml" class="headerlink" title=".gitlab-ci.yml"></a>.gitlab-ci.yml</h2><p>了使用GitLab CI&#x2F;CD，你需要一个托管在GitLab上的应用程序代码库，并且在根目录中的.gitlab-ci.yml文件中指定构建、测试和部署的脚本。一旦你已经添加了.gitlab-ci.yml到仓库中，GitLab将检测到该文件，并使用名为GitLab Runner的工具运行你的脚本。该工具的操作与终端类似。这些脚本被分组到jobs，它们共同组成一个pipeline。一个最简单的.gitlab-ci.yml文件可能是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">before_script: </span><br><span class="line">  - apt-get install rubygems ruby-dev -y </span><br><span class="line"></span><br><span class="line">run-test: </span><br><span class="line">  script: </span><br><span class="line">    - ruby --version 6</span><br></pre></td></tr></table></figure>
+
+<p>before_script属性将在运行任何内容之前为你的应用安装依赖，一个名为run-test的job（作业）将打印当前系统的Ruby版本。二者共同构成了在每次推送到仓库的任何分支时都会被触发的Pipeline（管道）。</p>
+<h2 id="Runner"><a href="#Runner" class="headerlink" title="Runner"></a>Runner</h2><p>在GitLab中，Runner运行你定义在.gitlab-ci.yml中的作业（job）。一个Runner可以是一个虚拟机、物理机、docker容器，或者一个容器集群。GitLab与Runner之间通过API进行通信，因此只需要Runner所在的机器有网络并且可以访问GitLab服务器即可。在成功配置Runner以后，你应该可以看到你最近的提交的状态 。</p>
+<blockquote>
+<p><a href="https://support.huaweicloud.com/usermanual-codehub/devcloud_hlp_0960.html">Git LFS使用_代码托管 CodeHub_用户指南_更多Git知识_华为云 (huaweicloud.com)</a></p>
+<p><a href="https://www.cnblogs.com/cjsblog/p/12256843.html">GitLab CI&#x2F;CD - 废物大师兄 - 博客园 (cnblogs.com)</a></p>
+</blockquote>
+<h1 id="Git初始化"><a href="#Git初始化" class="headerlink" title="Git初始化"></a>Git初始化</h1><h2 id="设置用户名"><a href="#设置用户名" class="headerlink" title="设置用户名"></a>设置用户名</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;username&quot;</span></span><br><span class="line">git config --global user.email useremail@xxx.com </span><br></pre></td></tr></table></figure>
+
+<h2 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global https.proxy http://127.0.0.1:1080</span><br><span class="line">git config --global https.proxy https://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+
+<h2 id="记住github-x2F-gitlab账号密码"><a href="#记住github-x2F-gitlab账号密码" class="headerlink" title="记住github&#x2F;gitlab账号密码"></a>记住github&#x2F;gitlab账号密码</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global credential.helper store</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>git lfs</tag>
+        <tag>ci/cd</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>升级HTTPS全记录</title>
     <url>/2023/03/24/%E7%BD%91%E7%AB%99/%E5%8D%9A%E5%AE%A2%E5%8D%87%E7%BA%A7HTTPS/</url>
     <content><![CDATA[<p>近期把博客升级为HTTPS访问了。记录一下升级过程。</p>
@@ -1127,38 +1277,6 @@
         <tag>博客</tag>
         <tag>hexo</tag>
         <tag>https</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>腾讯云(DNSPOD)域名DDNS脚本使用</title>
-    <url>/2020/06/24/%E7%BD%91%E7%AB%99/%E8%85%BE%E8%AE%AF%E4%BA%91(DNSPOD)%E5%9F%9F%E5%90%8DDDNS%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>DDNS（Dynamic Domain Name Server，动态域名服务）是将用户的动态IP地址映射到一个固定的域名解析服务上，用户每次连接网络的时候客户端程序就会通过信息传递把该主机的动态IP地址传送给位于服务商主机上的服务器程序，服务器程序负责提供DNS服务并实现动态域名解析。下面是介绍如何使用脚本实现腾讯云购买域名的DDNS。</p>
-<span id="more"></span>
-
-<h2 id="登录DNSPod获取密钥"><a href="#登录DNSPod获取密钥" class="headerlink" title="登录DNSPod获取密钥"></a>登录DNSPod获取密钥</h2><p>访问DNSPod控制台<a href="https://console.dnspod.cn/">https://console.dnspod.cn/</a>，使用你的腾讯云账号登录，如果腾讯云账号绑定微信，直接扫码登录就行。在域名管理添加一条A记录。域名前缀需要设定好，IP可以随意填写。我将域名前缀设置为<code>test</code>，ip设置为<code>1.1.1.1</code>。</p>
-<p><img src="https://image.onebug.tech/image-20200624223938388.png-d" alt="image-20200624223938388"></p>
-<p>点击个人头像下的密钥管理，创建一个密钥，将<code>ID</code>和<code>token</code>记下。</p>
-<p><img src="https://image.onebug.tech/image-20200624224951160.png-d" alt="image-20200624224951160"></p>
-<h2 id="设置DDNS脚本"><a href="#设置DDNS脚本" class="headerlink" title="设置DDNS脚本"></a>设置DDNS脚本</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/imki911/ArDNSPod</span><br><span class="line"><span class="built_in">cd</span> ArDNSPod</span><br><span class="line">vi dns.conf</span><br></pre></td></tr></table></figure>
-
-<p><code>dns.conf</code>设置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. Combine your token ID and token together as follows</span></span><br><span class="line"><span class="comment"># 第一个参数是上图的ID，第二个参数是上图的Token</span></span><br><span class="line">arToken=<span class="string">&quot;123425,b28c3344eaeaea9074c123451234512d&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. Place each domain you want to check as follows</span></span><br><span class="line"><span class="comment"># you can have multiple arDdnsCheck blocks</span></span><br><span class="line"><span class="comment"># 第一个参数是你的域名，第二个参数是前面设定的域名前缀</span></span><br><span class="line">arDdnsCheck <span class="string">&quot;yourdomain.com&quot;</span> <span class="string">&quot;test&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="定时运行DDNS脚本"><a href="#定时运行DDNS脚本" class="headerlink" title="定时运行DDNS脚本"></a>定时运行DDNS脚本</h2><p>测试脚本是否能正常运行，<code>./ddnspod.sh</code>，显示以下信息说明脚本正常运行，到DNSPod控制台可以看到前面设置的A记录的IP已经被修改为外网IP。</p>
-<p><img src="https://image.onebug.tech/image-20200624225712024.png-d" alt="image-20200624225712024"></p>
-<p>利用cron半小时执行一次DDNS脚本，注意脚本要使用绝对路径。群晖可以使用自带的定时程序完成该操作。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">*/30 * * * *   bin/bash /home/bzjz/ArDNSPod/ddnspod.sh</span><br></pre></td></tr></table></figure>
-
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>将不支持DDNS的域名服务商下的域名接入DNSPod，同样可以实现DDNS。</p>
-<p><img src="https://image.onebug.tech/image-20200624232552344.png-d" alt="image-20200624232552344"></p>
-]]></content>
-      <categories>
-        <category>网站</category>
-      </categories>
-      <tags>
-        <tag>域名</tag>
-        <tag>ddns</tag>
-        <tag>脚本</tag>
       </tags>
   </entry>
   <entry>
@@ -1333,6 +1451,38 @@
         <tag>多系统</tag>
         <tag>U盘</tag>
         <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>腾讯云(DNSPOD)域名DDNS脚本使用</title>
+    <url>/2020/06/24/%E7%BD%91%E7%AB%99/%E8%85%BE%E8%AE%AF%E4%BA%91(DNSPOD)%E5%9F%9F%E5%90%8DDDNS%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>DDNS（Dynamic Domain Name Server，动态域名服务）是将用户的动态IP地址映射到一个固定的域名解析服务上，用户每次连接网络的时候客户端程序就会通过信息传递把该主机的动态IP地址传送给位于服务商主机上的服务器程序，服务器程序负责提供DNS服务并实现动态域名解析。下面是介绍如何使用脚本实现腾讯云购买域名的DDNS。</p>
+<span id="more"></span>
+
+<h2 id="登录DNSPod获取密钥"><a href="#登录DNSPod获取密钥" class="headerlink" title="登录DNSPod获取密钥"></a>登录DNSPod获取密钥</h2><p>访问DNSPod控制台<a href="https://console.dnspod.cn/">https://console.dnspod.cn/</a>，使用你的腾讯云账号登录，如果腾讯云账号绑定微信，直接扫码登录就行。在域名管理添加一条A记录。域名前缀需要设定好，IP可以随意填写。我将域名前缀设置为<code>test</code>，ip设置为<code>1.1.1.1</code>。</p>
+<p><img src="https://image.onebug.tech/image-20200624223938388.png-d" alt="image-20200624223938388"></p>
+<p>点击个人头像下的密钥管理，创建一个密钥，将<code>ID</code>和<code>token</code>记下。</p>
+<p><img src="https://image.onebug.tech/image-20200624224951160.png-d" alt="image-20200624224951160"></p>
+<h2 id="设置DDNS脚本"><a href="#设置DDNS脚本" class="headerlink" title="设置DDNS脚本"></a>设置DDNS脚本</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/imki911/ArDNSPod</span><br><span class="line"><span class="built_in">cd</span> ArDNSPod</span><br><span class="line">vi dns.conf</span><br></pre></td></tr></table></figure>
+
+<p><code>dns.conf</code>设置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. Combine your token ID and token together as follows</span></span><br><span class="line"><span class="comment"># 第一个参数是上图的ID，第二个参数是上图的Token</span></span><br><span class="line">arToken=<span class="string">&quot;123425,b28c3344eaeaea9074c123451234512d&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. Place each domain you want to check as follows</span></span><br><span class="line"><span class="comment"># you can have multiple arDdnsCheck blocks</span></span><br><span class="line"><span class="comment"># 第一个参数是你的域名，第二个参数是前面设定的域名前缀</span></span><br><span class="line">arDdnsCheck <span class="string">&quot;yourdomain.com&quot;</span> <span class="string">&quot;test&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="定时运行DDNS脚本"><a href="#定时运行DDNS脚本" class="headerlink" title="定时运行DDNS脚本"></a>定时运行DDNS脚本</h2><p>测试脚本是否能正常运行，<code>./ddnspod.sh</code>，显示以下信息说明脚本正常运行，到DNSPod控制台可以看到前面设置的A记录的IP已经被修改为外网IP。</p>
+<p><img src="https://image.onebug.tech/image-20200624225712024.png-d" alt="image-20200624225712024"></p>
+<p>利用cron半小时执行一次DDNS脚本，注意脚本要使用绝对路径。群晖可以使用自带的定时程序完成该操作。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">*/30 * * * *   bin/bash /home/bzjz/ArDNSPod/ddnspod.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>将不支持DDNS的域名服务商下的域名接入DNSPod，同样可以实现DDNS。</p>
+<p><img src="https://image.onebug.tech/image-20200624232552344.png-d" alt="image-20200624232552344"></p>
+]]></content>
+      <categories>
+        <category>网站</category>
+      </categories>
+      <tags>
+        <tag>域名</tag>
+        <tag>ddns</tag>
+        <tag>脚本</tag>
       </tags>
   </entry>
   <entry>
