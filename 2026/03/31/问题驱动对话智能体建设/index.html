@@ -20,30 +20,19 @@
     var CONFIG = {"hostname":"www.onebug.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="使用vscode + Wsl 可以改善C++&#x2F;C的开发体验">
+  <meta name="description" content="最近几年，随着大模型技术的普及，几乎每个公司都在尝试建设自己的对话智能体（AI Agent）。 但是我观察到一个普遍的现象：很多团队在立项时，往往是“技术驱动”或“功能驱动”的。大家会列出一长串酷炫的功能清单——要支持多轮对话、要能调用外部 API、要支持多模态……结果项目做得很重，上线后用户却不买账，觉得“不聪明”或者“没解决我的问题”。 其实，建设对话智能体，最务实也最高效的方法应该是“问题驱">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用 VSCode + Wsl 搭建 linux 开发环境">
-<meta property="og:url" content="https://www.onebug.tech/2020/10/20/%E8%BD%AF%E4%BB%B6/vscode%E4%BD%BF%E7%94%A8wsl/index.html">
+<meta property="og:title" content="问题驱动对话智能体建设">
+<meta property="og:url" content="https://www.onebug.tech/2026/03/31/%E9%97%AE%E9%A2%98%E9%A9%B1%E5%8A%A8%E5%AF%B9%E8%AF%9D%E6%99%BA%E8%83%BD%E4%BD%93%E5%BB%BA%E8%AE%BE/index.html">
 <meta property="og:site_name" content="冰冻橘子的自留地">
-<meta property="og:description" content="使用vscode + Wsl 可以改善C++&#x2F;C的开发体验">
+<meta property="og:description" content="最近几年，随着大模型技术的普及，几乎每个公司都在尝试建设自己的对话智能体（AI Agent）。 但是我观察到一个普遍的现象：很多团队在立项时，往往是“技术驱动”或“功能驱动”的。大家会列出一长串酷炫的功能清单——要支持多轮对话、要能调用外部 API、要支持多模态……结果项目做得很重，上线后用户却不买账，觉得“不聪明”或者“没解决我的问题”。 其实，建设对话智能体，最务实也最高效的方法应该是“问题驱">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://code.visualstudio.com/assets/docs/remote/wsl/architecture-wsl.png">
-<meta property="og:image" content="https://image.onebug.tech/image-20201021222529606.png-d">
-<meta property="og:image" content="https://image.onebug.tech/image-20201021222425486.png-d">
-<meta property="og:image" content="https://image.onebug.tech/image-20201021222133299.png-d">
-<meta property="og:image" content="https://image.onebug.tech/image-20201021222248879.png-d">
-<meta property="og:image" content="https://image.onebug.tech/image-20201021222646711.png-d">
-<meta property="article:published_time" content="2020-10-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-03-23T15:29:43.029Z">
+<meta property="article:published_time" content="2026-03-30T19:58:53.000Z">
+<meta property="article:modified_time" content="2026-03-31T03:59:39.114Z">
 <meta property="article:author" content="冰冻橘子">
-<meta property="article:tag" content="工具">
-<meta property="article:tag" content="vscode">
-<meta property="article:tag" content="wsl">
-<meta property="article:tag" content="windows">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://code.visualstudio.com/assets/docs/remote/wsl/architecture-wsl.png">
 
-<link rel="canonical" href="https://www.onebug.tech/2020/10/20/%E8%BD%AF%E4%BB%B6/vscode%E4%BD%BF%E7%94%A8wsl/">
+<link rel="canonical" href="https://www.onebug.tech/2026/03/31/%E9%97%AE%E9%A2%98%E9%A9%B1%E5%8A%A8%E5%AF%B9%E8%AF%9D%E6%99%BA%E8%83%BD%E4%BD%93%E5%BB%BA%E8%AE%BE/">
 
 
 <script id="page-configurations">
@@ -56,7 +45,7 @@
   };
 </script>
 
-  <title>用 VSCode + Wsl 搭建 linux 开发环境 | 冰冻橘子的自留地</title>
+  <title>问题驱动对话智能体建设 | 冰冻橘子的自留地</title>
   
 
 
@@ -205,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.onebug.tech/2020/10/20/%E8%BD%AF%E4%BB%B6/vscode%E4%BD%BF%E7%94%A8wsl/">
+    <link itemprop="mainEntityOfPage" href="https://www.onebug.tech/2026/03/31/%E9%97%AE%E9%A2%98%E9%A9%B1%E5%8A%A8%E5%AF%B9%E8%AF%9D%E6%99%BA%E8%83%BD%E4%BD%93%E5%BB%BA%E8%AE%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://image.onebug.tech/avatar.png">
@@ -218,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          用 VSCode + Wsl 搭建 linux 开发环境
+          问题驱动对话智能体建设
         </h1>
 
         <div class="post-meta">
@@ -227,24 +216,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-10-20 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-20T00:00:00+08:00">2020-10-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-23 23:29:43" itemprop="dateModified" datetime="2023-03-23T23:29:43+08:00">2023-03-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
-                </span>
+              <time title="创建时间：2026-03-31 03:58:53 / 修改时间：11:59:39" itemprop="dateCreated datePublished" datetime="2026-03-31T03:58:53+08:00">2026-03-31</time>
             </span>
 
           
@@ -258,43 +232,43 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>使用vscode + Wsl 可以改善C++&#x2F;C的开发体验</p>
-<p><img src="https://code.visualstudio.com/assets/docs/remote/wsl/architecture-wsl.png" alt="WSL Architecture"></p>
+        <p>最近几年，随着大模型技术的普及，几乎每个公司都在尝试建设自己的对话智能体（AI Agent）。</p>
+<p>但是我观察到一个普遍的现象：很多团队在立项时，往往是“技术驱动”或“功能驱动”的。大家会列出一长串酷炫的功能清单——要支持多轮对话、要能调用外部 API、要支持多模态……结果项目做得很重，上线后用户却不买账，觉得“不聪明”或者“没解决我的问题”。</p>
+<p>其实，建设对话智能体，最务实也最高效的方法应该是<strong>“问题驱动”</strong>。</p>
 <span id="more"></span>
 
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10">安装 WSL</a></li>
-<li>在 Windows 端(不是在 WSL 中)安装 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/">Vs Code</a></li>
-</ul>
-<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ul>
-<li><p>安装Vs Code扩展<a target="_blank" rel="noopener" href="https://aka.ms/vscode-remote/download/extension">Remote Development extension pack</a></p>
-</li>
-<li><p>在<strong>WSL端</strong>安装C++&#x2F;C 语言扩展（以下是我个人安装的一些扩展）</p>
-<p><img src="https://image.onebug.tech/image-20201021222529606.png-d" alt="image-20201021222529606"></p>
-</li>
-</ul>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="初始化项目文件夹"><a href="#初始化项目文件夹" class="headerlink" title="初始化项目文件夹"></a>初始化项目文件夹</h3><ul>
-<li><p>打开vscode</p>
-</li>
-<li><p><code>F1</code>-&gt;<code>Remote-WSL: New Window</code> ，或者点击左下角的绿色按钮</p>
-<p><img src="https://image.onebug.tech/image-20201021222425486.png-d" alt="image-20201021222425486"></p>
-</li>
-<li><p>新建bash终端，使用<code>mkdir</code>等命令新建项目文件夹</p>
-</li>
-</ul>
-<p><img src="https://image.onebug.tech/image-20201021222133299.png-d" alt="image-20201021222133299"></p>
+<p>智能体的本质是一个交互界面的革命，它的核心价值不在于背后用了多复杂的模型，而在于它能多快、多准确地解决用户的实际疑问。顺着这个思路，我们可以把传统软件工程的生命周期，重新映射到对话智能体的建设上来。</p>
+<p>核心思想可以概括为三个阶段：</p>
+<hr>
+<h3 id="一、-问题即需求（设计与开发阶段）"><a href="#一、-问题即需求（设计与开发阶段）" class="headerlink" title="一、 问题即需求（设计与开发阶段）"></a>一、 问题即需求（设计与开发阶段）</h3><p>传统的软件开发，起点是产品经理写的 PRD（产品需求文档）。但在对话智能体的世界里，<strong>真实的“用户问题”才是最核心的需求。</strong></p>
+<p>很多团队在设计初期喜欢凭空想象用户会怎么问，这往往会导致偏差。正确的做法是，去收集用户在真实场景下会问的“Top 100 个问题”。</p>
 <ul>
-<li>菜单<code>文件</code>-&gt;<code>打开文件夹</code></li>
-<li><img src="https://image.onebug.tech/image-20201021222248879.png-d" alt="image-20201021222248879"></li>
+<li><strong>从问题推导意图：</strong> 用户问“我的快递到哪了？”，这背后是一个“物流查询”的意图。</li>
+<li><strong>从意图推导能力（工具&#x2F;API）：</strong> 为了回答这个问题，智能体需要具备调用内部订单系统和物流接口的能力。</li>
+<li><strong>从能力推导 Prompt 与工作流：</strong> 开发者需要设计相应的 Prompt，让大模型知道在识别到该意图时，应该提取哪些参数（如订单号），并触发哪个工作流。</li>
 </ul>
-<h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><ul>
-<li><p>新建测试文件<code>test.cpp</code></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	std::cout&lt;&lt;<span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在安装<code>code runner</code>扩展的前提下，<code>右键</code>- &gt;<code>run code</code>，可以看到，成功运行</p>
-</li>
+<p><strong>总结：</strong> 不要先建系统再找场景，而是先收集“问题”，让问题来决定你需要开发什么“需求”。</p>
+<h3 id="二、-问答对即测试（SIT-与-UAT-阶段）"><a href="#二、-问答对即测试（SIT-与-UAT-阶段）" class="headerlink" title="二、 问答对即测试（SIT 与 UAT 阶段）"></a>二、 问答对即测试（SIT 与 UAT 阶段）</h3><p>代码写完了，怎么测试？传统软件测试是点按钮、填表单，看系统是否崩溃。而对话智能体的测试，本质上是<strong>语义和逻辑的验证</strong>。</p>
+<p>这个时候，前期收集的“问题”，以及我们期望智能体给出的“标准答案”，就构成了<strong>问答对（Q&amp;A Pairs）</strong>。这些问答对，就是我们的测试用例。</p>
+<ul>
+<li><strong>SIT（系统集成测试）：</strong> 重点验证“死逻辑”。将几百个基础问答对批量输入给智能体，测试意图识别是否准确、API 调用是否成功、参数提取是否遗漏。这是一个客观的、可量化的过程，甚至可以引入另一个大模型来进行自动化的交叉打分。</li>
+<li><strong>UAT（用户验收测试）：</strong> 重点验证“活体验”。让业务人员基于真实的业务场景，用口语化、甚至带点口音或错别字的表述去提问。这里测试的是智能体的鲁棒性（Robustness）、语气是否合适、以及多轮追问下的上下文记忆能力。</li>
 </ul>
-<p><img src="https://image.onebug.tech/image-20201021222646711.png-d" alt="image-20201021222646711"></p>
+<p><strong>总结：</strong> 没有覆盖核心问答对的测试，对于智能体来说就是盲人摸象。问答对集的质量和覆盖面，决定了系统上线的底线。</p>
+<h3 id="三、-Bad-Case-是优化的阶梯（试运行阶段）"><a href="#三、-Bad-Case-是优化的阶梯（试运行阶段）" class="headerlink" title="三、 Bad Case 是优化的阶梯（试运行阶段）"></a>三、 Bad Case 是优化的阶梯（试运行阶段）</h3><p>系统上线试运行（Beta 测试）后，真正的考验才刚开始。</p>
+<p>无论你在实验室里测试得多么完美，真实用户永远会问出你意想不到的问题，或者用你完全没预料到的句式。智能体给出了错误、荒谬或答非所问的回答，这就是 <strong>Bad Case</strong>。</p>
+<p>传统软件碰到 Bug 需要改代码，而智能体碰到 Bad Case，往往需要的是<strong>“数据飞轮”和“提示词工程”</strong>。</p>
+<ol>
+<li><strong>收集与归类：</strong> 每天把试运行产生的 Bad Case 拉出来。是因为知识库没覆盖？是因为意图识别错了？还是大模型出现了幻觉？</li>
+<li><strong>针对性优化：</strong><ul>
+<li><strong>如果是知识缺失：</strong> 补充相关文档到 RAG（检索增强生成）系统的知识库中。</li>
+<li><strong>如果是意图混淆：</strong> 优化 Prompt，或者在 Few-shot（少样本提示）中增加这个 Bad Case 作为反面教材。</li>
+<li><strong>如果是逻辑死循环：</strong> 调整 Agent 的工作流编排节点。</li>
+</ul>
+</li>
+<li><strong>回归测试：</strong> 把解决后的 Bad Case 沉淀到第二步的“测试问答对”池子中，防止未来发生退化。</li>
+</ol>
+<p><strong>总结：</strong> 对话智能体不是“开发”出来的，而是“盘”出来的。试运行期间的 Bad Case 不是失败，而是系统进化的养料。</p>
 
     </div>
 
@@ -303,13 +277,6 @@
     
 
       <footer class="post-footer">
-          
-          <div class="post-tags">
-              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
-              <a href="/tags/vscode/" rel="tag"><i class="fa fa-tag"></i> vscode</a>
-              <a href="/tags/wsl/" rel="tag"><i class="fa fa-tag"></i> wsl</a>
-              <a href="/tags/windows/" rel="tag"><i class="fa fa-tag"></i> windows</a>
-          </div>
 
         
 
@@ -317,13 +284,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/09/22/%E8%BD%AF%E4%BB%B6/ventoy/" rel="prev" title="使用ventoy制作多系统启动盘">
-      <i class="fa fa-chevron-left"></i> 使用ventoy制作多系统启动盘
+    <a href="/2026/03/09/vibecoding%E4%B9%8B%E6%88%91%E8%A7%81/" rel="prev" title="vibecoding之我见">
+      <i class="fa fa-chevron-left"></i> vibecoding之我见
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/02/01/ROS/DDS/" rel="next" title="ROS的基础——DDS">
-      ROS的基础——DDS <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -382,7 +346,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96"><span class="nav-number">1.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">1.2.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">2.1.</span> <span class="nav-text">初始化项目文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="nav-number">2.2.</span> <span class="nav-text">测试代码</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81-%E9%97%AE%E9%A2%98%E5%8D%B3%E9%9C%80%E6%B1%82%EF%BC%88%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E9%98%B6%E6%AE%B5%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">一、 问题即需求（设计与开发阶段）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81-%E9%97%AE%E7%AD%94%E5%AF%B9%E5%8D%B3%E6%B5%8B%E8%AF%95%EF%BC%88SIT-%E4%B8%8E-UAT-%E9%98%B6%E6%AE%B5%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">二、 问答对即测试（SIT 与 UAT 阶段）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81-Bad-Case-%E6%98%AF%E4%BC%98%E5%8C%96%E7%9A%84%E9%98%B6%E6%A2%AF%EF%BC%88%E8%AF%95%E8%BF%90%E8%A1%8C%E9%98%B6%E6%AE%B5%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">三、 Bad Case 是优化的阶梯（试运行阶段）</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
