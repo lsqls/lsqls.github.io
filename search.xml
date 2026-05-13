@@ -1588,9 +1588,9 @@
 
 <h3 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h3><p>你只需要准备以下三样东西：</p>
 <ol>
-<li><strong>一个未注册过 Apple ID 的邮箱</strong>。推荐使用 Gmail 或 Outlook。</li>
+<li><strong>一个未注册过 Apple ID 的邮箱</strong>。推荐使用 Gmail 、 Outlook（国内的163邮箱也可以）。</li>
 <li><strong>一个能接收短信的手机号</strong>。国内的 <code>+86</code> 手机号即可，苹果允许一个号码绑定多个 ID。</li>
-<li><strong>一个土耳其的虚拟地址</strong>。可以通过搜索引擎查找 “Turkey Address Generator”，获取并记录下一组土耳其的街道、城市和邮编（例如邮编 34XXX）。</li>
+<li><strong>一个土耳其的虚拟地址</strong>。可以通过搜索引擎查找 “土耳其地址生成器”，获取并记录下一组土耳其的街道、城市和邮编（例如邮编 34XXX）。</li>
 </ol>
 <p>需要说明的是，整个注册过程建议在<strong>国内真实网络环境</strong>（Wi-Fi 或手机流量）下进行，不要开启任何代理工具，这样反而不容易触发风控。</p>
 <h3 id="二、网页端注册"><a href="#二、网页端注册" class="headerlink" title="二、网页端注册"></a>二、网页端注册</h3><p>第一步，打开浏览器，访问 Apple 的官方账户页面 <code>account.apple.com</code>。</p>
@@ -1613,7 +1613,7 @@
 <li>在付款方式（Payment Method）页面，<strong>必须选择“无（None）”</strong>。在下方的账单地址栏目，填入事先准备好的土耳其地址。</li>
 </ol>
 <p>一直点击下一步直到完成，你的土耳其区 Apple ID 就正式激活了，可以开始下载免费应用。</p>
-<h3 id="四、支付与注意事项"><a href="#四、支付与注意事项" class="headerlink" title="四、支付与注意事项"></a>四、支付与注意事项</h3><p>土区账号不支持绑定国内发行的双币信用卡。目前的支付方式主要有两种：一是通过 Oyunfor 等土耳其本土正规网站购买礼品卡（Gift Card）进行充值；二是办理 Ininal 等土耳其虚拟银行卡。</p>
+<h3 id="四、支付与注意事项"><a href="#四、支付与注意事项" class="headerlink" title="四、支付与注意事项"></a>四、支付与注意事项</h3><p>土区账号不支持绑定国内发行的双币信用卡。目前的支付方式主要有两种：一是通过 Turgame 等土耳其本土正规网站购买礼品卡（Gift Card）进行充值；二是办理 Ininal 等土耳其虚拟银行卡。</p>
 <p>最后，有几点需要特别注意：</p>
 <ul>
 <li><strong>账号隔离</strong>：外区账号永远只在 App Store 登录，仅用于下载应用和内购。手机系统的“设置 - iCloud”必须保持登录你的国区主账号。这样能确保你的照片、通讯录等隐私数据安全。</li>
